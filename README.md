@@ -30,5 +30,3 @@ The platform aims to:
 5. **Access Resources**:
    - Browse articles and guides shared by specialists.
 
-For more information, contact the project team at [email@example.com].
-
