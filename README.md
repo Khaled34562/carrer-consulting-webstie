@@ -1,4 +1,4 @@
-# Career Consulting Platform AI
+# Career Consulting Platform AI Branch
 
 ## Overview
 The Career Consulting Platform is a web application designed to connect job seekers with career professionals. It offers personalized guidance, AI-powered tools, and expert resources to help users achieve their career goals. The platform facilitates direct communication with consultants and provides tools for CV building and review.
