@@ -68,7 +68,7 @@ class OpenAIService {
         messages: [
           OpenAIChatCompletionChoiceMessageModel(
             role: OpenAIChatMessageRole.user,
-            content: prompt,
+            content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)],
           ),
         ],
       );

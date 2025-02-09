@@ -28,6 +28,22 @@ class EndpointExample extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointOpenAI extends _i1.EndpointRef {
+  EndpointOpenAI(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'openAI';
+
+  /// API endpoint to get AI-generated response
+  _i2.Future<Object?> getAIResponse(String userMessage) =>
+      caller.callServerEndpoint<Object?>(
+        'openAI',
+        'getAIResponse',
+        {'userMessage': userMessage},
+      );
+}
+
 class Modules {
   Modules(Client client) {
     auth = _i3.Caller(client);
@@ -63,15 +79,21 @@ class Client extends _i1.ServerpodClientShared {
               disconnectStreamsOnLostInternetConnection,
         ) {
     example = EndpointExample(this);
+    openAI = EndpointOpenAI(this);
     modules = Modules(this);
   }
 
   late final EndpointExample example;
 
+  late final EndpointOpenAI openAI;
+
   late final Modules modules;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {'example': example};
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {
+        'example': example,
+        'openAI': openAI,
+      };
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>
