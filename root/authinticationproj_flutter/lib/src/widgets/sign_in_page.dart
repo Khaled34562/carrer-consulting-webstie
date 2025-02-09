@@ -3,7 +3,7 @@ import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';
 import 'package:authinticationproj_flutter/src/serverpod_client.dart';
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context) {

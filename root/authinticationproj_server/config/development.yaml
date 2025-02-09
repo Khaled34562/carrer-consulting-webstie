@@ -39,3 +39,7 @@ redis:
   enabled: false
   host: localhost
   port: 8091
+
+# Configuration for OpenAI API.
+server:
+  openai_api_key: "your_openai_api_key_here"

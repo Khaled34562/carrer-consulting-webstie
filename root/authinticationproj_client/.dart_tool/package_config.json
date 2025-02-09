@@ -20,6 +20,24 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "dart_openai",
+      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/dart_openai-5.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "fetch_api",
+      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/fetch_api-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "fetch_client",
+      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/fetch_client-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "fixnum",
       "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/fixnum-1.1.1",
       "packageUri": "lib/",
@@ -146,10 +164,10 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-02-04T14:07:57.181529Z",
+  "generated": "2025-02-09T22:07:57.610523Z",
   "generator": "pub",
-  "generatorVersion": "3.6.1",
+  "generatorVersion": "3.6.2",
   "flutterRoot": "file:///D:/Flutter%20SDK/flutter",
-  "flutterVersion": "3.27.3",
+  "flutterVersion": "3.27.4",
   "pubCache": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache"
 }
