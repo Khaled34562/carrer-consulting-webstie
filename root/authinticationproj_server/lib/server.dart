@@ -6,6 +6,7 @@ import 'package:authinticationproj_server/src/web/routes/root.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 import 'src/generated/protocol.dart';
 import 'src/generated/endpoints.dart';
+import 'src/endpoints/openai_endpoint.dart'; // Import the OpenAI endpoint
 
 // This is the starting point of your Serverpod server. In most cases, you will
 // only need to make additions to this file if you add future calls,  are
@@ -22,6 +23,16 @@ void run(List<String> args) async {
 
   // If you are using any future calls, they need to be registered here.
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
+
+  // Retrieve OpenAI API key securely
+  final openaiApiKey = pod.config.get('server.openai_api_key') ?? '';
+
+  if (openaiApiKey.isEmpty) {
+    throw Exception('OpenAI API key is missing! Add it to your config.');
+  }
+
+  // Register OpenAI Endpoint with API key
+  pod.registerEndpoint('openai', OpenAIEndpoint(apiKey: openaiApiKey));
 
     
    // Configuration for sign in with email.
@@ -89,4 +100,12 @@ auth.AuthConfig.set(auth.AuthConfig(
 
   // Start the server.
   await pod.start();
+}
+
+extension on Serverpod {
+  void registerEndpoint(String s, OpenAIEndpoint openAIEndpoint) {}
+}
+
+extension on ServerpodConfig {
+  get(String s) {}
 }

@@ -3,7 +3,6 @@ import 'package:authinticationproj_flutter/src/serverpod_client.dart';
 import 'package:authinticationproj_flutter/src/widgets/account_page.dart';
 import 'package:authinticationproj_flutter/src/widgets/sign_in_page.dart';
 import 'package:flutter/material.dart';
-import 'package:serverpod_flutter/serverpod_flutter.dart';
 
 
 
