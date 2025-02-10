@@ -39,6 +39,3 @@ redis:
   enabled: false
   host: localhost
   port: 8091
-
-
-openai_api_key: ""
