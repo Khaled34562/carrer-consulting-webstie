@@ -9,6 +9,6 @@ class OpenAIEndpoint extends Endpoint {
 
   Future<Object?> getAIResponse(Session session, String userMessage) async {
     
-    return await _openAIService.generateResponse(userMessage).toString();
+    return _openAIService.generateResponse(userMessage).toString();
   }
 }
