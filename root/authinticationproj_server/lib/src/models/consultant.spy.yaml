@@ -1,0 +1,17 @@
+class: Consultant
+table: consultant
+fields:
+  userId: int, relation(parent=serverpod_user_info)
+  imagePath: String
+  availabilityStart: DateTime
+  availabilityEnd: DateTime
+  specializationField: String
+  degree: String
+  yearsOfExperience: int
+  consultationType: ConsultationType
+  bio: String
+  rating: double
+indexes:
+  consultant_user_unique_idx:
+    fields: userId
+    unique: true
