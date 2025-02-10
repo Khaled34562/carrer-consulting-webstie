@@ -24,7 +24,7 @@ class Endpoints extends _i1.EndpointDispatch {
           'example',
           null,
         ),
-      'openAI': _i3.OpenAIEndpoint(apiKey: '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')
+      'openAI': _i3.OpenAIEndpoint()
         ..initialize(
           server,
           'openAI',
@@ -62,8 +62,8 @@ class Endpoints extends _i1.EndpointDispatch {
         'getAIResponse': _i1.MethodConnector(
           name: 'getAIResponse',
           params: {
-            'userMessage': _i1.ParameterDescription(
-              name: 'userMessage',
+            'city': _i1.ParameterDescription(
+              name: 'city',
               type: _i1.getType<String>(),
               nullable: false,
             )
@@ -74,7 +74,7 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['openAI'] as _i3.OpenAIEndpoint).getAIResponse(
             session,
-            params['userMessage'],
+            params['city'],
           ),
         )
       },

@@ -1,13 +1,29 @@
-import 'package:authinticationproj_server/src/services/openai_service.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:serverpod/serverpod.dart';
 
 class OpenAIEndpoint extends Endpoint {
-  final OpenAIService _openAIService;
+  Future<String> getAIResponse(Session session, String city) async {
+    // Replace with a real OpenAI API endpoint (if needed)
+    final String url =
+        'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=YOUR_API_KEY&units=metric';
 
-  OpenAIEndpoint({required String apiKey})
-      : _openAIService = OpenAIService(apiKey);
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
 
-  Future<Object?> getAIResponse(Session session, String userMessage) async {
-    return await _openAIService.generateResponse(userMessage).toString();
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> weatherData = json.decode(response.body);
+        if (weatherData.containsKey('main') &&
+            weatherData['main'].containsKey('temp')) {
+          return '${weatherData['main']['temp']}°C';
+        } else {
+          return 'Weather data unavailable';
+        }
+      } else {
+        return 'Error: API returned ${response.statusCode}';
+      }
+    } catch (e) {
+      return 'Error: ${e.toString()}';
+    }
   }
 }

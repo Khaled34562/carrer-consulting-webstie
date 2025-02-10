@@ -27,9 +27,8 @@ void run(List<String> args) async {
     throw Exception('Add OpenAI key to config/config.yaml');
   }
 
-  // Register endpoint properly
-  pod.registerEndpoint(OpenAIEndpoint(apiKey: openaiApiKey));
-
+  // Add the root route to the web server
+  pod.webServer.addRoute(RouteRoot() ,'/');
     
    // Configuration for sign in with email.
 auth.AuthConfig.set(auth.AuthConfig(
@@ -100,15 +99,4 @@ auth.AuthConfig.set(auth.AuthConfig(
 
 extension on ServerpodConfig {
   get(String s) {}
-}
-
-extension EndpointRegistration on Serverpod {
-  void registerEndpoint(OpenAIEndpoint endpoint) {
-    // Add to existing endpoints
-    endpoints.add(endpoint);
-  }
-}
-
-extension on EndpointDispatch {
-  void add(OpenAIEndpoint endpoint) {}
 }
