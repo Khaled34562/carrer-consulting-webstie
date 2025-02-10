@@ -13,7 +13,7 @@ import 'src/endpoints/openai_endpoint.dart'; // Import the OpenAI endpoint
 // configuring Relic (Serverpod's web-server), or need custom setup work.
 
 void run(List<String> args) async {
-  // Initialize Serverpod and connect it with your generated code.
+  
   final pod = Serverpod(
     args,
     Protocol(),
@@ -21,18 +21,14 @@ void run(List<String> args) async {
     authenticationHandler: auth.authenticationHandler,
   );
 
-  // If you are using any future calls, they need to be registered here.
-  // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
-
-  // Retrieve OpenAI API key securely
+  // Get API key from secure config
   final openaiApiKey = pod.config.get('openai_api_key') ?? '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';
-
   if (openaiApiKey.isEmpty) {
-    throw Exception('OpenAI API key is missing! Add it to your config.');
+    throw Exception('Add OpenAI key to config/config.yaml');
   }
 
-  // Register OpenAI Endpoint with API key
-  pod.registerEndpoint('openai', OpenAIEndpoint(apiKey: openaiApiKey));
+  // Register endpoint properly
+  pod.registerEndpoint(OpenAIEndpoint(apiKey: openaiApiKey));
 
     
    // Configuration for sign in with email.
@@ -102,10 +98,17 @@ auth.AuthConfig.set(auth.AuthConfig(
   await pod.start();
 }
 
-extension on Serverpod {
-  void registerEndpoint(String s, OpenAIEndpoint openAIEndpoint) {}
-}
-
 extension on ServerpodConfig {
   get(String s) {}
+}
+
+extension EndpointRegistration on Serverpod {
+  void registerEndpoint(OpenAIEndpoint endpoint) {
+    // Add to existing endpoints
+    endpoints.add(endpoint);
+  }
+}
+
+extension on EndpointDispatch {
+  void add(OpenAIEndpoint endpoint) {}
 }

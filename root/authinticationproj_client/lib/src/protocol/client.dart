@@ -35,7 +35,6 @@ class EndpointOpenAI extends _i1.EndpointRef {
   @override
   String get name => 'openAI';
 
-  /// API endpoint to get AI-generated response
   _i2.Future<Object?> getAIResponse(String userMessage) =>
       caller.callServerEndpoint<Object?>(
         'openAI',
