@@ -22,7 +22,7 @@ void run(List<String> args) async {
   );
 
   // Get API key from secure config
-  final openaiApiKey = pod.config.get('openai_api_key') ?? '';
+  final openaiApiKey = pod.config.get('openai_api_key') ?? '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';
   if (openaiApiKey.isEmpty) {
     throw Exception('Add OpenAI key to config/config.yaml');
   }
