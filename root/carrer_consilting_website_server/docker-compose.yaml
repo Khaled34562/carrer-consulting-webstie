@@ -1,0 +1,54 @@
+services:
+  # Development services
+  postgres:
+    image: postgres:16.3
+    ports:
+      - '8090:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: carrer_consilting_website
+      POSTGRES_PASSWORD: "4Bg7zmbS1xjv46J3uGW3GrYNi5JwAOkC"
+    volumes:
+      - carrer_consilting_website_data:/var/lib/postgresql/data
+    profiles:
+      - '' # Default profile
+      - dev
+  redis:
+    image: redis:6.2.6
+    ports:
+      - '8091:6379'
+    command: redis-server --requirepass "J1ICh_8eK9CTWh6rWERE119NN7i2iOkM"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    profiles:
+      - '' # Default profile
+      - dev
+
+  # Test services
+  postgres_test:
+    image: postgres:16.3
+    ports:
+      - '9090:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: carrer_consilting_website_test
+      POSTGRES_PASSWORD: "UZz5c0wN8hybHhFh4UvpzeDdqe_hl_ta"
+    volumes:
+      - carrer_consilting_website_test_data:/var/lib/postgresql/data
+    profiles:
+      - '' # Default profile
+      - test
+  redis_test:
+    image: redis:6.2.6
+    ports:
+      - '9091:6379'
+    command: redis-server --requirepass "f7AWp8ndxeDW2rAi6Kyv0EAMN1EE2dRZ"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    profiles:
+      - '' # Default profile
+      - test
+
+volumes:
+  carrer_consilting_website_data:
+  carrer_consilting_website_test_data:
