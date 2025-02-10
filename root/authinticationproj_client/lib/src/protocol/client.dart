@@ -35,11 +35,11 @@ class EndpointOpenAI extends _i1.EndpointRef {
   @override
   String get name => 'openAI';
 
-  _i2.Future<String> getAIResponse(String city) =>
-      caller.callServerEndpoint<String>(
+  _i2.Future<Object?> getAIResponse(String userMessage) =>
+      caller.callServerEndpoint<Object?>(
         'openAI',
         'getAIResponse',
-        {'city': city},
+        {'userMessage': userMessage},
       );
 }
 

@@ -167,9 +167,9 @@ class _OpenAIEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<String> getAIResponse(
+  _i3.Future<Object?> getAIResponse(
     _i1.TestSessionBuilder sessionBuilder,
-    String city,
+    String userMessage,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -182,13 +182,13 @@ class _OpenAIEndpoint {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'openAI',
           methodName: 'getAIResponse',
-          parameters: _i1.testObjectToJson({'city': city}),
+          parameters: _i1.testObjectToJson({'userMessage': userMessage}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<String>);
+        ) as _i3.Future<Object?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
