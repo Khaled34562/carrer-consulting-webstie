@@ -6,7 +6,6 @@ enum OpenAIChatMessageContentType {
   imageUrl,
 }
 
-// Remove this enum as it conflicts with the one from the dart_openai package
 
 // ================== CONTENT ITEM MODEL ==================
 class OpenAIChatMessageContentItemModel {

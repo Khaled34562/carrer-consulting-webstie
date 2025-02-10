@@ -25,7 +25,7 @@ void run(List<String> args) async {
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
 
   // Retrieve OpenAI API key securely
-  final openaiApiKey = pod.config.get('server.openai_api_key') ?? '';
+  final openaiApiKey = pod.config.get('openai_api_key') ?? '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';
 
   if (openaiApiKey.isEmpty) {
     throw Exception('OpenAI API key is missing! Add it to your config.');
