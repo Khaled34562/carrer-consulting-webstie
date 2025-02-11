@@ -1,0 +1,15 @@
+{
+  "moduleName": "carrer_consilting_website",
+  "tables": [],
+  "installedModules": [
+    {
+      "module": "serverpod",
+      "version": "20240516151843329"
+    },
+    {
+      "module": "carrer_consilting_website",
+      "version": "20250210014406405"
+    }
+  ],
+  "migrationApiVersion": 1
+}
