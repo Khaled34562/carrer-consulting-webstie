@@ -1,7 +1,8 @@
-import 'package:carrer_consilting_website_client/carrer_consilting_website_client.dart';
+import 'package:serverpod_client/serverpod_client.dart'; // Import the library that defines Client
 import 'package:flutter/material.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'screens/landing_page.dart'; // Import the landing page
+
 
 // Sets up a singleton client object that can be used to talk to the server from
 // anywhere in our app. The client is generated from your server code.
