@@ -1,20 +1,20 @@
-import 'package:serverpod_client/serverpod_client.dart'; // Import the library that defines Client
+import 'package:authinticationproj_flutter/screens/landing.dart';
+import 'package:authinticationproj_flutter/src/serverpod_client.dart';
+import 'package:authinticationproj_flutter/screens/consultant/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:serverpod_flutter/serverpod_flutter.dart';
-import 'screens/landing_page.dart'; // Import the landing page
 
 
-// Sets up a singleton client object that can be used to talk to the server from
-// anywhere in our app. The client is generated from your server code.
-// The client is set up to connect to a Serverpod running on a local server on
-// the default port. You will need to modify this to connect to staging or
-// production servers.
-var client = Client('http://$localhost:8080/')
-  ..connectivityMonitor = FlutterConnectivityMonitor();
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  // Need to call this as SessionManager is using Flutter bindings before runApp
+  // is called.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeServerpodClient();
+
+ runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -22,11 +22,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Career Consulting Website',
+      title: 'Career Consulting',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
-      home: LandingPage(), // Set LandingPage as the home widget
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+void initState() {
+  super.initState();
+
+  // Make sure that we rebuild the page if signed in status changes.
+  sessionManager.addListener(() {
+    setState(() {});
+  });
+}
+
+
+  @override
+   Widget build(BuildContext context) {
+    return Scaffold(
+      body: sessionManager.isSignedIn ? const DashboardPage() : const LandingPage(),
     );
   }
 }
