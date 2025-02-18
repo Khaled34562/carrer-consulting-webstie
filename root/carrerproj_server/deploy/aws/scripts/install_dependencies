@@ -36,7 +36,11 @@ Wants=network-online.target
 [Service]
 User=$USERNAME
 WorkingDirectory=$WORKDIR
+<<<<<<< HEAD
 ExecStart=$WORKDIR/serverpod/active/authinticationproj_server/deploy/aws/scripts/run_serverpod
+=======
+ExecStart=$WORKDIR/serverpod/active/carrer_consilting_website_server/deploy/aws/scripts/run_serverpod
+>>>>>>> Front-End-Branch
 Restart=always
 
 [Install]

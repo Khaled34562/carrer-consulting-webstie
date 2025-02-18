@@ -4,7 +4,10 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
+<<<<<<< HEAD
   file_selector_windows
+=======
+>>>>>>> Front-End-Branch
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

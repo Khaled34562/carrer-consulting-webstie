@@ -6,8 +6,11 @@
 	<true/>
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
+<<<<<<< HEAD
 	<key>com.apple.security.network.client</key>
 	<true/>
+=======
+>>>>>>> Front-End-Branch
 	<key>com.apple.security.network.server</key>
 	<true/>
 </dict>

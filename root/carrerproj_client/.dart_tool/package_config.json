@@ -20,24 +20,6 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "dart_openai",
-      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/dart_openai-5.1.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
-    },
-    {
-      "name": "fetch_api",
-      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/fetch_api-2.2.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.3"
-    },
-    {
-      "name": "fetch_client",
-      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/fetch_client-1.1.2",
-      "packageUri": "lib/",
-      "languageVersion": "3.3"
-    },
-    {
       "name": "fixnum",
       "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/fixnum-1.1.1",
       "packageUri": "lib/",
@@ -56,12 +38,6 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "lints",
-      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/lints-5.1.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.6"
-    },
-    {
       "name": "meta",
       "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/meta-1.16.0",
       "packageUri": "lib/",
@@ -72,12 +48,6 @@
       "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/path-1.9.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
-    },
-    {
-      "name": "serverpod_auth_client",
-      "rootUri": "file:///C:/Users/mhaah/AppData/Local/Pub/Cache/hosted/pub.dev/serverpod_auth_client-2.3.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.3"
     },
     {
       "name": "serverpod_client",
@@ -158,13 +128,13 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "authinticationproj_client",
+      "name": "carrer_consilting_website_client",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-02-11T12:37:59.097859Z",
+  "generated": "2025-02-18T11:53:31.206572Z",
   "generator": "pub",
   "generatorVersion": "3.6.2",
   "flutterRoot": "file:///D:/Flutter%20SDK/flutter",

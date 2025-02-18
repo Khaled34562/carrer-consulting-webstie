@@ -44,8 +44,11 @@ redis:
   enabled: false
   host: redis.private-production.examplepod.com
   port: 6379
+<<<<<<< HEAD
 
 # Configuration for OpenAI API.
 server:
   openai_api_key: "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"
 
+=======
+>>>>>>> Front-End-Branch

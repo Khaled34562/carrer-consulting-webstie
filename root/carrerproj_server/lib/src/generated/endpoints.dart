@@ -11,8 +11,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
-import '../endpoints/openai_endpoint.dart' as _i3;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i4;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -23,13 +21,7 @@ class Endpoints extends _i1.EndpointDispatch {
           server,
           'example',
           null,
-        ),
-      'openAI': _i3.OpenAIEndpoint(apiKey: '')
-        ..initialize(
-          server,
-          'openAI',
-          null,
-        ),
+        )
     };
     connectors['example'] = _i1.EndpointConnector(
       name: 'example',
@@ -55,30 +47,5 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
-    connectors['openAI'] = _i1.EndpointConnector(
-      name: 'openAI',
-      endpoint: endpoints['openAI']!,
-      methodConnectors: {
-        'getAIResponse': _i1.MethodConnector(
-          name: 'getAIResponse',
-          params: {
-            'userMessage': _i1.ParameterDescription(
-              name: 'userMessage',
-              type: _i1.getType<String>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['openAI'] as _i3.OpenAIEndpoint).getAIResponse(
-            session,
-            params['userMessage'],
-          ),
-        )
-      },
-    );
-    modules['serverpod_auth'] = _i4.Endpoints()..initializeEndpoints(server);
   }
 }

@@ -9,7 +9,11 @@
 # avoid any underscores.
 # NOTE: the project name cannot use underscore, spaces, or any special
 # characters.
+<<<<<<< HEAD
 project_name = "authinticationproj"
+=======
+project_name = "carrer-consilting-website"
+>>>>>>> Front-End-Branch
 
 # The region where to deploy the server. If you change the region you will also
 # need to update the instance_ami variable (see below) and update the region in
@@ -81,8 +85,16 @@ staging_autoscaling_desired_capacity = 1
 
 # The deployment bucket name needs to be unique and can only contain lower case
 # letters and dashes (no underscored allowed).
+<<<<<<< HEAD
 deployment_bucket_name              = "authinticationproj-deployment-4444124"
 public_storage_bucket_name          = "authinticationproj-public-storage-4444124"
 private_storage_bucket_name         = "authinticationproj-private-storage-4444124"
 public_storage_bucket_name_staging  = "authinticationproj-public-storage-staging-4444124"
 private_storage_bucket_name_staging = "authinticationproj-private-storage-staging-4444124"
+=======
+deployment_bucket_name              = "carrer-consilting-website-deployment-2092737"
+public_storage_bucket_name          = "carrer-consilting-website-public-storage-2092737"
+private_storage_bucket_name         = "carrer-consilting-website-private-storage-2092737"
+public_storage_bucket_name_staging  = "carrer-consilting-website-public-storage-staging-2092737"
+private_storage_bucket_name_staging = "carrer-consilting-website-private-storage-staging-2092737"
+>>>>>>> Front-End-Branch

@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:authinticationproj_server/src/example_util.dart';
+import 'package:carrer_consilting_website_server/src/example_util.dart';
 
 void main() {
   test(

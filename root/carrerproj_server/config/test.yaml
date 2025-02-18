@@ -32,7 +32,11 @@ webServer:
 database:
   host: localhost
   port: 9090
+<<<<<<< HEAD
   name: authinticationproj_test
+=======
+  name: carrer_consilting_website_test
+>>>>>>> Front-End-Branch
   user: postgres
 
 # This is the setup for your Redis test instance.

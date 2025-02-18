@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "authinticationproj_flutter",
     "short_name": "authinticationproj_flutter",
+=======
+    "name": "carrer_consilting_website_flutter",
+    "short_name": "carrer_consilting_website_flutter",
+>>>>>>> Front-End-Branch
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

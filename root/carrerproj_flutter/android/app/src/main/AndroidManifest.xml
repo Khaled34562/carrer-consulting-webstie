@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="authinticationproj_flutter"
+=======
+        android:label="carrer_consilting_website_flutter"
+>>>>>>> Front-End-Branch
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

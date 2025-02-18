@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
-
+import 'package:authinticationproj_flutter/screens/login.dart';
 import 'package:authinticationproj_flutter/src/serverpod_client.dart';
 
 class AccountPage extends StatelessWidget {
@@ -25,6 +25,10 @@ class AccountPage extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               sessionManager.signOut();
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+              );
             },
             child: const Text('Sign out'),
           ),

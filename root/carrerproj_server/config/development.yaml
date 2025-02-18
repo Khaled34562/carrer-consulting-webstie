@@ -31,14 +31,22 @@ webServer:
 database:
   host: localhost
   port: 8090
+<<<<<<< HEAD
   name: authinticationproj
+=======
+  name: carrer_consilting_website
+>>>>>>> Front-End-Branch
   user: postgres
 
 # This is the setup for Redis.
 redis:
   enabled: false
   host: localhost
+<<<<<<< HEAD
   port: 8091
 
 
 openai_api_key: "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"
+=======
+  port: 8091
+>>>>>>> Front-End-Branch

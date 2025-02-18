@@ -1,4 +1,4 @@
-name: authinticationproj_client
+name: carrer_consilting_website_client
 description: Starting point for a Serverpod client.
 
 environment:
@@ -6,5 +6,3 @@ environment:
 
 dependencies:
   serverpod_client: 2.3.1
-  serverpod_auth_client: 2.3.1
-  dart_openai: ^5.1.0

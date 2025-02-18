@@ -1,7 +1,6 @@
-
+import 'package:authinticationproj_flutter/screens/landing.dart';
 import 'package:authinticationproj_flutter/src/serverpod_client.dart';
-import 'package:authinticationproj_flutter/src/widgets/account_page.dart';
-import 'package:authinticationproj_flutter/src/widgets/sign_in_page.dart';
+import 'package:authinticationproj_flutter/screens/consultant/homepage.dart';
 import 'package:flutter/material.dart';
 
 
@@ -23,19 +22,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Serverpod demo',
+      title: 'Career Consulting',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Serverpod Example'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -57,10 +55,7 @@ void initState() {
   @override
    Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: sessionManager.isSignedIn ? const AccountPage() : const SignInPage(),
+      body: sessionManager.isSignedIn ? const DashboardPage() : const LandingPage(),
     );
   }
 }

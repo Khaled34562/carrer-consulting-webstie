@@ -6,10 +6,17 @@ services:
       - '8090:5432'
     environment:
       POSTGRES_USER: postgres
+<<<<<<< HEAD
       POSTGRES_DB: authinticationproj
       POSTGRES_PASSWORD: "HL7WnF3JtuGPO9f1jgJfX9pYg_ksuiov"
     volumes:
       - authinticationproj_data:/var/lib/postgresql/data
+=======
+      POSTGRES_DB: carrer_consilting_website
+      POSTGRES_PASSWORD: "4Bg7zmbS1xjv46J3uGW3GrYNi5JwAOkC"
+    volumes:
+      - carrer_consilting_website_data:/var/lib/postgresql/data
+>>>>>>> Front-End-Branch
     profiles:
       - '' # Default profile
       - dev
@@ -17,7 +24,11 @@ services:
     image: redis:6.2.6
     ports:
       - '8091:6379'
+<<<<<<< HEAD
     command: redis-server --requirepass "Q1DsWQngsmVJ8RVZBBCMu8qZCkRsLoqR"
+=======
+    command: redis-server --requirepass "J1ICh_8eK9CTWh6rWERE119NN7i2iOkM"
+>>>>>>> Front-End-Branch
     environment:
       - REDIS_REPLICATION_MODE=master
     profiles:
@@ -31,10 +42,17 @@ services:
       - '9090:5432'
     environment:
       POSTGRES_USER: postgres
+<<<<<<< HEAD
       POSTGRES_DB: authinticationproj_test
       POSTGRES_PASSWORD: "tCBDA7QhtESh6k4Eu_IWKpTobIrpPkA2"
     volumes:
       - authinticationproj_test_data:/var/lib/postgresql/data
+=======
+      POSTGRES_DB: carrer_consilting_website_test
+      POSTGRES_PASSWORD: "UZz5c0wN8hybHhFh4UvpzeDdqe_hl_ta"
+    volumes:
+      - carrer_consilting_website_test_data:/var/lib/postgresql/data
+>>>>>>> Front-End-Branch
     profiles:
       - '' # Default profile
       - test
@@ -42,7 +60,11 @@ services:
     image: redis:6.2.6
     ports:
       - '9091:6379'
+<<<<<<< HEAD
     command: redis-server --requirepass "xNIDOSnT83Er7srIi9NqPECPHNWa2OeL"
+=======
+    command: redis-server --requirepass "f7AWp8ndxeDW2rAi6Kyv0EAMN1EE2dRZ"
+>>>>>>> Front-End-Branch
     environment:
       - REDIS_REPLICATION_MODE=master
     profiles:
@@ -50,5 +72,10 @@ services:
       - test
 
 volumes:
+<<<<<<< HEAD
   authinticationproj_data:
   authinticationproj_test_data:
+=======
+  carrer_consilting_website_data:
+  carrer_consilting_website_test_data:
+>>>>>>> Front-End-Branch

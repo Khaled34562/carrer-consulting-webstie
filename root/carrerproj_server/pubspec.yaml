@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: authinticationproj_server
+=======
+name: carrer_consilting_website_server
+>>>>>>> Front-End-Branch
 description: Starting point for a Serverpod server.
 # version: 1.0.0
 # homepage: https://www.example.com
@@ -7,10 +11,14 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
+<<<<<<< HEAD
   dart_openai: ^5.1.0
   mailer: ^6.4.1
   serverpod: 2.3.1
   serverpod_auth_server: 2.3.1
+=======
+  serverpod: 2.3.1
+>>>>>>> Front-End-Branch
 
 dev_dependencies:
   lints: '>=3.0.0 <6.0.0'

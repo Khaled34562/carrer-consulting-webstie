@@ -3,6 +3,7 @@ os: linux
 files:
   - source: /vendor/
     destination: /home/ec2-user/serverpod/upload/vendor/
+<<<<<<< HEAD
   - source: /authinticationproj_server/
     destination: /home/ec2-user/serverpod/upload/authinticationproj_server/
 hooks:
@@ -12,5 +13,16 @@ hooks:
       runas: root
   ApplicationStart:
     - location: authinticationproj_server/deploy/aws/scripts/start_server
+=======
+  - source: /carrer_consilting_website_server/
+    destination: /home/ec2-user/serverpod/upload/carrer_consilting_website_server/
+hooks:
+  BeforeInstall:
+    - location: carrer_consilting_website_server/deploy/aws/scripts/install_dependencies
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: carrer_consilting_website_server/deploy/aws/scripts/start_server
+>>>>>>> Front-End-Branch
       timeout: 300
       runas: root

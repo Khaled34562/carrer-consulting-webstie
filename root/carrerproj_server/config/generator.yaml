@@ -1,4 +1,8 @@
 type: server
 
+<<<<<<< HEAD
 client_package_path: ../authinticationproj_client
+=======
+client_package_path: ../carrer_consilting_website_client
+>>>>>>> Front-End-Branch
 server_test_tools_path: test/integration/test_tools
