@@ -1,4 +1,16 @@
+article:
+  - fetchRecentArticles:
+  - likeArticle:
+  - addCommentToArticle:
+  - shareArticle:
+  - fetchArticlesByConsultant:
+  - manageArticle:
+  - previewArticle:
 example:
   - hello:
 openAI:
   - getAIResponse:
+user:
+  - getUser:
+  - updateUser:
+  - createUser:

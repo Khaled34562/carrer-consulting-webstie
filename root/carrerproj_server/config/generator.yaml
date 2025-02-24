@@ -1,4 +1,4 @@
 type: server
 
-client_package_path: ../authinticationproj_client
+client_package_path: ../carrerproj_client
 server_test_tools_path: test/integration/test_tools
