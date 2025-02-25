@@ -149,8 +149,9 @@ class ArticleEndpoint extends Endpoint {
       bool? delete}) async {
     // Fetch the article by ID
     final article = await Article.db.findById(session, articleId);
-    if (article == null || article.authorId != userId)
+    if (article == null || article.authorId != userId) {
       throw Exception('Article not found or unauthorized');
+    }
 
     // Delete the article if requested
     if (delete == true) {
