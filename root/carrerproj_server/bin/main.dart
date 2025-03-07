@@ -1,4 +1,6 @@
-import 'package:carrer_consilting_website_server/server.dart';
+import 'package:authinticationproj_server/server.dart';
+
+
 
 /// This is the starting point for your Serverpod server. Typically, there is
 /// no need to modify this file.

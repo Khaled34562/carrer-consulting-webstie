@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';
-import 'package:authinticationproj_flutter/src/serverpod_client.dart';
-import 'package:authinticationproj_flutter/screens/login.dart';
+import 'package:carrerproj_flutter/src/serverpod_client.dart';
+import 'package:carrerproj_flutter/screens/login.dart';
 
 class ValidatePage extends StatefulWidget {
   const ValidatePage({super.key});
@@ -28,7 +28,14 @@ class _ValidatePageState extends State<ValidatePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Career Consulting'),
+        title: Text(
+                    'Career Consulting',
+                    style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                    ),
+                  ),
       ),
       body: Center(
         child: Padding(

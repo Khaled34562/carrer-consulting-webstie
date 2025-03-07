@@ -1,0 +1,11 @@
+class: Article
+table: article
+fields:
+  title: String
+  content: String
+  authorId: int, relation(parent=user)
+  createdAt: DateTime
+  updatedAt: DateTime?
+  likes: int
+  shares: int
+  isArchived: bool

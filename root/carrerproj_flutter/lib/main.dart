@@ -1,50 +1,10 @@
-import 'package:authinticationproj_flutter/screens/landing.dart';
-import 'package:authinticationproj_flutter/src/serverpod_client.dart';
-import 'package:authinticationproj_flutter/screens/consultant/homepage.dart';
+import 'package:carrerproj_flutter/screens/landing.dart';
+import 'package:carrerproj_flutter/src/serverpod_client.dart';
+import 'package:carrerproj_flutter/screens/consultant/homepage.dart';
 import 'package:flutter/material.dart';
-import '../../carrerproj_client/lib/carrer_consilting_website_client.dart';
 
 
-var client = Client('http://localhost:8080/')
-  ..connectivityMonitor = FlutterConnectivityMonitor();
-  
-class ArticlesPage extends StatefulWidget {
-    const ArticlesPage({super.key});
 
-    @override
-    ArticlesPageState createState() => ArticlesPageState();
-}
-
-class ArticlesPageState extends State<ArticlesPage> {
-  List<Article>? _articles;
-  Exception? _connectionException;
-
-  void initState() {
-    super.initState();
-    _FetchArticles();
-  }
-
-  Future<void> _FetchArticles(Session session, int consultantId ) async {
-    try {
-        var articles = await client.fetchArticlesByConsultant(session, consultantId);
-        setState(() {
-            _articles = articles;
-        });
-    } catch (e) {
-        _connectionFailed(e);
-    }
-  }
-  
-  
-  void _connectionFailed(dynamic exception) {
-    setState(() {
-        _articles = null;
-        _connectionException = exception;
-    });
-
-
-}
-  
 void main() async{
   // Need to call this as SessionManager is using Flutter bindings before runApp
   // is called.

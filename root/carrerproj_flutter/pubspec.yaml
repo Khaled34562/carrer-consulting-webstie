@@ -1,4 +1,4 @@
-name: carrer_consilting_website_flutter
+name: carrerproj_flutter
 description: A new Flutter project with Serverpod.
 
 # The following line prevents the package from being accidentally published to
@@ -25,13 +25,18 @@ dependencies:
   flutter:
     sdk: flutter
   serverpod_flutter: 2.3.1
-  carrer_consilting_website_client:
-    path: ../carrer_consilting_website_client
+  carrerproj_client:
+    path: ../carrerproj_client
+  serverpod_auth_email_flutter: 2.3.1
+  serverpod_auth_shared_flutter: 2.3.1
+  image_picker: ^1.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
+  dart_openai: ^5.1.0
+  serverpod_auth_server: ^2.3.1
 
 dev_dependencies:
   flutter_lints: '>=3.0.0 <6.0.0'

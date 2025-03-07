@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:authinticationproj_flutter/screens/signup.dart';
-import 'package:authinticationproj_flutter/screens/login.dart';
+import 'package:carrerproj_flutter/screens/signup.dart';
+import 'package:carrerproj_flutter/screens/login.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -10,8 +10,14 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Career Consulting'),
-        backgroundColor: Colors.white,
+        title: Text(
+                    'Career Consulting',
+                    style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                    ),
+                  ),
       ),
        backgroundColor: Colors.grey[200], // Light grey background
       body: Center(
@@ -86,6 +92,19 @@ class LandingPage extends StatelessWidget {
           ),
         ),
       ),
+      persistentFooterButtons: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                // Navigate to about us page
+              },
+              child: Text('About us'),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

@@ -4,7 +4,7 @@
 chown -R ec2-user:ec2-user /home/ec2-user/serverpod
 
 # Run pub get as ec2-user
-cd /home/ec2-user/serverpod/upload/carrer_consilting_website_server/
+cd /home/ec2-user/serverpod/upload/authinticationproj_server/
 sudo -u ec2-user dart pub get
 
 # Set correct permissions for start script

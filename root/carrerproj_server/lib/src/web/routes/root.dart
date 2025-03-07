@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:carrer_consilting_website_server/src/web/widgets/default_page_widget.dart';
+import 'package:authinticationproj_server/src/web/widgets/default_page_widget.dart';
 import 'package:serverpod/serverpod.dart';
 
 class RouteRoot extends WidgetRoute {

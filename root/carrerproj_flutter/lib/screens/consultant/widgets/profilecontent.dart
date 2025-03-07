@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:authinticationproj_flutter/src/serverpod_client.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:carrerproj_flutter/src/serverpod_client.dart';
 
 class ProfileContent extends StatefulWidget {
   @override
@@ -60,14 +62,54 @@ class _ProfileContentState extends State<ProfileContent> {
   }
 }
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends StatefulWidget {
+  @override
+  _ProfileHeaderState createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends State<ProfileHeader> {
+  File? _image;
+  String? _imagePath;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        _imagePath = pickedFile.path;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+        Stack(
+          children: [
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.grey[400], // Placeholder
+              backgroundImage: _imagePath != null ? FileImage(File(_imagePath!)) : null,
+              child: _imagePath == null ? Icon(Icons.person, color: Colors.white) : null,
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: InkWell(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundColor: Colors.blue,
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         SizedBox(width: 20),
         Column(
@@ -156,3 +198,4 @@ class ProfileForm extends StatelessWidget {
     );
   }
 }
+

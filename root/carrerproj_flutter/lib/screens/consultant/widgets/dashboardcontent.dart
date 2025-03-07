@@ -9,43 +9,6 @@ class DashboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
                 children: [
-                  /// Top Bar with Search and Avatar
-                  Row(
-                    children: [
-                      /// Search Bar
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Row(
-                            children: [
-                              Icon(Icons.search, color: Colors.grey),
-                              SizedBox(width: 10),
-                              Text("Search...", style: TextStyle(color: Colors.grey)),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-
-                      /// Notification Icon
-                      Icon(Icons.notifications_none, color: Colors.grey[700]),
-                      const SizedBox(width: 20),
-
-                      /// User Avatar Placeholder
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.grey[400], // Placeholder
-                        child: Icon(Icons.person, color: Colors.white),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
 
                   /// Content Sections
                   Expanded(
