@@ -12,21 +12,15 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
-import 'advice_seeker.dart' as _i4;
-import 'article.dart' as _i5;
+import 'article.dart' as _i4;
+import 'article_like.dart' as _i5;
 import 'comment.dart' as _i6;
-import 'consultant.dart' as _i7;
-import 'consultation_type.dart' as _i8;
-import 'example.dart' as _i9;
-import 'user.dart' as _i10;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i11;
-export 'advice_seeker.dart';
+import 'package:authinticationproj_server/src/generated/article_like.dart'
+    as _i7;
+import 'package:authinticationproj_server/src/generated/comment.dart' as _i8;
 export 'article.dart';
+export 'article_like.dart';
 export 'comment.dart';
-export 'consultant.dart';
-export 'consultation_type.dart';
-export 'example.dart';
-export 'user.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -36,98 +30,6 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
-    _i2.TableDefinition(
-      name: 'advice_seeker',
-      dartName: 'AdviceSeeker',
-      schema: 'public',
-      module: 'authinticationproj',
-      columns: [
-        _i2.ColumnDefinition(
-          name: 'id',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int?',
-          columnDefault: 'nextval(\'advice_seeker_id_seq\'::regclass)',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'imagePath',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'careerLevel',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'educationBackground',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'jobInterest',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'resumeLink',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-      ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'advice_seeker_fk_0',
-          columns: ['userId'],
-          referenceTable: 'serverpod_user_info',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
-          matchType: null,
-        )
-      ],
-      indexes: [
-        _i2.IndexDefinition(
-          indexName: 'advice_seeker_pkey',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'id',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
-          isPrimary: true,
-        ),
-        _i2.IndexDefinition(
-          indexName: 'advice_seeker_user_unique_idx',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'userId',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
-          isPrimary: false,
-        ),
-      ],
-      managed: true,
-    ),
     _i2.TableDefinition(
       name: 'article',
       dartName: 'Article',
@@ -194,7 +96,7 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ForeignKeyDefinition(
           constraintName: 'article_fk_0',
           columns: ['authorId'],
-          referenceTable: 'user',
+          referenceTable: 'serverpod_user_info',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
@@ -215,7 +117,108 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
+        _i2.IndexDefinition(
+          indexName: 'user_article_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'authorId',
+            )
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'article_like',
+      dartName: 'ArticleLike',
+      schema: 'public',
+      module: 'authinticationproj',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'article_like_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'articleId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'article_like_fk_0',
+          columns: ['userId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'article_like_fk_1',
+          columns: ['articleId'],
+          referenceTable: 'article',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'article_like_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'user_article_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'userId',
+            ),
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'articleId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
       ],
       managed: true,
     ),
@@ -265,13 +268,13 @@ class Protocol extends _i1.SerializationManagerServer {
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
           matchType: null,
         ),
         _i2.ForeignKeyDefinition(
           constraintName: 'comment_fk_1',
           columns: ['userId'],
-          referenceTable: 'user',
+          referenceTable: 'serverpod_user_info',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
@@ -292,246 +295,22 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
-      ],
-      managed: true,
-    ),
-    _i2.TableDefinition(
-      name: 'consultant',
-      dartName: 'Consultant',
-      schema: 'public',
-      module: 'authinticationproj',
-      columns: [
-        _i2.ColumnDefinition(
-          name: 'id',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int?',
-          columnDefault: 'nextval(\'consultant_id_seq\'::regclass)',
         ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'imagePath',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'availabilityStart',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
-        ),
-        _i2.ColumnDefinition(
-          name: 'availabilityEnd',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
-        ),
-        _i2.ColumnDefinition(
-          name: 'specializationField',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'degree',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'yearsOfExperience',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'consultationType',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'protocol:ConsultationType',
-        ),
-        _i2.ColumnDefinition(
-          name: 'bio',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'rating',
-          columnType: _i2.ColumnType.doublePrecision,
-          isNullable: false,
-          dartType: 'double',
-        ),
-      ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'consultant_fk_0',
-          columns: ['userId'],
-          referenceTable: 'serverpod_user_info',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
-          matchType: null,
-        )
-      ],
-      indexes: [
         _i2.IndexDefinition(
-          indexName: 'consultant_pkey',
+          indexName: 'article_comment_idx',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
-              definition: 'id',
+              definition: 'articleId',
             )
           ],
           type: 'btree',
-          isUnique: true,
-          isPrimary: true,
-        ),
-        _i2.IndexDefinition(
-          indexName: 'consultant_user_unique_idx',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'userId',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
+          isUnique: false,
           isPrimary: false,
         ),
-      ],
-      managed: true,
-    ),
-    _i2.TableDefinition(
-      name: 'user',
-      dartName: 'User',
-      schema: 'public',
-      module: 'authinticationproj',
-      columns: [
-        _i2.ColumnDefinition(
-          name: 'id',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int?',
-          columnDefault: 'nextval(\'user_id_seq\'::regclass)',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'role',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'fullName',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'nickname',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'dateOfBirth',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: false,
-          dartType: 'DateTime',
-        ),
-        _i2.ColumnDefinition(
-          name: 'gender',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'profileImage',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'country',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'languages',
-          columnType: _i2.ColumnType.json,
-          isNullable: false,
-          dartType: 'List<String>',
-        ),
-        _i2.ColumnDefinition(
-          name: 'timezone',
-          columnType: _i2.ColumnType.text,
-          isNullable: false,
-          dartType: 'String',
-        ),
-        _i2.ColumnDefinition(
-          name: 'creditCardInfo',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'educationLevel',
-          columnType: _i2.ColumnType.text,
-          isNullable: true,
-          dartType: 'String?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'hourlyRate',
-          columnType: _i2.ColumnType.doublePrecision,
-          isNullable: true,
-          dartType: 'double?',
-        ),
-      ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'user_fk_0',
-          columns: ['userId'],
-          referenceTable: 'serverpod_user_info',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
-          matchType: null,
-        )
-      ],
-      indexes: [
         _i2.IndexDefinition(
-          indexName: 'user_pkey',
-          tableSpace: null,
-          elements: [
-            _i2.IndexElementDefinition(
-              type: _i2.IndexElementDefinitionType.column,
-              definition: 'id',
-            )
-          ],
-          type: 'btree',
-          isUnique: true,
-          isPrimary: true,
-        ),
-        _i2.IndexDefinition(
-          indexName: 'user_unique_idx',
+          indexName: 'user_comment_idx',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -540,7 +319,7 @@ class Protocol extends _i1.SerializationManagerServer {
             )
           ],
           type: 'btree',
-          isUnique: true,
+          isUnique: false,
           isPrimary: false,
         ),
       ],
@@ -556,54 +335,30 @@ class Protocol extends _i1.SerializationManagerServer {
     Type? t,
   ]) {
     t ??= T;
-    if (t == _i4.AdviceSeeker) {
-      return _i4.AdviceSeeker.fromJson(data) as T;
+    if (t == _i4.Article) {
+      return _i4.Article.fromJson(data) as T;
     }
-    if (t == _i5.Article) {
-      return _i5.Article.fromJson(data) as T;
+    if (t == _i5.ArticleLike) {
+      return _i5.ArticleLike.fromJson(data) as T;
     }
     if (t == _i6.Comment) {
       return _i6.Comment.fromJson(data) as T;
     }
-    if (t == _i7.Consultant) {
-      return _i7.Consultant.fromJson(data) as T;
+    if (t == _i1.getType<_i4.Article?>()) {
+      return (data != null ? _i4.Article.fromJson(data) : null) as T;
     }
-    if (t == _i8.ConsultationType) {
-      return _i8.ConsultationType.fromJson(data) as T;
-    }
-    if (t == _i9.Example) {
-      return _i9.Example.fromJson(data) as T;
-    }
-    if (t == _i10.User) {
-      return _i10.User.fromJson(data) as T;
-    }
-    if (t == _i1.getType<_i4.AdviceSeeker?>()) {
-      return (data != null ? _i4.AdviceSeeker.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i5.Article?>()) {
-      return (data != null ? _i5.Article.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i5.ArticleLike?>()) {
+      return (data != null ? _i5.ArticleLike.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i6.Comment?>()) {
       return (data != null ? _i6.Comment.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i7.Consultant?>()) {
-      return (data != null ? _i7.Consultant.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i8.ConsultationType?>()) {
-      return (data != null ? _i8.ConsultationType.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i9.Example?>()) {
-      return (data != null ? _i9.Example.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i10.User?>()) {
-      return (data != null ? _i10.User.fromJson(data) : null) as T;
-    }
-    if (t == List<String>) {
-      return (data as List).map((e) => deserialize<String>(e)).toList()
+    if (t == List<_i7.ArticleLike>) {
+      return (data as List).map((e) => deserialize<_i7.ArticleLike>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i11.Article>) {
-      return (data as List).map((e) => deserialize<_i11.Article>(e)).toList()
+    if (t == List<_i8.Comment>) {
+      return (data as List).map((e) => deserialize<_i8.Comment>(e)).toList()
           as dynamic;
     }
     try {
@@ -619,26 +374,14 @@ class Protocol extends _i1.SerializationManagerServer {
   String? getClassNameForObject(Object? data) {
     String? className = super.getClassNameForObject(data);
     if (className != null) return className;
-    if (data is _i4.AdviceSeeker) {
-      return 'AdviceSeeker';
-    }
-    if (data is _i5.Article) {
+    if (data is _i4.Article) {
       return 'Article';
+    }
+    if (data is _i5.ArticleLike) {
+      return 'ArticleLike';
     }
     if (data is _i6.Comment) {
       return 'Comment';
-    }
-    if (data is _i7.Consultant) {
-      return 'Consultant';
-    }
-    if (data is _i8.ConsultationType) {
-      return 'ConsultationType';
-    }
-    if (data is _i9.Example) {
-      return 'Example';
-    }
-    if (data is _i10.User) {
-      return 'User';
     }
     className = _i2.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -657,26 +400,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'AdviceSeeker') {
-      return deserialize<_i4.AdviceSeeker>(data['data']);
-    }
     if (dataClassName == 'Article') {
-      return deserialize<_i5.Article>(data['data']);
+      return deserialize<_i4.Article>(data['data']);
+    }
+    if (dataClassName == 'ArticleLike') {
+      return deserialize<_i5.ArticleLike>(data['data']);
     }
     if (dataClassName == 'Comment') {
       return deserialize<_i6.Comment>(data['data']);
-    }
-    if (dataClassName == 'Consultant') {
-      return deserialize<_i7.Consultant>(data['data']);
-    }
-    if (dataClassName == 'ConsultationType') {
-      return deserialize<_i8.ConsultationType>(data['data']);
-    }
-    if (dataClassName == 'Example') {
-      return deserialize<_i9.Example>(data['data']);
-    }
-    if (dataClassName == 'User') {
-      return deserialize<_i10.User>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -704,16 +435,12 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i4.AdviceSeeker:
-        return _i4.AdviceSeeker.t;
-      case _i5.Article:
-        return _i5.Article.t;
+      case _i4.Article:
+        return _i4.Article.t;
+      case _i5.ArticleLike:
+        return _i5.ArticleLike.t;
       case _i6.Comment:
         return _i6.Comment.t;
-      case _i7.Consultant:
-        return _i7.Consultant.t;
-      case _i10.User:
-        return _i10.User.t;
     }
     return null;
   }

@@ -1,16 +1,10 @@
-article:
-  - fetchRecentArticles:
+articleLike:
   - likeArticle:
-  - addCommentToArticle:
-  - shareArticle:
-  - fetchArticlesByConsultant:
-  - manageArticle:
-  - previewArticle:
-example:
-  - hello:
-openAI:
-  - getAIResponse:
-user:
-  - getUser:
-  - updateUser:
-  - createUser:
+  - unlikeArticle:
+  - getLikedArticlesByUser:
+  - getLikeCount:
+comment:
+  - insertComment:
+  - getCommentsByArticle:
+  - getCommentsByUser:
+  - deleteComment:

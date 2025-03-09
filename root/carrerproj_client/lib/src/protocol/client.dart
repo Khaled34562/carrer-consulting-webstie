@@ -11,310 +11,170 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'package:authinticationproj_client/src/protocol/article.dart' as _i3;
-import 'package:authinticationproj_client/src/protocol/user.dart' as _i4;
+import 'package:authinticationproj_client/src/protocol/article_like.dart'
+    as _i3;
+import 'package:authinticationproj_client/src/protocol/comment.dart' as _i4;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i5;
 import 'protocol.dart' as _i6;
 
-/// The `ArticleEndpoint` class provides functionality for managing articles,
-/// including fetching recent articles, liking articles, adding comments, and sharing articles.
-/// fetching articles by author, editing or deleting
-/// articles, and previewing articles.
+/// Endpoint for handling article likes.
 /// {@category Endpoint}
-class EndpointArticle extends _i1.EndpointRef {
-  EndpointArticle(_i1.EndpointCaller caller) : super(caller);
+class EndpointArticleLike extends _i1.EndpointRef {
+  EndpointArticleLike(_i1.EndpointCaller caller) : super(caller);
 
   @override
-  String get name => 'article';
+  String get name => 'articleLike';
 
-  /// Fetches the 10 most recent articles from the database, ordered by their creation date
-  /// in descending order (newest first).
+  /// Likes an article or re-likes it if previously unliked.
   ///
-  /// - Parameters:
-  ///   - `session`: The current Serverpod session, used for database operations.
+  /// - [like]: The [ArticleLike] object containing `userId` and `articleId`.
+  /// - If the like already exists, this may result in a duplicate entry.
   ///
-  /// - Returns: A `Future<List<Article>>` containing the 10 most recent articles.
+  /// Returns the created [ArticleLike] object.
   ///
-  /// - Example:
-  ///   ```dart
-  ///   final recentArticles = await article.fetchRecentArticles(session);
-  ///   ```
-  _i2.Future<List<_i3.Article>> fetchRecentArticles() =>
-      caller.callServerEndpoint<List<_i3.Article>>(
-        'article',
-        'fetchRecentArticles',
-        {},
-      );
-
-  /// Increments the like count of a specific article.
-  ///
-  /// - Parameters:
-  ///   - `session`: The current Serverpod session, used for database operations.
-  ///   - `userId`: The ID of the user liking the article (currently unused in the method).
-  ///   - `articleId`: The ID of the article to like.
-  ///
-  /// - Throws:
-  ///   - `Exception`: If the article with the specified `articleId` is not found.
-  ///
-  /// - Example:
-  ///   ```dart
-  ///   await article.likeArticle(session, userId, articleId);
-  ///   ```
-  _i2.Future<void> likeArticle(
-    int userId,
-    int articleId,
-  ) =>
-      caller.callServerEndpoint<void>(
-        'article',
+  /// Example usage:
+  /// ```dart
+  /// ArticleLike newLike = ArticleLike(userId: 1, articleId: 5);
+  /// ArticleLike result = await client.articleLike.likeArticle(newLike);
+  /// ```
+  _i2.Future<_i3.ArticleLike> likeArticle(_i3.ArticleLike like) =>
+      caller.callServerEndpoint<_i3.ArticleLike>(
+        'articleLike',
         'likeArticle',
-        {
-          'userId': userId,
-          'articleId': articleId,
-        },
+        {'like': like},
       );
 
-  /// Adds a comment to a specific article.
+  /// Unlikes an article.
   ///
-  /// - Parameters:
-  ///   - `session`: The current Serverpod session, used for database operations.
-  ///   - `userId`: The ID of the user adding the comment.
-  ///   - `articleId`: The ID of the article to which the comment is added.
-  ///   - `comment`: The comment text.
+  /// - [like]: The [ArticleLike] object containing `userId` and `articleId` to be unliked.
   ///
-  /// - Example:
-  ///   ```dart
-  ///   await article.addCommentToArticle(session, userId, articleId, "Great article!");
-  ///   ```
-  _i2.Future<void> addCommentToArticle(
-    int userId,
-    int articleId,
-    String comment,
-  ) =>
-      caller.callServerEndpoint<void>(
-        'article',
-        'addCommentToArticle',
-        {
-          'userId': userId,
-          'articleId': articleId,
-          'comment': comment,
-        },
-      );
-
-  /// Increments the share count of a specific article.
+  /// Returns the deleted [ArticleLike] object.
   ///
-  /// - Parameters:
-  ///   - `session`: The current Serverpod session, used for database operations.
-  ///   - `userId`: The ID of the user sharing the article (currently unused in the method).
-  ///   - `articleId`: The ID of the article to share.
-  ///
-  /// - Throws:
-  ///   - `Exception`: If the article with the specified `articleId` is not found.
-  ///
-  /// - Example:
-  ///   ```dart
-  ///   await article.shareArticle(session, userId, articleId);
-  ///   ```
-  _i2.Future<void> shareArticle(
-    int userId,
-    int articleId,
-  ) =>
-      caller.callServerEndpoint<void>(
-        'article',
-        'shareArticle',
-        {
-          'userId': userId,
-          'articleId': articleId,
-        },
-      );
-
-  /// Fetches all articles written by a specific consultant.
-  ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `userId`: The unique identifier of the consultant (author) whose articles
-  ///   are to be fetched.
-  ///
-  /// Returns:
-  /// - A `List<Article>` containing all articles written by the consultant.
-  ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final articles = await article.fetchArticlesByConsultant(session, 123);
+  /// ArticleLike unlike = ArticleLike(userId: 1, articleId: 5);
+  /// ArticleLike result = await client.articleLike.unlikeArticle(unlike);
   /// ```
-  _i2.Future<List<_i3.Article>> fetchArticlesByConsultant(int userId) =>
-      caller.callServerEndpoint<List<_i3.Article>>(
-        'article',
-        'fetchArticlesByConsultant',
-        {'userId': userId},
+  _i2.Future<_i3.ArticleLike> unlikeArticle(_i3.ArticleLike like) =>
+      caller.callServerEndpoint<_i3.ArticleLike>(
+        'articleLike',
+        'unlikeArticle',
+        {'like': like},
       );
 
-  /// Allows a consultant to edit, archive, or delete an article.
+  /// Retrieves all articles liked by a specific user.
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `userId`: The unique identifier of the consultant performing the action.
-  /// - `articleId`: The unique identifier of the article to be managed.
-  /// - `newTitle`: (Optional) The new title for the article.
-  /// - `newContent`: (Optional) The new content for the article.
-  /// - `archive`: (Optional) Whether to archive the article.
-  /// - `delete`: (Optional) Whether to delete the article.
+  /// - [like]: The [ArticleLike] object containing `userId`.
+  /// - Returns a list of [ArticleLike] objects representing the liked articles.
   ///
-  /// Throws:
-  /// - `Exception` if the article is not found or the user is unauthorized.
-  ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// await article.manageArticle(
-  ///   session,
-  ///   123,
-  ///   456,
-  ///   newTitle: 'Updated Title',
-  ///   newContent: 'Updated content...',
-  ///   archive: true,
-  /// );
+  /// List<ArticleLike> likedArticles = await client.articleLike.getLikedArticlesByUser(userLike);
   /// ```
-  _i2.Future<void> manageArticle(
-    int userId,
-    int articleId, {
-    String? newTitle,
-    String? newContent,
-    bool? archive,
-    bool? delete,
-  }) =>
-      caller.callServerEndpoint<void>(
-        'article',
-        'manageArticle',
-        {
-          'userId': userId,
-          'articleId': articleId,
-          'newTitle': newTitle,
-          'newContent': newContent,
-          'archive': archive,
-          'delete': delete,
-        },
+  _i2.Future<List<_i3.ArticleLike>> getLikedArticlesByUser(
+          _i3.ArticleLike like) =>
+      caller.callServerEndpoint<List<_i3.ArticleLike>>(
+        'articleLike',
+        'getLikedArticlesByUser',
+        {'like': like},
       );
 
-  /// Fetches an article for previewing.
+  /// Retrieves the total like count for a specific article.
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `articleId`: The unique identifier of the article to preview.
+  /// - [like]: The [ArticleLike] object containing `articleId`.
+  /// - Returns an `int` representing the total number of likes.
   ///
-  /// Returns:
-  /// - The `Article` object if found.
-  /// - `null` if the article is not found.
-  ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final article = await article.previewArticle(session, 456);
+  /// int likeCount = await client.articleLike.getLikeCount(articleLike);
   /// ```
-  _i2.Future<_i3.Article?> previewArticle(int articleId) =>
-      caller.callServerEndpoint<_i3.Article?>(
-        'article',
-        'previewArticle',
+  _i2.Future<int> getLikeCount(_i3.ArticleLike like) =>
+      caller.callServerEndpoint<int>(
+        'articleLike',
+        'getLikeCount',
+        {'like': like},
+      );
+}
+
+/// Endpoint for handling comment-related operations.
+/// {@category Endpoint}
+class EndpointComment extends _i1.EndpointRef {
+  EndpointComment(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'comment';
+
+  /// Inserts a new comment into the database.
+  ///
+  /// The [comment] object should contain necessary details such as `articleId` and `userId`.
+  /// The `createdAt` timestamp is automatically set to the current time.
+  ///
+  /// Returns the inserted [Comment] object.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// Comment newComment = Comment(articleId: 1, userId: 2, content: 'Great article!');
+  /// Comment result = await client.comment.insertComment(newComment);
+  /// ```
+  _i2.Future<_i4.Comment> insertComment(_i4.Comment comment) =>
+      caller.callServerEndpoint<_i4.Comment>(
+        'comment',
+        'insertComment',
+        {'comment': comment},
+      );
+
+  /// Retrieves all comments associated with a specific article.
+  ///
+  /// - [articleId]: The unique identifier of the article.
+  /// - Comments are returned in ascending order based on `createdAt`.
+  ///
+  /// Returns a list of [Comment] objects.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// List<Comment> comments = await client.comment.getCommentsByArticle(articleId);
+  /// ```
+  _i2.Future<List<_i4.Comment>> getCommentsByArticle(int articleId) =>
+      caller.callServerEndpoint<List<_i4.Comment>>(
+        'comment',
+        'getCommentsByArticle',
         {'articleId': articleId},
       );
-}
 
-/// {@category Endpoint}
-class EndpointExample extends _i1.EndpointRef {
-  EndpointExample(_i1.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'example';
-
-  _i2.Future<String> hello(String name) => caller.callServerEndpoint<String>(
-        'example',
-        'hello',
-        {'name': name},
-      );
-}
-
-/// {@category Endpoint}
-class EndpointOpenAI extends _i1.EndpointRef {
-  EndpointOpenAI(_i1.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'openAI';
-
-  _i2.Future<Object?> getAIResponse(String userMessage) =>
-      caller.callServerEndpoint<Object?>(
-        'openAI',
-        'getAIResponse',
-        {'userMessage': userMessage},
-      );
-}
-
-/// The `UserEndpoint` class provides endpoints for managing user-related operations.
-/// This includes fetching user details, updating user information, and creating new users.
-/// {@category Endpoint}
-class EndpointUser extends _i1.EndpointRef {
-  EndpointUser(_i1.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'user';
-
-  /// Fetches a user by their unique `userId`.
+  /// Retrieves all comments made by a specific user.
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `userId`: The unique identifier of the user to fetch.
+  /// - [userId]: The unique identifier of the user.
+  /// - Comments are returned in ascending order based on `createdAt`.
   ///
-  /// Returns:
-  /// - A `User` object if the user is found.
-  /// - `null` if no user is found with the provided `userId`.
+  /// Returns a list of [Comment] objects.
   ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final user = await user.getUser(session, 123);
+  /// List<Comment> userComments = await client.comment.getCommentsByUser(userId);
   /// ```
-  _i2.Future<_i4.User?> getUser(int userId) =>
-      caller.callServerEndpoint<_i4.User?>(
-        'user',
-        'getUser',
+  _i2.Future<List<_i4.Comment>> getCommentsByUser(int userId) =>
+      caller.callServerEndpoint<List<_i4.Comment>>(
+        'comment',
+        'getCommentsByUser',
         {'userId': userId},
       );
 
-  /// Updates an existing user's information in the database.
+  /// Deletes a specific comment from the database.
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `newUser`: A `User` object containing the updated user information.
+  /// - [comment]: The [Comment] object to be deleted.
   ///
-  /// Returns:
-  /// - The updated `User` object if the update is successful.
-  /// - `null` if the user does not exist or the update fails.
+  /// Returns the deleted [Comment] object.
   ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final updatedUser = await user.updateUser(session, user);
+  /// Comment commentToDelete = Comment(id: 5);
+  /// Comment result = await client.comment.deleteComment(commentToDelete);
   /// ```
-  _i2.Future<_i4.User?> updateUser(_i4.User newUser) =>
-      caller.callServerEndpoint<_i4.User?>(
-        'user',
-        'updateUser',
-        {'newUser': newUser},
-      );
-
-  /// Creates a new user in the database.
-  ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `newUser`: A `User` object containing the details of the new user.
-  ///
-  /// Returns:
-  /// - The newly created `User` object if the insertion is successful.
-  /// - `null` if the insertion fails.
-  ///
-  /// Example:
-  /// ```dart
-  /// final createdUser = await user.createUser(session, user);
-  /// ```
-  _i2.Future<_i4.User?> createUser(_i4.User newUser) =>
-      caller.callServerEndpoint<_i4.User?>(
-        'user',
-        'createUser',
-        {'newUser': newUser},
+  _i2.Future<_i4.Comment> deleteComment(_i4.Comment comment) =>
+      caller.callServerEndpoint<_i4.Comment>(
+        'comment',
+        'deleteComment',
+        {'comment': comment},
       );
 }
 
@@ -352,29 +212,21 @@ class Client extends _i1.ServerpodClientShared {
           disconnectStreamsOnLostInternetConnection:
               disconnectStreamsOnLostInternetConnection,
         ) {
-    article = EndpointArticle(this);
-    example = EndpointExample(this);
-    openAI = EndpointOpenAI(this);
-    user = EndpointUser(this);
+    articleLike = EndpointArticleLike(this);
+    comment = EndpointComment(this);
     modules = Modules(this);
   }
 
-  late final EndpointArticle article;
+  late final EndpointArticleLike articleLike;
 
-  late final EndpointExample example;
-
-  late final EndpointOpenAI openAI;
-
-  late final EndpointUser user;
+  late final EndpointComment comment;
 
   late final Modules modules;
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
-        'article': article,
-        'example': example,
-        'openAI': openAI,
-        'user': user,
+        'articleLike': articleLike,
+        'comment': comment,
       };
 
   @override
