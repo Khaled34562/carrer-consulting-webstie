@@ -1,3 +1,11 @@
+article:
+  - insertArticle:
+  - getRecentArticles:
+  - shareArticle:
+  - getArticlesByConsultant:
+  - updateArticle:
+  - getArticle:
+  - deleteArticle:
 articleLike:
   - likeArticle:
   - unlikeArticle:
@@ -8,3 +16,7 @@ comment:
   - getCommentsByArticle:
   - getCommentsByUser:
   - deleteComment:
+user:
+  - getUser:
+  - updateUser:
+  - createUser:

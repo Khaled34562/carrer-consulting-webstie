@@ -1,5 +1,6 @@
+import 'package:authinticationproj_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
-import 'package:carrerproj_server/src/generated/protocol.dart';
+
 
 /// Endpoint for handling article-related operations.
 class ArticleEndpoint extends Endpoint {

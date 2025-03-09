@@ -15,12 +15,15 @@ import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'article.dart' as _i4;
 import 'article_like.dart' as _i5;
 import 'comment.dart' as _i6;
+import 'user_profile.dart' as _i7;
+import 'package:authinticationproj_server/src/generated/article.dart' as _i8;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i7;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i8;
+    as _i9;
+import 'package:authinticationproj_server/src/generated/comment.dart' as _i10;
 export 'article.dart';
 export 'article_like.dart';
 export 'comment.dart';
+export 'user_profile.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -325,6 +328,140 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       managed: true,
     ),
+    _i2.TableDefinition(
+      name: 'user_profile',
+      dartName: 'UserProfile',
+      schema: 'public',
+      module: 'authinticationproj',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'user_profile_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'role',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'fullName',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'nickname',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'dateOfBirth',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'gender',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'profileImage',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'country',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'languages',
+          columnType: _i2.ColumnType.json,
+          isNullable: false,
+          dartType: 'List<String>',
+        ),
+        _i2.ColumnDefinition(
+          name: 'timezone',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'creditCardInfo',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'educationLevel',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'hourlyRate',
+          columnType: _i2.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'user_profile_fk_0',
+          columns: ['userId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'user_profile_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'user_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'userId',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     ..._i3.Protocol.targetTableDefinitions,
     ..._i2.Protocol.targetTableDefinitions,
   ];
@@ -344,6 +481,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i6.Comment) {
       return _i6.Comment.fromJson(data) as T;
     }
+    if (t == _i7.UserProfile) {
+      return _i7.UserProfile.fromJson(data) as T;
+    }
     if (t == _i1.getType<_i4.Article?>()) {
       return (data != null ? _i4.Article.fromJson(data) : null) as T;
     }
@@ -353,12 +493,23 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i6.Comment?>()) {
       return (data != null ? _i6.Comment.fromJson(data) : null) as T;
     }
-    if (t == List<_i7.ArticleLike>) {
-      return (data as List).map((e) => deserialize<_i7.ArticleLike>(e)).toList()
+    if (t == _i1.getType<_i7.UserProfile?>()) {
+      return (data != null ? _i7.UserProfile.fromJson(data) : null) as T;
+    }
+    if (t == List<String>) {
+      return (data as List).map((e) => deserialize<String>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i8.Comment>) {
-      return (data as List).map((e) => deserialize<_i8.Comment>(e)).toList()
+    if (t == List<_i8.Article>) {
+      return (data as List).map((e) => deserialize<_i8.Article>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i9.ArticleLike>) {
+      return (data as List).map((e) => deserialize<_i9.ArticleLike>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i10.Comment>) {
+      return (data as List).map((e) => deserialize<_i10.Comment>(e)).toList()
           as dynamic;
     }
     try {
@@ -382,6 +533,9 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (data is _i6.Comment) {
       return 'Comment';
+    }
+    if (data is _i7.UserProfile) {
+      return 'UserProfile';
     }
     className = _i2.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -408,6 +562,9 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (dataClassName == 'Comment') {
       return deserialize<_i6.Comment>(data['data']);
+    }
+    if (dataClassName == 'UserProfile') {
+      return deserialize<_i7.UserProfile>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -441,6 +598,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i5.ArticleLike.t;
       case _i6.Comment:
         return _i6.Comment.t;
+      case _i7.UserProfile:
+        return _i7.UserProfile.t;
     }
     return null;
   }

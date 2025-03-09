@@ -1,4 +1,4 @@
-import 'package:carrerproj_server/src/generated/protocol.dart';
+import 'package:authinticationproj_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
 /// Endpoint for handling user-related operations.
