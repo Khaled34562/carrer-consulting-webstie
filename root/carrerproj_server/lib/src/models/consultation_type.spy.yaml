@@ -1,5 +1,0 @@
-enum: ConsultationType
-serialized: byName
-values:
-  - video
-  - audio

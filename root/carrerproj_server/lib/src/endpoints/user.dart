@@ -1,65 +1,48 @@
+import 'package:carrerproj_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
-import '../generated/user.dart';
 
-/// The `UserEndpoint` class provides endpoints for managing user-related operations.
-/// This includes fetching user details, updating user information, and creating new users.
+/// Endpoint for handling user-related operations.
 class UserEndpoint extends Endpoint {
-  /// Fetches a user by their unique `userId`.
+  /// Retrieves a user profile by their [userId].
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `userId`: The unique identifier of the user to fetch.
+  /// Returns a [UserProfile] object if found, otherwise `null`.
   ///
-  /// Returns:
-  /// - A `User` object if the user is found.
-  /// - `null` if no user is found with the provided `userId`.
-  ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final user = await user.getUser(session, 123);
+  /// UserProfile? user = await client.user.getUser(userId);
   /// ```
-  Future<User?> getUser(Session session, int userId) async {
-    return await User.db.findFirstRow(
+  Future<UserProfile?> getUser(Session session, int userId) async {
+    return await UserProfile.db.findFirstRow(
       session,
       where: (u) => u.userId.equals(userId),
     );
   }
 
-  /// Updates an existing user's information in the database.
+  /// Updates an existing user profile with the provided [updatedUser] object.
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `newUser`: A `User` object containing the updated user information.
+  /// Returns the updated [UserProfile] if successful, otherwise `null`.
   ///
-  /// Returns:
-  /// - The updated `User` object if the update is successful.
-  /// - `null` if the user does not exist or the update fails.
-  ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final updatedUser = await user.updateUser(session, user);
+  /// UserProfile updatedUser = UserProfile(id: 1, name: 'New Name');
+  /// UserProfile? result = await client.user.updateUser(updatedUser);
   /// ```
-  Future<User?> updateUser(Session session, User newUser) async {
+  Future<UserProfile?> updateUser(
+      Session session, UserProfile updatedUser) async {
     // Update the user in the database
-    var updatedUser = await User.db.updateRow(session, newUser);
-    return updatedUser;
+    return await UserProfile.db.updateRow(session, updatedUser);
   }
 
-  /// Creates a new user in the database.
+  /// Creates a new user profile using the [newUser] object.
   ///
-  /// Parameters:
-  /// - `session`: The current server session.
-  /// - `newUser`: A `User` object containing the details of the new user.
+  /// Returns the created [UserProfile] if successful, otherwise `null`.
   ///
-  /// Returns:
-  /// - The newly created `User` object if the insertion is successful.
-  /// - `null` if the insertion fails.
-  ///
-  /// Example:
+  /// Example usage:
   /// ```dart
-  /// final createdUser = await user.createUser(session, user);
+  /// UserProfile newUser = UserProfile(name: 'John Doe');
+  /// UserProfile? result = await client.user.createUser(newUser);
   /// ```
-  Future<User?> createUser(Session session, User newUser) async {
-    return await User.db.insertRow(session, newUser);
+  Future<UserProfile?> createUser(Session session, UserProfile newUser) async {
+    return await UserProfile.db.insertRow(session, newUser);
   }
 }

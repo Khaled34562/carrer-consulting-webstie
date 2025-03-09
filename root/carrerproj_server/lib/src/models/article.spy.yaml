@@ -3,9 +3,12 @@ table: article
 fields:
   title: String
   content: String
-  authorId: int, relation(parent=user)
+  authorId: int, relation(parent=serverpod_user_info)
   createdAt: DateTime
   updatedAt: DateTime?
   likes: int
   shares: int
   isArchived: bool
+indexes:
+  user_article_idx:
+    fields: authorId
