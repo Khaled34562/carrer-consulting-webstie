@@ -13,7 +13,7 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/article.dart' as _i2;
 import '../endpoints/articleLike.dart' as _i3;
 import '../endpoints/comment.dart' as _i4;
-import '../endpoints/userProfile.dart' as _i5;
+import '../endpoints/user_profile.dart' as _i5;
 import 'package:authinticationproj_server/src/generated/article.dart' as _i6;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
     as _i7;
