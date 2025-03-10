@@ -5,15 +5,15 @@ import '../generated/protocol.dart';
 class CommentEndpoint extends Endpoint {
   /// Inserts a new comment into the database.
   ///
-  /// The [comment] object should contain necessary details such as `articleId` and `userId`.
-  /// The `createdAt` timestamp is automatically set to the current time.
+  /// - [comment]: The [Comment] object containing necessary details such as `articleId`, `userId`, and `content`.
+  ///   The `createdAt` timestamp is automatically set to the current time.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the inserted [Comment] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Comment newComment = Comment(articleId: 1, userId: 2, content: 'Great article!');
-  /// Comment result = await client.comment.insertComment(newComment);
+  /// Comment result = await client.comment.insertComment(Comment: newComment);
   /// ```
   Future<Comment> insertComment(Session session, Comment comment) async {
     comment.createdAt = DateTime.now();
@@ -23,6 +23,7 @@ class CommentEndpoint extends Endpoint {
   /// Retrieves all comments associated with a specific article.
   ///
   /// - [articleId]: The unique identifier of the article.
+  /// - [session]: The current [Session] object.
   /// - Comments are returned in ascending order based on `createdAt`.
   ///
   /// Returns a list of [Comment] objects.
@@ -43,6 +44,7 @@ class CommentEndpoint extends Endpoint {
   /// Retrieves all comments made by a specific user.
   ///
   /// - [userId]: The unique identifier of the user.
+  /// - [session]: The current [Session] object.
   /// - Comments are returned in ascending order based on `createdAt`.
   ///
   /// Returns a list of [Comment] objects.
@@ -62,13 +64,13 @@ class CommentEndpoint extends Endpoint {
   /// Deletes a specific comment from the database.
   ///
   /// - [comment]: The [Comment] object to be deleted.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the deleted [Comment] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Comment commentToDelete = Comment(id: 5);
-  /// Comment result = await client.comment.deleteComment(commentToDelete);
+  /// Comment result = await client.comment.deleteComment(Comment: commentToDelete);
   /// ```
   Future<Comment> deleteComment(Session session, Comment comment) async {
     return await Comment.db.deleteRow(session, comment);

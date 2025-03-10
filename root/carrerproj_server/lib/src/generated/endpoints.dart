@@ -13,7 +13,7 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/article.dart' as _i2;
 import '../endpoints/articleLike.dart' as _i3;
 import '../endpoints/comment.dart' as _i4;
-import '../endpoints/user.dart' as _i5;
+import '../endpoints/userProfile.dart' as _i5;
 import 'package:authinticationproj_server/src/generated/article.dart' as _i6;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
     as _i7;
@@ -220,9 +220,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'getLikedArticlesByUser': _i1.MethodConnector(
           name: 'getLikedArticlesByUser',
           params: {
-            'like': _i1.ParameterDescription(
-              name: 'like',
-              type: _i1.getType<_i7.ArticleLike>(),
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
               nullable: false,
             )
           },
@@ -233,15 +233,15 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['articleLike'] as _i3.ArticleLikeEndpoint)
                   .getLikedArticlesByUser(
             session,
-            params['like'],
+            params['userId'],
           ),
         ),
         'getLikeCount': _i1.MethodConnector(
           name: 'getLikeCount',
           params: {
-            'like': _i1.ParameterDescription(
-              name: 'like',
-              type: _i1.getType<_i7.ArticleLike>(),
+            'articleId': _i1.ParameterDescription(
+              name: 'articleId',
+              type: _i1.getType<int>(),
               nullable: false,
             )
           },
@@ -252,7 +252,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['articleLike'] as _i3.ArticleLikeEndpoint)
                   .getLikeCount(
             session,
-            params['like'],
+            params['articleId'],
           ),
         ),
       },
@@ -340,8 +340,8 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'user',
       endpoint: endpoints['user']!,
       methodConnectors: {
-        'getUser': _i1.MethodConnector(
-          name: 'getUser',
+        'getUserProfile': _i1.MethodConnector(
+          name: 'getUserProfile',
           params: {
             'userId': _i1.ParameterDescription(
               name: 'userId',
@@ -353,16 +353,16 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).getUser(
+              (endpoints['user'] as _i5.UserEndpoint).getUserProfile(
             session,
             params['userId'],
           ),
         ),
-        'updateUser': _i1.MethodConnector(
-          name: 'updateUser',
+        'updateUserProfile': _i1.MethodConnector(
+          name: 'updateUserProfile',
           params: {
-            'updatedUser': _i1.ParameterDescription(
-              name: 'updatedUser',
+            'updatedUserProfile': _i1.ParameterDescription(
+              name: 'updatedUserProfile',
               type: _i1.getType<_i9.UserProfile>(),
               nullable: false,
             )
@@ -371,16 +371,16 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).updateUser(
+              (endpoints['user'] as _i5.UserEndpoint).updateUserProfile(
             session,
-            params['updatedUser'],
+            params['updatedUserProfile'],
           ),
         ),
-        'createUser': _i1.MethodConnector(
-          name: 'createUser',
+        'createUserProfile': _i1.MethodConnector(
+          name: 'createUserProfile',
           params: {
-            'newUser': _i1.ParameterDescription(
-              name: 'newUser',
+            'newUserProfile': _i1.ParameterDescription(
+              name: 'newUserProfile',
               type: _i1.getType<_i9.UserProfile>(),
               nullable: false,
             )
@@ -389,9 +389,9 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).createUser(
+              (endpoints['user'] as _i5.UserEndpoint).createUserProfile(
             session,
-            params['newUser'],
+            params['newUserProfile'],
           ),
         ),
       },

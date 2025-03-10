@@ -31,13 +31,13 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Inserts a new article into the database.
   ///
   /// - [article]: The [Article] object containing article details.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the inserted [Article] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Article newArticle = Article(title: 'New Post', content: 'Content here...');
-  /// Article result = await client.article.insertArticle(newArticle);
+  /// Article result = await client.article.insertArticle(Article: newArticle);
   /// ```
   _i2.Future<_i3.Article> insertArticle(_i3.Article article) =>
       caller.callServerEndpoint<_i3.Article>(
@@ -49,6 +49,7 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Retrieves the 10 most recent articles.
   ///
   /// - Articles are sorted in descending order based on `createdAt`.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns a list of up to 10 [Article] objects.
   ///
@@ -66,6 +67,7 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Increments the share count of an article.
   ///
   /// - [articleId]: The unique identifier of the article to be shared.
+  /// - [session]: The current [Session] object.
   /// - If the article is not found, an exception is thrown.
   ///
   /// Returns the updated [Article] object.
@@ -84,6 +86,7 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Retrieves all articles authored by a specific consultant (user).
   ///
   /// - [userId]: The unique identifier of the consultant (author).
+  /// - [session]: The current [Session] object.
   ///
   /// Returns a list of [Article] objects.
   ///
@@ -101,12 +104,13 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Updates an existing article.
   ///
   /// - [updatedArticle]: The updated [Article] object.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the updated [Article] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Article updatedArticle = await client.article.updateArticle(article);
+  /// Article updatedArticle = await client.article.updateArticle(Article: article);
   /// ```
   _i2.Future<_i3.Article> updateArticle(_i3.Article updatedArticle) =>
       caller.callServerEndpoint<_i3.Article>(
@@ -118,6 +122,7 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Retrieves a specific article by its ID.
   ///
   /// - [articleId]: The unique identifier of the article.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the [Article] object if found, otherwise `null`.
   ///
@@ -135,13 +140,14 @@ class EndpointArticle extends _i1.EndpointRef {
   /// Deletes an existing article from the database.
   ///
   /// - [article]: The [Article] object to be deleted.
+  /// - [session]: The current [Session] object.
   /// - If the article is not found, an exception is thrown.
   ///
   /// Returns the deleted [Article] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Article articleToDelete = await client.article.getArticle(articleId);
+  /// Article articleToDelete = await client.article.getArticle(Article: article);
   /// if (articleToDelete != null) {
   ///   await client.article.deleteArticle(articleToDelete);
   /// }
@@ -171,8 +177,7 @@ class EndpointArticleLike extends _i1.EndpointRef {
   ///
   /// Example usage:
   /// ```dart
-  /// ArticleLike newLike = ArticleLike(userId: 1, articleId: 5);
-  /// ArticleLike result = await client.articleLike.likeArticle(newLike);
+  /// ArticleLike result = await client.articleLike.likeArticle(ArticleLike: newLike);
   /// ```
   _i2.Future<_i4.ArticleLike> likeArticle(_i4.ArticleLike like) =>
       caller.callServerEndpoint<_i4.ArticleLike>(
@@ -189,8 +194,7 @@ class EndpointArticleLike extends _i1.EndpointRef {
   ///
   /// Example usage:
   /// ```dart
-  /// ArticleLike unlike = ArticleLike(userId: 1, articleId: 5);
-  /// ArticleLike result = await client.articleLike.unlikeArticle(unlike);
+  /// ArticleLike result = await client.articleLike.unlikeArticle(ArticleLike: unlike);
   /// ```
   _i2.Future<_i4.ArticleLike> unlikeArticle(_i4.ArticleLike like) =>
       caller.callServerEndpoint<_i4.ArticleLike>(
@@ -201,35 +205,33 @@ class EndpointArticleLike extends _i1.EndpointRef {
 
   /// Retrieves all articles liked by a specific user.
   ///
-  /// - [like]: The [ArticleLike] object containing `userId`.
+  /// - [userId]: The unique identifier of the user.
   /// - Returns a list of [ArticleLike] objects representing the liked articles.
   ///
   /// Example usage:
   /// ```dart
-  /// List<ArticleLike> likedArticles = await client.articleLike.getLikedArticlesByUser(userLike);
+  /// List<ArticleLike> likedArticles = await client.articleLike.getLikedArticlesByUser(1);
   /// ```
-  _i2.Future<List<_i4.ArticleLike>> getLikedArticlesByUser(
-          _i4.ArticleLike like) =>
+  _i2.Future<List<_i4.ArticleLike>> getLikedArticlesByUser(int userId) =>
       caller.callServerEndpoint<List<_i4.ArticleLike>>(
         'articleLike',
         'getLikedArticlesByUser',
-        {'like': like},
+        {'userId': userId},
       );
 
-  /// Retrieves the total like count for a specific article.
+  /// Retrieves the total count of likes for a specific article.
   ///
-  /// - [like]: The [ArticleLike] object containing `articleId`.
-  /// - Returns an `int` representing the total number of likes.
+  /// - [articleId]: The unique identifier of the article.
+  /// - Returns an integer representing the total number of likes.
   ///
   /// Example usage:
   /// ```dart
-  /// int likeCount = await client.articleLike.getLikeCount(articleLike);
+  /// int likeCount = await client.articleLike.getLikeCount(5);
   /// ```
-  _i2.Future<int> getLikeCount(_i4.ArticleLike like) =>
-      caller.callServerEndpoint<int>(
+  _i2.Future<int> getLikeCount(int articleId) => caller.callServerEndpoint<int>(
         'articleLike',
         'getLikeCount',
-        {'like': like},
+        {'articleId': articleId},
       );
 }
 
@@ -243,15 +245,15 @@ class EndpointComment extends _i1.EndpointRef {
 
   /// Inserts a new comment into the database.
   ///
-  /// The [comment] object should contain necessary details such as `articleId` and `userId`.
-  /// The `createdAt` timestamp is automatically set to the current time.
+  /// - [comment]: The [Comment] object containing necessary details such as `articleId`, `userId`, and `content`.
+  ///   The `createdAt` timestamp is automatically set to the current time.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the inserted [Comment] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Comment newComment = Comment(articleId: 1, userId: 2, content: 'Great article!');
-  /// Comment result = await client.comment.insertComment(newComment);
+  /// Comment result = await client.comment.insertComment(Comment: newComment);
   /// ```
   _i2.Future<_i5.Comment> insertComment(_i5.Comment comment) =>
       caller.callServerEndpoint<_i5.Comment>(
@@ -263,6 +265,7 @@ class EndpointComment extends _i1.EndpointRef {
   /// Retrieves all comments associated with a specific article.
   ///
   /// - [articleId]: The unique identifier of the article.
+  /// - [session]: The current [Session] object.
   /// - Comments are returned in ascending order based on `createdAt`.
   ///
   /// Returns a list of [Comment] objects.
@@ -281,6 +284,7 @@ class EndpointComment extends _i1.EndpointRef {
   /// Retrieves all comments made by a specific user.
   ///
   /// - [userId]: The unique identifier of the user.
+  /// - [session]: The current [Session] object.
   /// - Comments are returned in ascending order based on `createdAt`.
   ///
   /// Returns a list of [Comment] objects.
@@ -299,13 +303,13 @@ class EndpointComment extends _i1.EndpointRef {
   /// Deletes a specific comment from the database.
   ///
   /// - [comment]: The [Comment] object to be deleted.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the deleted [Comment] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Comment commentToDelete = Comment(id: 5);
-  /// Comment result = await client.comment.deleteComment(commentToDelete);
+  /// Comment result = await client.comment.deleteComment(Comment: commentToDelete);
   /// ```
   _i2.Future<_i5.Comment> deleteComment(_i5.Comment comment) =>
       caller.callServerEndpoint<_i5.Comment>(
@@ -329,12 +333,12 @@ class EndpointUser extends _i1.EndpointRef {
   ///
   /// Example usage:
   /// ```dart
-  /// UserProfile? user = await client.user.getUser(userId);
+  /// UserProfile? user = await client.user.getUserProfile(userId);
   /// ```
-  _i2.Future<_i6.UserProfile?> getUser(int userId) =>
+  _i2.Future<_i6.UserProfile?> getUserProfile(int userId) =>
       caller.callServerEndpoint<_i6.UserProfile?>(
         'user',
-        'getUser',
+        'getUserProfile',
         {'userId': userId},
       );
 
@@ -344,14 +348,14 @@ class EndpointUser extends _i1.EndpointRef {
   ///
   /// Example usage:
   /// ```dart
-  /// UserProfile updatedUser = UserProfile(id: 1, name: 'New Name');
-  /// UserProfile? result = await client.user.updateUser(updatedUser);
+  /// UserProfile? result = await client.user.updateUserProfile(UserProfile: updatedUserProfile);
   /// ```
-  _i2.Future<_i6.UserProfile?> updateUser(_i6.UserProfile updatedUser) =>
+  _i2.Future<_i6.UserProfile?> updateUserProfile(
+          _i6.UserProfile updatedUserProfile) =>
       caller.callServerEndpoint<_i6.UserProfile?>(
         'user',
-        'updateUser',
-        {'updatedUser': updatedUser},
+        'updateUserProfile',
+        {'updatedUserProfile': updatedUserProfile},
       );
 
   /// Creates a new user profile using the [newUser] object.
@@ -360,14 +364,14 @@ class EndpointUser extends _i1.EndpointRef {
   ///
   /// Example usage:
   /// ```dart
-  /// UserProfile newUser = UserProfile(name: 'John Doe');
-  /// UserProfile? result = await client.user.createUser(newUser);
+  /// UserProfile? result = await client.user.createUserProfile(UserProfile: newUserProfile);
   /// ```
-  _i2.Future<_i6.UserProfile?> createUser(_i6.UserProfile newUser) =>
+  _i2.Future<_i6.UserProfile?> createUserProfile(
+          _i6.UserProfile newUserProfile) =>
       caller.callServerEndpoint<_i6.UserProfile?>(
         'user',
-        'createUser',
-        {'newUser': newUser},
+        'createUserProfile',
+        {'newUserProfile': newUserProfile},
       );
 }
 

@@ -19,7 +19,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
     required this.authorId,
     required this.createdAt,
     this.updatedAt,
-    required this.likes,
     required this.shares,
     required this.isArchived,
   });
@@ -31,7 +30,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
     required int authorId,
     required DateTime createdAt,
     DateTime? updatedAt,
-    required int likes,
     required int shares,
     required bool isArchived,
   }) = _ArticleImpl;
@@ -47,7 +45,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
       updatedAt: jsonSerialization['updatedAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
-      likes: jsonSerialization['likes'] as int,
       shares: jsonSerialization['shares'] as int,
       isArchived: jsonSerialization['isArchived'] as bool,
     );
@@ -70,8 +67,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
 
   DateTime? updatedAt;
 
-  int likes;
-
   int shares;
 
   bool isArchived;
@@ -86,7 +81,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
     int? authorId,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? likes,
     int? shares,
     bool? isArchived,
   });
@@ -99,7 +93,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
       'authorId': authorId,
       'createdAt': createdAt.toJson(),
       if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
-      'likes': likes,
       'shares': shares,
       'isArchived': isArchived,
     };
@@ -114,7 +107,6 @@ abstract class Article implements _i1.TableRow, _i1.ProtocolSerialization {
       'authorId': authorId,
       'createdAt': createdAt.toJson(),
       if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
-      'likes': likes,
       'shares': shares,
       'isArchived': isArchived,
     };
@@ -160,7 +152,6 @@ class _ArticleImpl extends Article {
     required int authorId,
     required DateTime createdAt,
     DateTime? updatedAt,
-    required int likes,
     required int shares,
     required bool isArchived,
   }) : super._(
@@ -170,7 +161,6 @@ class _ArticleImpl extends Article {
           authorId: authorId,
           createdAt: createdAt,
           updatedAt: updatedAt,
-          likes: likes,
           shares: shares,
           isArchived: isArchived,
         );
@@ -183,7 +173,6 @@ class _ArticleImpl extends Article {
     int? authorId,
     DateTime? createdAt,
     Object? updatedAt = _Undefined,
-    int? likes,
     int? shares,
     bool? isArchived,
   }) {
@@ -194,7 +183,6 @@ class _ArticleImpl extends Article {
       authorId: authorId ?? this.authorId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt is DateTime? ? updatedAt : this.updatedAt,
-      likes: likes ?? this.likes,
       shares: shares ?? this.shares,
       isArchived: isArchived ?? this.isArchived,
     );
@@ -223,10 +211,6 @@ class ArticleTable extends _i1.Table {
       'updatedAt',
       this,
     );
-    likes = _i1.ColumnInt(
-      'likes',
-      this,
-    );
     shares = _i1.ColumnInt(
       'shares',
       this,
@@ -247,8 +231,6 @@ class ArticleTable extends _i1.Table {
 
   late final _i1.ColumnDateTime updatedAt;
 
-  late final _i1.ColumnInt likes;
-
   late final _i1.ColumnInt shares;
 
   late final _i1.ColumnBool isArchived;
@@ -261,7 +243,6 @@ class ArticleTable extends _i1.Table {
         authorId,
         createdAt,
         updatedAt,
-        likes,
         shares,
         isArchived,
       ];

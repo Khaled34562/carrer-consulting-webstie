@@ -17,6 +17,6 @@ comment:
   - getCommentsByUser:
   - deleteComment:
 user:
-  - getUser:
-  - updateUser:
-  - createUser:
+  - getUserProfile:
+  - updateUserProfile:
+  - createUserProfile:

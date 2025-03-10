@@ -417,7 +417,7 @@ class _ArticleLikeEndpoint {
 
   _i3.Future<List<_i5.ArticleLike>> getLikedArticlesByUser(
     _i1.TestSessionBuilder sessionBuilder,
-    _i5.ArticleLike like,
+    int userId,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -430,7 +430,7 @@ class _ArticleLikeEndpoint {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'articleLike',
           methodName: 'getLikedArticlesByUser',
-          parameters: _i1.testObjectToJson({'like': like}),
+          parameters: _i1.testObjectToJson({'userId': userId}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
@@ -446,7 +446,7 @@ class _ArticleLikeEndpoint {
 
   _i3.Future<int> getLikeCount(
     _i1.TestSessionBuilder sessionBuilder,
-    _i5.ArticleLike like,
+    int articleId,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -459,7 +459,7 @@ class _ArticleLikeEndpoint {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'articleLike',
           methodName: 'getLikeCount',
-          parameters: _i1.testObjectToJson({'like': like}),
+          parameters: _i1.testObjectToJson({'articleId': articleId}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
@@ -611,7 +611,7 @@ class _UserEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.UserProfile?> getUser(
+  _i3.Future<_i7.UserProfile?> getUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
     int userId,
   ) async {
@@ -619,13 +619,13 @@ class _UserEndpoint {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
         endpoint: 'user',
-        method: 'getUser',
+        method: 'getUserProfile',
       );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'user',
-          methodName: 'getUser',
+          methodName: 'getUserProfile',
           parameters: _i1.testObjectToJson({'userId': userId}),
           serializationManager: _serializationManager,
         );
@@ -640,22 +640,23 @@ class _UserEndpoint {
     });
   }
 
-  _i3.Future<_i7.UserProfile?> updateUser(
+  _i3.Future<_i7.UserProfile?> updateUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
-    _i7.UserProfile updatedUser,
+    _i7.UserProfile updatedUserProfile,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
         endpoint: 'user',
-        method: 'updateUser',
+        method: 'updateUserProfile',
       );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'user',
-          methodName: 'updateUser',
-          parameters: _i1.testObjectToJson({'updatedUser': updatedUser}),
+          methodName: 'updateUserProfile',
+          parameters:
+              _i1.testObjectToJson({'updatedUserProfile': updatedUserProfile}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
@@ -669,22 +670,22 @@ class _UserEndpoint {
     });
   }
 
-  _i3.Future<_i7.UserProfile?> createUser(
+  _i3.Future<_i7.UserProfile?> createUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
-    _i7.UserProfile newUser,
+    _i7.UserProfile newUserProfile,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
         endpoint: 'user',
-        method: 'createUser',
+        method: 'createUserProfile',
       );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'user',
-          methodName: 'createUser',
-          parameters: _i1.testObjectToJson({'newUser': newUser}),
+          methodName: 'createUserProfile',
+          parameters: _i1.testObjectToJson({'newUserProfile': newUserProfile}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(

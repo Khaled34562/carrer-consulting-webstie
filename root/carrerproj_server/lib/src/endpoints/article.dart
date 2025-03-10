@@ -1,19 +1,18 @@
-import 'package:authinticationproj_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
-
+import '../generated/protocol.dart';
 
 /// Endpoint for handling article-related operations.
 class ArticleEndpoint extends Endpoint {
   /// Inserts a new article into the database.
   ///
   /// - [article]: The [Article] object containing article details.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the inserted [Article] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Article newArticle = Article(title: 'New Post', content: 'Content here...');
-  /// Article result = await client.article.insertArticle(newArticle);
+  /// Article result = await client.article.insertArticle(Article: newArticle);
   /// ```
   Future<Article> insertArticle(Session session, Article article) async {
     return await Article.db.insertRow(session, article);
@@ -22,6 +21,7 @@ class ArticleEndpoint extends Endpoint {
   /// Retrieves the 10 most recent articles.
   ///
   /// - Articles are sorted in descending order based on `createdAt`.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns a list of up to 10 [Article] objects.
   ///
@@ -41,6 +41,7 @@ class ArticleEndpoint extends Endpoint {
   /// Increments the share count of an article.
   ///
   /// - [articleId]: The unique identifier of the article to be shared.
+  /// - [session]: The current [Session] object.
   /// - If the article is not found, an exception is thrown.
   ///
   /// Returns the updated [Article] object.
@@ -60,6 +61,7 @@ class ArticleEndpoint extends Endpoint {
   /// Retrieves all articles authored by a specific consultant (user).
   ///
   /// - [userId]: The unique identifier of the consultant (author).
+  /// - [session]: The current [Session] object.
   ///
   /// Returns a list of [Article] objects.
   ///
@@ -78,12 +80,13 @@ class ArticleEndpoint extends Endpoint {
   /// Updates an existing article.
   ///
   /// - [updatedArticle]: The updated [Article] object.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the updated [Article] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Article updatedArticle = await client.article.updateArticle(article);
+  /// Article updatedArticle = await client.article.updateArticle(Article: article);
   /// ```
   Future<Article> updateArticle(Session session, Article updatedArticle) async {
     return await Article.db.updateRow(session, updatedArticle);
@@ -92,6 +95,7 @@ class ArticleEndpoint extends Endpoint {
   /// Retrieves a specific article by its ID.
   ///
   /// - [articleId]: The unique identifier of the article.
+  /// - [session]: The current [Session] object.
   ///
   /// Returns the [Article] object if found, otherwise `null`.
   ///
@@ -106,13 +110,14 @@ class ArticleEndpoint extends Endpoint {
   /// Deletes an existing article from the database.
   ///
   /// - [article]: The [Article] object to be deleted.
+  /// - [session]: The current [Session] object.
   /// - If the article is not found, an exception is thrown.
   ///
   /// Returns the deleted [Article] object.
   ///
   /// Example usage:
   /// ```dart
-  /// Article articleToDelete = await client.article.getArticle(articleId);
+  /// Article articleToDelete = await client.article.getArticle(Article: article);
   /// if (articleToDelete != null) {
   ///   await client.article.deleteArticle(articleToDelete);
   /// }

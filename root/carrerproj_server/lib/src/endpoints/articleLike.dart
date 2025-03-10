@@ -12,10 +12,10 @@ class ArticleLikeEndpoint extends Endpoint {
   ///
   /// Example usage:
   /// ```dart
-  /// ArticleLike newLike = ArticleLike(userId: 1, articleId: 5);
-  /// ArticleLike result = await client.articleLike.likeArticle(newLike);
+  /// ArticleLike result = await client.articleLike.likeArticle(ArticleLike: newLike);
   /// ```
   Future<ArticleLike> likeArticle(Session session, ArticleLike like) async {
+    like.createdAt = new DateTime.now();
     return await session.db.insertRow(like);
   }
 
@@ -27,8 +27,7 @@ class ArticleLikeEndpoint extends Endpoint {
   ///
   /// Example usage:
   /// ```dart
-  /// ArticleLike unlike = ArticleLike(userId: 1, articleId: 5);
-  /// ArticleLike result = await client.articleLike.unlikeArticle(unlike);
+  /// ArticleLike result = await client.articleLike.unlikeArticle(ArticleLike: unlike);
   /// ```
   Future<ArticleLike> unlikeArticle(Session session, ArticleLike like) async {
     return await ArticleLike.db.deleteRow(session, like);
@@ -36,30 +35,30 @@ class ArticleLikeEndpoint extends Endpoint {
 
   /// Retrieves all articles liked by a specific user.
   ///
-  /// - [like]: The [ArticleLike] object containing `userId`.
+  /// - [userId]: The unique identifier of the user.
   /// - Returns a list of [ArticleLike] objects representing the liked articles.
   ///
   /// Example usage:
   /// ```dart
-  /// List<ArticleLike> likedArticles = await client.articleLike.getLikedArticlesByUser(userLike);
+  /// List<ArticleLike> likedArticles = await client.articleLike.getLikedArticlesByUser(1);
   /// ```
   Future<List<ArticleLike>> getLikedArticlesByUser(
-      Session session, ArticleLike like) async {
+      Session session, int userId) async {
     return await ArticleLike.db
-        .find(session, where: (t) => t.userId.equals(like.userId));
+        .find(session, where: (t) => t.userId.equals(userId));
   }
 
-  /// Retrieves the total like count for a specific article.
+  /// Retrieves the total count of likes for a specific article.
   ///
-  /// - [like]: The [ArticleLike] object containing `articleId`.
-  /// - Returns an `int` representing the total number of likes.
+  /// - [articleId]: The unique identifier of the article.
+  /// - Returns an integer representing the total number of likes.
   ///
   /// Example usage:
   /// ```dart
-  /// int likeCount = await client.articleLike.getLikeCount(articleLike);
+  /// int likeCount = await client.articleLike.getLikeCount(5);
   /// ```
-  Future<int> getLikeCount(Session session, ArticleLike like) async {
+  Future<int> getLikeCount(Session session, int articleId) async {
     return await ArticleLike.db
-        .count(session, where: (t) => t.articleId.equals(like.articleId));
+        .count(session, where: (t) => t.articleId.equals(articleId));
   }
 }

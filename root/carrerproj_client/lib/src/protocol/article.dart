@@ -19,7 +19,6 @@ abstract class Article implements _i1.SerializableModel {
     required this.authorId,
     required this.createdAt,
     this.updatedAt,
-    required this.likes,
     required this.shares,
     required this.isArchived,
   });
@@ -31,7 +30,6 @@ abstract class Article implements _i1.SerializableModel {
     required int authorId,
     required DateTime createdAt,
     DateTime? updatedAt,
-    required int likes,
     required int shares,
     required bool isArchived,
   }) = _ArticleImpl;
@@ -47,7 +45,6 @@ abstract class Article implements _i1.SerializableModel {
       updatedAt: jsonSerialization['updatedAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
-      likes: jsonSerialization['likes'] as int,
       shares: jsonSerialization['shares'] as int,
       isArchived: jsonSerialization['isArchived'] as bool,
     );
@@ -68,8 +65,6 @@ abstract class Article implements _i1.SerializableModel {
 
   DateTime? updatedAt;
 
-  int likes;
-
   int shares;
 
   bool isArchived;
@@ -81,7 +76,6 @@ abstract class Article implements _i1.SerializableModel {
     int? authorId,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? likes,
     int? shares,
     bool? isArchived,
   });
@@ -94,7 +88,6 @@ abstract class Article implements _i1.SerializableModel {
       'authorId': authorId,
       'createdAt': createdAt.toJson(),
       if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
-      'likes': likes,
       'shares': shares,
       'isArchived': isArchived,
     };
@@ -116,7 +109,6 @@ class _ArticleImpl extends Article {
     required int authorId,
     required DateTime createdAt,
     DateTime? updatedAt,
-    required int likes,
     required int shares,
     required bool isArchived,
   }) : super._(
@@ -126,7 +118,6 @@ class _ArticleImpl extends Article {
           authorId: authorId,
           createdAt: createdAt,
           updatedAt: updatedAt,
-          likes: likes,
           shares: shares,
           isArchived: isArchived,
         );
@@ -139,7 +130,6 @@ class _ArticleImpl extends Article {
     int? authorId,
     DateTime? createdAt,
     Object? updatedAt = _Undefined,
-    int? likes,
     int? shares,
     bool? isArchived,
   }) {
@@ -150,7 +140,6 @@ class _ArticleImpl extends Article {
       authorId: authorId ?? this.authorId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt is DateTime? ? updatedAt : this.updatedAt,
-      likes: likes ?? this.likes,
       shares: shares ?? this.shares,
       isArchived: isArchived ?? this.isArchived,
     );
