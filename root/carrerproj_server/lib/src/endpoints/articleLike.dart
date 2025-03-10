@@ -15,7 +15,7 @@ class ArticleLikeEndpoint extends Endpoint {
   /// ArticleLike result = await client.articleLike.likeArticle(ArticleLike: newLike);
   /// ```
   Future<ArticleLike> likeArticle(Session session, ArticleLike like) async {
-    like.createdAt = new DateTime.now();
+    like.createdAt = DateTime.now();
     return await session.db.insertRow(like);
   }
 

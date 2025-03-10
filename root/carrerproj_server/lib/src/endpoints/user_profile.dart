@@ -16,7 +16,6 @@ class UserEndpoint extends Endpoint {
       session,
       where: (u) => u.userId.equals(userId),
     );
-    ;
   }
 
   /// Updates an existing user profile with the provided [updatedUser] object.
