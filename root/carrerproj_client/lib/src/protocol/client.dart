@@ -15,10 +15,11 @@ import 'package:authinticationproj_client/src/protocol/article.dart' as _i3;
 import 'package:authinticationproj_client/src/protocol/article_like.dart'
     as _i4;
 import 'package:authinticationproj_client/src/protocol/comment.dart' as _i5;
+import 'package:authinticationproj_client/src/protocol/credential.dart' as _i6;
 import 'package:authinticationproj_client/src/protocol/user_profile.dart'
-    as _i6;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i7;
-import 'protocol.dart' as _i8;
+    as _i7;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i8;
+import 'protocol.dart' as _i9;
 
 /// Endpoint for handling article-related operations.
 /// {@category Endpoint}
@@ -319,6 +320,47 @@ class EndpointComment extends _i1.EndpointRef {
       );
 }
 
+/// Endpoint for handling credential-related operations.
+/// {@category Endpoint}
+class EndpointCredentials extends _i1.EndpointRef {
+  EndpointCredentials(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'credentials';
+
+  /// Creates a new credential for a user.
+  _i2.Future<_i6.Credentials?> createCredential(_i6.Credentials credential) =>
+      caller.callServerEndpoint<_i6.Credentials?>(
+        'credentials',
+        'createCredential',
+        {'credential': credential},
+      );
+
+  /// Retrieves all credentials for a specific user.
+  _i2.Future<List<_i6.Credentials>> getCredentialsByUserId(int userId) =>
+      caller.callServerEndpoint<List<_i6.Credentials>>(
+        'credentials',
+        'getCredentialsByUserId',
+        {'userId': userId},
+      );
+
+  /// Updates an existing credential.
+  _i2.Future<_i6.Credentials?> updateCredential(_i6.Credentials credential) =>
+      caller.callServerEndpoint<_i6.Credentials?>(
+        'credentials',
+        'updateCredential',
+        {'credential': credential},
+      );
+
+  /// Deletes a credential by its ID.
+  _i2.Future<bool> deleteCredential(int credentialId) =>
+      caller.callServerEndpoint<bool>(
+        'credentials',
+        'deleteCredential',
+        {'credentialId': credentialId},
+      );
+}
+
 /// Endpoint for handling user-related operations.
 /// {@category Endpoint}
 class EndpointUser extends _i1.EndpointRef {
@@ -335,8 +377,8 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? user = await client.user.getUserProfile(userId);
   /// ```
-  _i2.Future<_i6.UserProfile?> getUserProfile(int userId) =>
-      caller.callServerEndpoint<_i6.UserProfile?>(
+  _i2.Future<_i7.UserProfile?> getUserProfile(int userId) =>
+      caller.callServerEndpoint<_i7.UserProfile?>(
         'user',
         'getUserProfile',
         {'userId': userId},
@@ -350,9 +392,9 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? result = await client.user.updateUserProfile(UserProfile: updatedUserProfile);
   /// ```
-  _i2.Future<_i6.UserProfile?> updateUserProfile(
-          _i6.UserProfile updatedUserProfile) =>
-      caller.callServerEndpoint<_i6.UserProfile?>(
+  _i2.Future<_i7.UserProfile?> updateUserProfile(
+          _i7.UserProfile updatedUserProfile) =>
+      caller.callServerEndpoint<_i7.UserProfile?>(
         'user',
         'updateUserProfile',
         {'updatedUserProfile': updatedUserProfile},
@@ -366,9 +408,9 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? result = await client.user.createUserProfile(UserProfile: newUserProfile);
   /// ```
-  _i2.Future<_i6.UserProfile?> createUserProfile(
-          _i6.UserProfile newUserProfile) =>
-      caller.callServerEndpoint<_i6.UserProfile?>(
+  _i2.Future<_i7.UserProfile?> createUserProfile(
+          _i7.UserProfile newUserProfile) =>
+      caller.callServerEndpoint<_i7.UserProfile?>(
         'user',
         'createUserProfile',
         {'newUserProfile': newUserProfile},
@@ -377,10 +419,10 @@ class EndpointUser extends _i1.EndpointRef {
 
 class Modules {
   Modules(Client client) {
-    auth = _i7.Caller(client);
+    auth = _i8.Caller(client);
   }
 
-  late final _i7.Caller auth;
+  late final _i8.Caller auth;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -399,7 +441,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i8.Protocol(),
+          _i9.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -412,6 +454,7 @@ class Client extends _i1.ServerpodClientShared {
     article = EndpointArticle(this);
     articleLike = EndpointArticleLike(this);
     comment = EndpointComment(this);
+    credentials = EndpointCredentials(this);
     user = EndpointUser(this);
     modules = Modules(this);
   }
@@ -422,6 +465,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointComment comment;
 
+  late final EndpointCredentials credentials;
+
   late final EndpointUser user;
 
   late final Modules modules;
@@ -431,6 +476,7 @@ class Client extends _i1.ServerpodClientShared {
         'article': article,
         'articleLike': articleLike,
         'comment': comment,
+        'credentials': credentials,
         'user': user,
       };
 

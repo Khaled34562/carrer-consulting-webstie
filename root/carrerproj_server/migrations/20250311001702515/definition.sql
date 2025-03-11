@@ -46,6 +46,22 @@ CREATE INDEX "article_comment_idx" ON "comment" USING btree ("articleId");
 CREATE INDEX "user_comment_idx" ON "comment" USING btree ("userId");
 
 --
+-- Class Credentials as table credentials
+--
+CREATE TABLE "credentials" (
+    "id" bigserial PRIMARY KEY,
+    "userId" bigint NOT NULL,
+    "name" text NOT NULL,
+    "date" timestamp without time zone NOT NULL,
+    "version" text NOT NULL,
+    "fileUrl" text NOT NULL,
+    "description" text,
+    "issuer" text,
+    "expirationDate" timestamp without time zone,
+    "status" text
+);
+
+--
 -- Class UserProfile as table user_profile
 --
 CREATE TABLE "user_profile" (
@@ -429,6 +445,16 @@ ALTER TABLE ONLY "comment"
     ON UPDATE NO ACTION;
 
 --
+-- Foreign relations for "credentials" table
+--
+ALTER TABLE ONLY "credentials"
+    ADD CONSTRAINT "credentials_fk_0"
+    FOREIGN KEY("userId")
+    REFERENCES "user_profile"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
 -- Foreign relations for "user_profile" table
 --
 ALTER TABLE ONLY "user_profile"
@@ -473,9 +499,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR authinticationproj
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('authinticationproj', '20250310063904226', now())
+    VALUES ('authinticationproj', '20250311001702515', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20250310063904226', "timestamp" = now();
+    DO UPDATE SET "version" = '20250311001702515', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod

@@ -11,16 +11,19 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/article.dart' as _i2;
-import '../endpoints/articleLike.dart' as _i3;
+import '../endpoints/article_like.dart' as _i3;
 import '../endpoints/comment.dart' as _i4;
-import '../endpoints/user_profile.dart' as _i5;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i6;
+import '../endpoints/credential.dart' as _i5;
+import '../endpoints/user_profile.dart' as _i6;
+import 'package:authinticationproj_server/src/generated/article.dart' as _i7;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i7;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i8;
+    as _i8;
+import 'package:authinticationproj_server/src/generated/comment.dart' as _i9;
+import 'package:authinticationproj_server/src/generated/credential.dart'
+    as _i10;
 import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i9;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i10;
+    as _i11;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i12;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -44,7 +47,13 @@ class Endpoints extends _i1.EndpointDispatch {
           'comment',
           null,
         ),
-      'user': _i5.UserEndpoint()
+      'credentials': _i5.CredentialsEndpoint()
+        ..initialize(
+          server,
+          'credentials',
+          null,
+        ),
+      'user': _i6.UserEndpoint()
         ..initialize(
           server,
           'user',
@@ -60,7 +69,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'article': _i1.ParameterDescription(
               name: 'article',
-              type: _i1.getType<_i6.Article>(),
+              type: _i1.getType<_i7.Article>(),
               nullable: false,
             )
           },
@@ -125,7 +134,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'updatedArticle': _i1.ParameterDescription(
               name: 'updatedArticle',
-              type: _i1.getType<_i6.Article>(),
+              type: _i1.getType<_i7.Article>(),
               nullable: false,
             )
           },
@@ -161,7 +170,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'article': _i1.ParameterDescription(
               name: 'article',
-              type: _i1.getType<_i6.Article>(),
+              type: _i1.getType<_i7.Article>(),
               nullable: false,
             )
           },
@@ -185,7 +194,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'like': _i1.ParameterDescription(
               name: 'like',
-              type: _i1.getType<_i7.ArticleLike>(),
+              type: _i1.getType<_i8.ArticleLike>(),
               nullable: false,
             )
           },
@@ -203,7 +212,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'like': _i1.ParameterDescription(
               name: 'like',
-              type: _i1.getType<_i7.ArticleLike>(),
+              type: _i1.getType<_i8.ArticleLike>(),
               nullable: false,
             )
           },
@@ -266,7 +275,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'comment': _i1.ParameterDescription(
               name: 'comment',
-              type: _i1.getType<_i8.Comment>(),
+              type: _i1.getType<_i9.Comment>(),
               nullable: false,
             )
           },
@@ -321,7 +330,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'comment': _i1.ParameterDescription(
               name: 'comment',
-              type: _i1.getType<_i8.Comment>(),
+              type: _i1.getType<_i9.Comment>(),
               nullable: false,
             )
           },
@@ -332,6 +341,88 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['comment'] as _i4.CommentEndpoint).deleteComment(
             session,
             params['comment'],
+          ),
+        ),
+      },
+    );
+    connectors['credentials'] = _i1.EndpointConnector(
+      name: 'credentials',
+      endpoint: endpoints['credentials']!,
+      methodConnectors: {
+        'createCredential': _i1.MethodConnector(
+          name: 'createCredential',
+          params: {
+            'credential': _i1.ParameterDescription(
+              name: 'credential',
+              type: _i1.getType<_i10.Credentials>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+                  .createCredential(
+            session,
+            params['credential'],
+          ),
+        ),
+        'getCredentialsByUserId': _i1.MethodConnector(
+          name: 'getCredentialsByUserId',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+                  .getCredentialsByUserId(
+            session,
+            params['userId'],
+          ),
+        ),
+        'updateCredential': _i1.MethodConnector(
+          name: 'updateCredential',
+          params: {
+            'credential': _i1.ParameterDescription(
+              name: 'credential',
+              type: _i1.getType<_i10.Credentials>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+                  .updateCredential(
+            session,
+            params['credential'],
+          ),
+        ),
+        'deleteCredential': _i1.MethodConnector(
+          name: 'deleteCredential',
+          params: {
+            'credentialId': _i1.ParameterDescription(
+              name: 'credentialId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+                  .deleteCredential(
+            session,
+            params['credentialId'],
           ),
         ),
       },
@@ -353,7 +444,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).getUserProfile(
+              (endpoints['user'] as _i6.UserEndpoint).getUserProfile(
             session,
             params['userId'],
           ),
@@ -363,7 +454,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'updatedUserProfile': _i1.ParameterDescription(
               name: 'updatedUserProfile',
-              type: _i1.getType<_i9.UserProfile>(),
+              type: _i1.getType<_i11.UserProfile>(),
               nullable: false,
             )
           },
@@ -371,7 +462,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).updateUserProfile(
+              (endpoints['user'] as _i6.UserEndpoint).updateUserProfile(
             session,
             params['updatedUserProfile'],
           ),
@@ -381,7 +472,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'newUserProfile': _i1.ParameterDescription(
               name: 'newUserProfile',
-              type: _i1.getType<_i9.UserProfile>(),
+              type: _i1.getType<_i11.UserProfile>(),
               nullable: false,
             )
           },
@@ -389,13 +480,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i5.UserEndpoint).createUserProfile(
+              (endpoints['user'] as _i6.UserEndpoint).createUserProfile(
             session,
             params['newUserProfile'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i10.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i12.Endpoints()..initializeEndpoints(server);
   }
 }

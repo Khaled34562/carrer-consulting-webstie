@@ -16,6 +16,11 @@ comment:
   - getCommentsByArticle:
   - getCommentsByUser:
   - deleteComment:
+credentials:
+  - createCredential:
+  - getCredentialsByUserId:
+  - updateCredential:
+  - deleteCredential:
 user:
   - getUserProfile:
   - updateUserProfile:

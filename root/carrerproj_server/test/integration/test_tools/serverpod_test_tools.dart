@@ -18,8 +18,9 @@ import 'package:authinticationproj_server/src/generated/article.dart' as _i4;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
     as _i5;
 import 'package:authinticationproj_server/src/generated/comment.dart' as _i6;
+import 'package:authinticationproj_server/src/generated/credential.dart' as _i7;
 import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i7;
+    as _i8;
 import 'package:authinticationproj_server/src/generated/protocol.dart';
 import 'package:authinticationproj_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -106,6 +107,8 @@ class TestEndpoints {
 
   late final _CommentEndpoint comment;
 
+  late final _CredentialsEndpoint credentials;
+
   late final _UserEndpoint user;
 }
 
@@ -125,6 +128,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     comment = _CommentEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    credentials = _CredentialsEndpoint(
       endpoints,
       serializationManager,
     );
@@ -601,6 +608,133 @@ class _CommentEndpoint {
   }
 }
 
+class _CredentialsEndpoint {
+  _CredentialsEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i7.Credentials?> createCredential(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i7.Credentials credential,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'credentials',
+        method: 'createCredential',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'credentials',
+          methodName: 'createCredential',
+          parameters: _i1.testObjectToJson({'credential': credential}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i7.Credentials?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i7.Credentials>> getCredentialsByUserId(
+    _i1.TestSessionBuilder sessionBuilder,
+    int userId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'credentials',
+        method: 'getCredentialsByUserId',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'credentials',
+          methodName: 'getCredentialsByUserId',
+          parameters: _i1.testObjectToJson({'userId': userId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i7.Credentials>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i7.Credentials?> updateCredential(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i7.Credentials credential,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'credentials',
+        method: 'updateCredential',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'credentials',
+          methodName: 'updateCredential',
+          parameters: _i1.testObjectToJson({'credential': credential}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i7.Credentials?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<bool> deleteCredential(
+    _i1.TestSessionBuilder sessionBuilder,
+    int credentialId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'credentials',
+        method: 'deleteCredential',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'credentials',
+          methodName: 'deleteCredential',
+          parameters: _i1.testObjectToJson({'credentialId': credentialId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<bool>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _UserEndpoint {
   _UserEndpoint(
     this._endpointDispatch,
@@ -611,7 +745,7 @@ class _UserEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.UserProfile?> getUserProfile(
+  _i3.Future<_i8.UserProfile?> getUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
     int userId,
   ) async {
@@ -632,7 +766,7 @@ class _UserEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i7.UserProfile?>);
+        ) as _i3.Future<_i8.UserProfile?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -640,9 +774,9 @@ class _UserEndpoint {
     });
   }
 
-  _i3.Future<_i7.UserProfile?> updateUserProfile(
+  _i3.Future<_i8.UserProfile?> updateUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
-    _i7.UserProfile updatedUserProfile,
+    _i8.UserProfile updatedUserProfile,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -662,7 +796,7 @@ class _UserEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i7.UserProfile?>);
+        ) as _i3.Future<_i8.UserProfile?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -670,9 +804,9 @@ class _UserEndpoint {
     });
   }
 
-  _i3.Future<_i7.UserProfile?> createUserProfile(
+  _i3.Future<_i8.UserProfile?> createUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
-    _i7.UserProfile newUserProfile,
+    _i8.UserProfile newUserProfile,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -691,7 +825,7 @@ class _UserEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i7.UserProfile?>);
+        ) as _i3.Future<_i8.UserProfile?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
