@@ -15,14 +15,11 @@ import '../endpoints/article_like.dart' as _i3;
 import '../endpoints/comment.dart' as _i4;
 import '../endpoints/credential.dart' as _i5;
 import '../endpoints/user_profile.dart' as _i6;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i7;
-import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i8;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i9;
-import 'package:authinticationproj_server/src/generated/credential.dart'
-    as _i10;
-import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i11;
+import 'package:carrerproj_server/src/generated/article.dart' as _i7;
+import 'package:carrerproj_server/src/generated/article_like.dart' as _i8;
+import 'package:carrerproj_server/src/generated/comment.dart' as _i9;
+import 'package:carrerproj_server/src/generated/credential.dart' as _i10;
+import 'package:carrerproj_server/src/generated/user_profile.dart' as _i11;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i12;
 
 class Endpoints extends _i1.EndpointDispatch {
@@ -409,9 +406,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'deleteCredential': _i1.MethodConnector(
           name: 'deleteCredential',
           params: {
-            'credentialId': _i1.ParameterDescription(
-              name: 'credentialId',
-              type: _i1.getType<int>(),
+            'credential': _i1.ParameterDescription(
+              name: 'credential',
+              type: _i1.getType<_i10.Credentials>(),
               nullable: false,
             )
           },
@@ -422,7 +419,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['credentials'] as _i5.CredentialsEndpoint)
                   .deleteCredential(
             session,
-            params['credentialId'],
+            params['credential'],
           ),
         ),
       },

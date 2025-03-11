@@ -99,6 +99,9 @@ abstract class UserProfile implements _i1.SerializableModel {
 
   double? hourlyRate;
 
+  /// Returns a shallow copy of this [UserProfile]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   UserProfile copyWith({
     int? id,
     int? userId,
@@ -176,6 +179,9 @@ class _UserProfileImpl extends UserProfile {
           hourlyRate: hourlyRate,
         );
 
+  /// Returns a shallow copy of this [UserProfile]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   UserProfile copyWith({
     Object? id = _Undefined,

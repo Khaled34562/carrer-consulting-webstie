@@ -14,15 +14,13 @@
 import 'package:serverpod_test/serverpod_test.dart' as _i1;
 import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i4;
-import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i5;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i6;
-import 'package:authinticationproj_server/src/generated/credential.dart' as _i7;
-import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i8;
-import 'package:authinticationproj_server/src/generated/protocol.dart';
-import 'package:authinticationproj_server/src/generated/endpoints.dart';
+import 'package:carrerproj_server/src/generated/article.dart' as _i4;
+import 'package:carrerproj_server/src/generated/article_like.dart' as _i5;
+import 'package:carrerproj_server/src/generated/comment.dart' as _i6;
+import 'package:carrerproj_server/src/generated/credential.dart' as _i7;
+import 'package:carrerproj_server/src/generated/user_profile.dart' as _i8;
+import 'package:carrerproj_server/src/generated/protocol.dart';
+import 'package:carrerproj_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
 
 /// Creates a new test group that takes a callback that can be used to write tests.
@@ -70,12 +68,15 @@ export 'package:serverpod_test/serverpod_test_public_exports.dart';
 /// [testGroupTagsOverride] By default Serverpod test tools tags the `withServerpod` test group with `"integration"`.
 /// This is to provide a simple way to only run unit or integration tests.
 /// This property allows this tag to be overridden to something else. Defaults to `['integration']`.
+///
+/// [experimentalFeatures] Optionally specify experimental features. See [Serverpod] for more information.
 @_i1.isTestGroup
 void withServerpod(
   String testGroupName,
   _i1.TestClosure<TestEndpoints> testClosure, {
   bool? applyMigrations,
   bool? enableSessionLogging,
+  _i2.ExperimentalFeatures? experimentalFeatures,
   _i1.RollbackDatabase? rollbackDatabase,
   String? runMode,
   _i2.ServerpodLoggingMode? serverpodLoggingMode,
@@ -92,6 +93,7 @@ void withServerpod(
       applyMigrations: applyMigrations,
       isDatabaseEnabled: true,
       serverpodLoggingMode: serverpodLoggingMode,
+      experimentalFeatures: experimentalFeatures,
     ),
     maybeRollbackDatabase: rollbackDatabase,
     maybeEnableSessionLogging: enableSessionLogging,
@@ -705,9 +707,9 @@ class _CredentialsEndpoint {
     });
   }
 
-  _i3.Future<bool> deleteCredential(
+  _i3.Future<_i7.Credentials> deleteCredential(
     _i1.TestSessionBuilder sessionBuilder,
-    int credentialId,
+    _i7.Credentials credential,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -720,13 +722,13 @@ class _CredentialsEndpoint {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'credentials',
           methodName: 'deleteCredential',
-          parameters: _i1.testObjectToJson({'credentialId': credentialId}),
+          parameters: _i1.testObjectToJson({'credential': credential}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<bool>);
+        ) as _i3.Future<_i7.Credentials>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

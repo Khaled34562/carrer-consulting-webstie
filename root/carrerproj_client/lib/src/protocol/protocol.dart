@@ -15,11 +15,10 @@ import 'article_like.dart' as _i3;
 import 'comment.dart' as _i4;
 import 'credential.dart' as _i5;
 import 'user_profile.dart' as _i6;
-import 'package:authinticationproj_client/src/protocol/article.dart' as _i7;
-import 'package:authinticationproj_client/src/protocol/article_like.dart'
-    as _i8;
-import 'package:authinticationproj_client/src/protocol/comment.dart' as _i9;
-import 'package:authinticationproj_client/src/protocol/credential.dart' as _i10;
+import 'package:carrerproj_client/src/protocol/article.dart' as _i7;
+import 'package:carrerproj_client/src/protocol/article_like.dart' as _i8;
+import 'package:carrerproj_client/src/protocol/comment.dart' as _i9;
+import 'package:carrerproj_client/src/protocol/credential.dart' as _i10;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i11;
 export 'article.dart';
 export 'article_like.dart';
@@ -72,25 +71,24 @@ class Protocol extends _i1.SerializationManager {
       return (data != null ? _i6.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
-      return (data as List).map((e) => deserialize<String>(e)).toList()
-          as dynamic;
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == List<_i7.Article>) {
       return (data as List).map((e) => deserialize<_i7.Article>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == List<_i8.ArticleLike>) {
       return (data as List).map((e) => deserialize<_i8.ArticleLike>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == List<_i9.Comment>) {
       return (data as List).map((e) => deserialize<_i9.Comment>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == List<_i10.Credentials>) {
       return (data as List)
           .map((e) => deserialize<_i10.Credentials>(e))
-          .toList() as dynamic;
+          .toList() as T;
     }
     try {
       return _i11.Protocol().deserialize<T>(data, t);

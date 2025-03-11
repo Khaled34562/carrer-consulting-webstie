@@ -52,6 +52,9 @@ abstract class Comment implements _i1.SerializableModel {
 
   DateTime createdAt;
 
+  /// Returns a shallow copy of this [Comment]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   Comment copyWith({
     int? id,
     int? articleId,
@@ -93,6 +96,9 @@ class _CommentImpl extends Comment {
           createdAt: createdAt,
         );
 
+  /// Returns a shallow copy of this [Comment]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   Comment copyWith({
     Object? id = _Undefined,

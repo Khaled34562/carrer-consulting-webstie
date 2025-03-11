@@ -17,12 +17,10 @@ import 'article_like.dart' as _i5;
 import 'comment.dart' as _i6;
 import 'credential.dart' as _i7;
 import 'user_profile.dart' as _i8;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i9;
-import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i10;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i11;
-import 'package:authinticationproj_server/src/generated/credential.dart'
-    as _i12;
+import 'package:carrerproj_server/src/generated/article.dart' as _i9;
+import 'package:carrerproj_server/src/generated/article_like.dart' as _i10;
+import 'package:carrerproj_server/src/generated/comment.dart' as _i11;
+import 'package:carrerproj_server/src/generated/credential.dart' as _i12;
 export 'article.dart';
 export 'article_like.dart';
 export 'comment.dart';
@@ -41,7 +39,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'article',
       dartName: 'Article',
       schema: 'public',
-      module: 'authinticationproj',
+      module: 'carrerproj',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -139,7 +137,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'article_like',
       dartName: 'ArticleLike',
       schema: 'public',
-      module: 'authinticationproj',
+      module: 'carrerproj',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -227,7 +225,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'comment',
       dartName: 'Comment',
       schema: 'public',
-      module: 'authinticationproj',
+      module: 'carrerproj',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -330,7 +328,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'credentials',
       dartName: 'Credentials',
       schema: 'public',
-      module: 'authinticationproj',
+      module: 'carrerproj',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -427,7 +425,7 @@ class Protocol extends _i1.SerializationManagerServer {
       name: 'user_profile',
       dartName: 'UserProfile',
       schema: 'public',
-      module: 'authinticationproj',
+      module: 'carrerproj',
       columns: [
         _i2.ColumnDefinition(
           name: 'id',
@@ -598,26 +596,25 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data != null ? _i8.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
-      return (data as List).map((e) => deserialize<String>(e)).toList()
-          as dynamic;
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == List<_i9.Article>) {
       return (data as List).map((e) => deserialize<_i9.Article>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == List<_i10.ArticleLike>) {
       return (data as List)
           .map((e) => deserialize<_i10.ArticleLike>(e))
-          .toList() as dynamic;
+          .toList() as T;
     }
     if (t == List<_i11.Comment>) {
       return (data as List).map((e) => deserialize<_i11.Comment>(e)).toList()
-          as dynamic;
+          as T;
     }
     if (t == List<_i12.Credentials>) {
       return (data as List)
           .map((e) => deserialize<_i12.Credentials>(e))
-          .toList() as dynamic;
+          .toList() as T;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -724,5 +721,5 @@ class Protocol extends _i1.SerializationManagerServer {
       targetTableDefinitions;
 
   @override
-  String getModuleName() => 'authinticationproj';
+  String getModuleName() => 'carrerproj';
 }

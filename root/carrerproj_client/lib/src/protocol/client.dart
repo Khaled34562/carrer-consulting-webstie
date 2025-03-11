@@ -11,13 +11,11 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'package:authinticationproj_client/src/protocol/article.dart' as _i3;
-import 'package:authinticationproj_client/src/protocol/article_like.dart'
-    as _i4;
-import 'package:authinticationproj_client/src/protocol/comment.dart' as _i5;
-import 'package:authinticationproj_client/src/protocol/credential.dart' as _i6;
-import 'package:authinticationproj_client/src/protocol/user_profile.dart'
-    as _i7;
+import 'package:carrerproj_client/src/protocol/article.dart' as _i3;
+import 'package:carrerproj_client/src/protocol/article_like.dart' as _i4;
+import 'package:carrerproj_client/src/protocol/comment.dart' as _i5;
+import 'package:carrerproj_client/src/protocol/credential.dart' as _i6;
+import 'package:carrerproj_client/src/protocol/user_profile.dart' as _i7;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i8;
 import 'protocol.dart' as _i9;
 
@@ -352,12 +350,12 @@ class EndpointCredentials extends _i1.EndpointRef {
         {'credential': credential},
       );
 
-  /// Deletes a credential by its ID.
-  _i2.Future<bool> deleteCredential(int credentialId) =>
-      caller.callServerEndpoint<bool>(
+  /// Deletes a credential.
+  _i2.Future<_i6.Credentials> deleteCredential(_i6.Credentials credential) =>
+      caller.callServerEndpoint<_i6.Credentials>(
         'credentials',
         'deleteCredential',
-        {'credentialId': credentialId},
+        {'credential': credential},
       );
 }
 
