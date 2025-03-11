@@ -1,0 +1,10 @@
+class: ArticleLike
+table: article_like
+fields:
+  userId: int, relation(parent=serverpod_user_info)
+  articleId: int, relation(parent=article, onDelete=Cascade)
+  createdAt: DateTime?
+indexes:
+  user_article_unique_idx:
+    fields: userId, articleId
+    unique: true
