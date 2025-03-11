@@ -221,7 +221,7 @@ class _ValidatePopupState extends State<ValidatePopup> {
     }
 
     // Create a new user in the custom table
-    var newUser = User(
+    var newUser = UserProfile(
       userId: sessionUser.id ?? 0, // Relates to serverpod_user_info
       role: widget.userType, // Use the userType passed from SignUpPage
       fullName: sessionUser.userName ?? "name",
@@ -238,7 +238,7 @@ class _ValidatePopupState extends State<ValidatePopup> {
     );
 
     // Call the backend endpoint to insert user
-    await client.user.createUser(newUser);
+    await client.user.createUserProfile(newUser);
 
     // Navigate to login page after successful validation and insertion
     Navigator.pushReplacement(

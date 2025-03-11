@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (userInfo != null) {
       // Fetch user details from your Serverpod database
-      final user = await client.user.getUser(userInfo.id ?? 0);
+      final user = await client.user.getUserProfile(userInfo.id ?? 0);
 
       if (user != null) {
         if (user.role == 'Consultant') {

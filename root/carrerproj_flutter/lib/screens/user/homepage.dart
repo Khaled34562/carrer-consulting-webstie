@@ -1,5 +1,6 @@
 import 'package:carrerproj_flutter/screens/user/widgets/dashboardcontent.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/profilecontent.dart';
+import 'package:carrerproj_flutter/screens/user/widgets/articles.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:carrerproj_flutter/screens/landing.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,9 @@ class _DashboardPageState extends State<DashboardPageUser> {
     const DashboardContent(title: "Dashboard Overview"),
     const DashboardContent(title: "Calendar View"),
     ProfileContent(),
-    const DashboardContent(title: "Credentials Section"),
     const DashboardContent(title: "Messages Inbox"),
     const DashboardContent(title: "Payments Transactions"),
-    const DashboardContent(title: "Articles & Blogs"),
+    ArticleContent(),
     const DashboardContent(title: "Settings Panel"),
   ];
 
@@ -43,14 +43,14 @@ class _DashboardPageState extends State<DashboardPageUser> {
       ),
       body: Column(
         children: [
-    /// Search Bar, Avatar, and Consultant Text
+    /// Search Bar, Avatar, and User Text
     Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
         children: [
-          /// Consultant Text
+          /// User Text
           const Text(
-            'Consultant',
+            'User',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -145,34 +145,28 @@ class _DashboardPageState extends State<DashboardPageUser> {
                         onTap: () => setState(() => _selectedIndex = 2),
                       ),
                       SidebarTab(
-                        icon: Icons.article,
-                        label: "Credentials",
-                        isSelected: _selectedIndex == 3,
-                        onTap: () => setState(() => _selectedIndex = 3),
-                      ),
-                      SidebarTab(
                         icon: Icons.mail,
                         label: "Messages",
                         isSelected: _selectedIndex == 4,
-                        onTap: () => setState(() => _selectedIndex = 4),
+                        onTap: () => setState(() => _selectedIndex = 3),
                       ),
                       SidebarTab(
                         icon: Icons.payment,
                         label: "Payments",
                         isSelected: _selectedIndex == 5,
-                        onTap: () => setState(() => _selectedIndex = 5),
+                        onTap: () => setState(() => _selectedIndex = 4),
                       ),
                       SidebarTab(
                         icon: Icons.library_books,
                         label: "Articles",
                         isSelected: _selectedIndex == 6,
-                        onTap: () => setState(() => _selectedIndex = 6),
+                        onTap: () => setState(() => _selectedIndex = 5),
                       ),
                       SidebarTab(
                         icon: Icons.settings,
                         label: "Settings",
                         isSelected: _selectedIndex == 7,
-                        onTap: () => setState(() => _selectedIndex = 7),
+                        onTap: () => setState(() => _selectedIndex = 6),
                       ),
 
                       const Spacer(),
@@ -195,6 +189,7 @@ class _DashboardPageState extends State<DashboardPageUser> {
                     child: _pages[_selectedIndex], // Display the selected page
                   ),
                 ),
+                
               ],
             ),
           ),

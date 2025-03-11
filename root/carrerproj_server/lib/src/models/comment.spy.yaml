@@ -1,7 +1,0 @@
-class: Comment
-table: comment
-fields:
-  articleId: int, relation(parent=article)
-  userId: int, relation(parent=user)
-  comment: String
-  createdAt: DateTime

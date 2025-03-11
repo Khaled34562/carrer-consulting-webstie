@@ -1,3 +1,5 @@
+import 'package:carrerproj_client/authinticationproj_client.dart';
+import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:flutter/material.dart';
 import 'ai_assistant_widget.dart';
 import 'package:carrerproj_flutter/screens/consultant/homepage.dart';
@@ -10,35 +12,95 @@ class ArticleWritingScreen extends StatefulWidget {
 class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _articleController = TextEditingController();
+  int? _authorId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  // Load authenticated user ID
+  Future<void> _loadUser() async {
+    var user = await sessionManager.signedInUser!;
+    if (user != null) {
+      setState(() {
+        _authorId = user.id;
+      });
+    }
+  }
+
+  // Save article as a draft
+  Future<void> _onSaveDraft() async {
+    if (_authorId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: User not authenticated')),
+      );
+      return;
+    }
+
+    String title = _titleController.text;
+    String content = _articleController.text;
+
+    var article = Article(
+      title: title,
+      content: content,
+      authorId: _authorId!,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      shares: 0,
+      isArchived: true, // Mark as draft
+    );
+
+    try {
+      await client.article.insertArticle(article);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Draft saved: $title')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving draft: $e')),
+      );
+    }
+  }
+
+  // Publish article
+  Future<void> _onPublish() async {
+    if (_authorId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: User not authenticated')),
+      );
+      return;
+    }
+
+    String title = _titleController.text;
+    String content = _articleController.text;
+
+    print("📝 Attempting to save draft: Title = $title, Content Length = ${content.length}");
+
+    var article = Article(
+      title: title,
+      content: content,
+      authorId: _authorId!,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      shares: 0,
+      isArchived: false, // Mark as published
+    );
+
+    try {
+      await client.article.insertArticle(article);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Article published: $title')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error publishing article: $e')),
+      );
+    }
+  }
+
   
-
-  void _onCancel() {
-    _titleController.clear();
-    _articleController.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Article discarded')),
-    );
-    Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardPage()),
-    );
-  }
-
-  void _onSaveDraft() {
-    String title = _titleController.text;
-    String draft = _articleController.text;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Draft saved: $title')),
-    );
-  }
-
-  void _onPublish() {
-    String title = _titleController.text;
-    String article = _articleController.text;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Article published: $title')),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +113,8 @@ class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
         child: Center(
           child: Column(
             children: [
-              AIAssistantWidget(),
+              AIAssistantWidget(), // ✅ Keeping AI Assistant Widget
               SizedBox(height: 10),
-
-              // 📝 Title Input Field
               Container(
                 width: 1000,
                 padding: EdgeInsets.all(12),
@@ -71,8 +131,6 @@ class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
                 ),
               ),
               SizedBox(height: 10),
-
-              // ✍️ Article Content Field
               Container(
                 width: 1000,
                 height: 250,
@@ -83,7 +141,7 @@ class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
                 padding: EdgeInsets.all(12),
                 child: TextField(
                   controller: _articleController,
-                  maxLines: null, // Allows unlimited lines
+                  maxLines: null,
                   decoration: InputDecoration(
                     hintText: 'Write your article here...',
                     border: InputBorder.none,
@@ -91,15 +149,23 @@ class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
                 ),
               ),
               SizedBox(height: 16),
-
-              // 🔘 Buttons Row
               SizedBox(
                 width: 800,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: _onCancel,
+                      onPressed: () {
+                        _titleController.clear();
+                        _articleController.clear();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Article discarded')),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
@@ -109,7 +175,9 @@ class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
                       child: Text('Cancel'),
                     ),
                     ElevatedButton(
-                      onPressed: _onSaveDraft,
+                      onPressed: (){
+                         _onSaveDraft;
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                         shape: RoundedRectangleBorder(
@@ -119,7 +187,13 @@ class _ArticleWritingScreenState extends State<ArticleWritingScreen> {
                       child: Text('Save Draft'),
                     ),
                     ElevatedButton(
-                      onPressed: _onPublish,
+                      onPressed: (){
+                          _onPublish;
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DashboardPage()),
+                        );
+                      } , 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(

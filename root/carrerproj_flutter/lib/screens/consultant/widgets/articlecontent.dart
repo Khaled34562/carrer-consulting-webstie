@@ -1,8 +1,6 @@
 import 'package:carrerproj_client/authinticationproj_client.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:flutter/material.dart';
-import 'article_writing_screen.dart';
-
 
 class ArticleContent extends StatefulWidget {
   @override
@@ -11,6 +9,7 @@ class ArticleContent extends StatefulWidget {
 
 class _ArticleContentState extends State<ArticleContent> {
   late Future<List<Article>> _articlesFuture;
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -18,84 +17,144 @@ class _ArticleContentState extends State<ArticleContent> {
     _articlesFuture = _fetchArticles();
   }
 
-  Future<List<Article>> _fetchArticles() async {
-    return await client.article.fetchRecentArticles(); // Fetch articles from Serverpod
+  Future<List<Article>> _fetchArticles({String query = ""}) async {
+    final articles = await client.article.getRecentArticles();
+    if (query.isNotEmpty) {
+      return articles.where((article) => article.title.toLowerCase().contains(query.toLowerCase())).toList();
+    }
+    return articles;
+  }
+
+  void _showCreateArticleDialog(BuildContext context) {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController contentController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Create New Article"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(controller: titleController, decoration: InputDecoration(labelText: "Title")),
+            TextField(controller: contentController, maxLines: 5, decoration: InputDecoration(labelText: "Content")),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+          ElevatedButton(
+            onPressed: () async {
+              Article newArticle = Article(
+                title: titleController.text,
+                content: contentController.text,
+                authorId: sessionManager.signedInUser!.id ?? 0,
+                createdAt: DateTime.now(),
+                shares: 0,
+                isArchived: false,
+              );
+              await client.article.insertArticle(newArticle);
+              setState(() {
+                _articlesFuture = _fetchArticles();
+              });
+              Navigator.pop(context);
+            },
+            child: Text("Save as Draft"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPreviewDialog(BuildContext context, Article article) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(article.title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Content: ${article.content}"),
+            Text("Likes: 0, Shares: ${article.shares}, Comments: 0"),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("Close")),
+        ],
+      ),
+    );
+  }
+
+  void _deleteArticle(Article article) async {
+    await client.article.deleteArticle(article);
+    setState(() {
+      _articlesFuture = _fetchArticles();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /// 🔍 Search and Create Article
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: TextField(
+                  controller: _searchController,
                   decoration: InputDecoration(
                     hintText: "Search Articles...",
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
                   ),
+                  onChanged: (query) {
+                    setState(() {
+                      _articlesFuture = _fetchArticles(query: query);
+                    });
+                  },
                 ),
               ),
-              const SizedBox(width: 20),
+              SizedBox(width: 10),
               ElevatedButton(
-                onPressed: () {
-                  // Handle Create New Article
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => ArticleWritingScreen()),
-                   );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  backgroundColor: Colors.blueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text("Create New Article"),
+                onPressed: () => _showCreateArticleDialog(context),
+                child: Text("Create New Article"),
               ),
             ],
           ),
         ),
-
-        /// 📋 Article Table
         Expanded(
           child: FutureBuilder<List<Article>>(
             future: _articlesFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text("Error: ${snapshot.error}"));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text("No articles found."));
+                return Center(child: Text("No articles found."));
               }
-
+              
               final articles = snapshot.data!;
               return ListView.builder(
                 itemCount: articles.length,
                 itemBuilder: (context, index) {
                   final article = articles[index];
-                  return _buildArticleRow(
-                    context,
-                    article.title,
-                    article.createdAt.toLocal().toString(),
-                    "Uncategorized",
-                    article.content,
-                    "Draft",
-                    0,
-                    article.likes ?? 0,
-                    0,
+                  return ListTile(
+                    title: Text(article.title),
+                    subtitle: Text("Created At: ${article.createdAt}"),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.visibility),
+                          onPressed: () => _showPreviewDialog(context, article),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => _deleteArticle(article),
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
@@ -104,181 +163,5 @@ class _ArticleContentState extends State<ArticleContent> {
         ),
       ],
     );
-  }
-
-  /// 📝 Article Row Widget
-  Widget _buildArticleRow(
-    BuildContext context,
-    String title,
-    String date,
-    String category,
-    String content,
-    String status,
-    int views,
-    int likes,
-    int comments,
-  ) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// 📌 Article Info
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text("📅 Date: $date"),
-                    Text("🏷️ Category: $category"),
-                    Text("📌 Status: $status"),
-                  ],
-                ),
-
-                /// 📊 Stats & Actions
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.remove_red_eye, color: Colors.blueAccent),
-                        const SizedBox(width: 5),
-                        Text("$views"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.thumb_up, color: Colors.green),
-                        const SizedBox(width: 5),
-                        Text("$likes"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.comment, color: Colors.orange),
-                        const SizedBox(width: 5),
-                        Text("$comments"),
-                      ],
-                    ),
-                  ],
-                ),
-
-                /// 🛠️ Actions
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.visibility),
-                      onPressed: () {
-                        _showPreviewDialog(context, title, content);
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        // Handle edit article
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.share, color: Colors.blue),
-                      onPressed: () {
-                        _shareArticle(title, content);
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.archive),
-                      onPressed: () {
-                        // Handle archive article
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        _showDeleteConfirmation(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// ❌ Delete Confirmation
-  void _showDeleteConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Delete Article"),
-        content: const Text("Are you sure you want to delete this article?"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              // Handle delete logic
-              Navigator.pop(context);
-            },
-            child: const Text("Delete", style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 👀 Preview Article
-  void _showPreviewDialog(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          width: 400,
-          height: 300,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Text(content),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// 📢 Share Article (Dummy function)
-  void _shareArticle(String title, String content) {
-    // You can integrate with the Share package to share content
-    print("Sharing article: $title");
   }
 }
