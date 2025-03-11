@@ -71,24 +71,25 @@ class Protocol extends _i1.SerializationManager {
       return (data != null ? _i6.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
-      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+      return (data as List).map((e) => deserialize<String>(e)).toList()
+          as dynamic;
     }
     if (t == List<_i7.Article>) {
       return (data as List).map((e) => deserialize<_i7.Article>(e)).toList()
-          as T;
+          as dynamic;
     }
     if (t == List<_i8.ArticleLike>) {
       return (data as List).map((e) => deserialize<_i8.ArticleLike>(e)).toList()
-          as T;
+          as dynamic;
     }
     if (t == List<_i9.Comment>) {
       return (data as List).map((e) => deserialize<_i9.Comment>(e)).toList()
-          as T;
+          as dynamic;
     }
     if (t == List<_i10.Credentials>) {
       return (data as List)
           .map((e) => deserialize<_i10.Credentials>(e))
-          .toList() as T;
+          .toList() as dynamic;
     }
     try {
       return _i11.Protocol().deserialize<T>(data, t);

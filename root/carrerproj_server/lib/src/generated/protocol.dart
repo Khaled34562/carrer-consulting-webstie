@@ -596,25 +596,26 @@ class Protocol extends _i1.SerializationManagerServer {
       return (data != null ? _i8.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
-      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+      return (data as List).map((e) => deserialize<String>(e)).toList()
+          as dynamic;
     }
     if (t == List<_i9.Article>) {
       return (data as List).map((e) => deserialize<_i9.Article>(e)).toList()
-          as T;
+          as dynamic;
     }
     if (t == List<_i10.ArticleLike>) {
       return (data as List)
           .map((e) => deserialize<_i10.ArticleLike>(e))
-          .toList() as T;
+          .toList() as dynamic;
     }
     if (t == List<_i11.Comment>) {
       return (data as List).map((e) => deserialize<_i11.Comment>(e)).toList()
-          as T;
+          as dynamic;
     }
     if (t == List<_i12.Credentials>) {
       return (data as List)
           .map((e) => deserialize<_i12.Credentials>(e))
-          .toList() as T;
+          .toList() as dynamic;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);

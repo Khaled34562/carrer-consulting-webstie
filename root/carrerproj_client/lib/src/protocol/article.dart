@@ -69,9 +69,6 @@ abstract class Article implements _i1.SerializableModel {
 
   bool isArchived;
 
-  /// Returns a shallow copy of this [Article]
-  /// with some or all fields replaced by the given arguments.
-  @_i1.useResult
   Article copyWith({
     int? id,
     String? title,
@@ -125,9 +122,6 @@ class _ArticleImpl extends Article {
           isArchived: isArchived,
         );
 
-  /// Returns a shallow copy of this [Article]
-  /// with some or all fields replaced by the given arguments.
-  @_i1.useResult
   @override
   Article copyWith({
     Object? id = _Undefined,

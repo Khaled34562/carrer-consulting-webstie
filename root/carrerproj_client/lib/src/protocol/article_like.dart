@@ -48,9 +48,6 @@ abstract class ArticleLike implements _i1.SerializableModel {
 
   DateTime? createdAt;
 
-  /// Returns a shallow copy of this [ArticleLike]
-  /// with some or all fields replaced by the given arguments.
-  @_i1.useResult
   ArticleLike copyWith({
     int? id,
     int? userId,
@@ -88,9 +85,6 @@ class _ArticleLikeImpl extends ArticleLike {
           createdAt: createdAt,
         );
 
-  /// Returns a shallow copy of this [ArticleLike]
-  /// with some or all fields replaced by the given arguments.
-  @_i1.useResult
   @override
   ArticleLike copyWith({
     Object? id = _Undefined,
