@@ -14,17 +14,14 @@
 import 'package:serverpod_test/serverpod_test.dart' as _i1;
 import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i4;
-import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i5;
-import 'package:authinticationproj_server/src/generated/chat_message.dart'
-    as _i6;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i7;
-import 'package:authinticationproj_server/src/generated/credential.dart' as _i8;
-import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i9;
-import 'package:authinticationproj_server/src/generated/protocol.dart';
-import 'package:authinticationproj_server/src/generated/endpoints.dart';
+import 'package:carrerproj_server/src/generated/article.dart' as _i4;
+import 'package:carrerproj_server/src/generated/article_like.dart' as _i5;
+import 'package:carrerproj_server/src/generated/chat_message.dart' as _i6;
+import 'package:carrerproj_server/src/generated/comment.dart' as _i7;
+import 'package:carrerproj_server/src/generated/credential.dart' as _i8;
+import 'package:carrerproj_server/src/generated/user_profile.dart' as _i9;
+import 'package:carrerproj_server/src/generated/protocol.dart';
+import 'package:carrerproj_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
 
 /// Creates a new test group that takes a callback that can be used to write tests.

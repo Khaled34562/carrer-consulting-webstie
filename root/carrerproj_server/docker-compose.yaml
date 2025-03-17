@@ -6,10 +6,10 @@ services:
       - '8090:5432'
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: authinticationproj
+      POSTGRES_DB: carrerproj
       POSTGRES_PASSWORD: "HL7WnF3JtuGPO9f1jgJfX9pYg_ksuiov"
     volumes:
-      - authinticationproj_data:/var/lib/postgresql/data
+      - carrerproj_data:/var/lib/postgresql/data
     profiles:
       - '' # Default profile
       - dev
@@ -31,10 +31,10 @@ services:
       - '9090:5432'
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: authinticationproj_test
+      POSTGRES_DB: carrerproj_test
       POSTGRES_PASSWORD: "tCBDA7QhtESh6k4Eu_IWKpTobIrpPkA2"
     volumes:
-      - authinticationproj_test_data:/var/lib/postgresql/data
+      - carrerproj_test_data:/var/lib/postgresql/data
     profiles:
       - '' # Default profile
       - test
@@ -50,5 +50,5 @@ services:
       - test
 
 volumes:
-  authinticationproj_data:
-  authinticationproj_test_data:
+  carrerproj_data:
+  carrerproj_test_data:

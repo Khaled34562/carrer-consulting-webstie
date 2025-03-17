@@ -16,16 +16,12 @@ import '../endpoints/chat.dart' as _i4;
 import '../endpoints/comment.dart' as _i5;
 import '../endpoints/credential.dart' as _i6;
 import '../endpoints/user_profile.dart' as _i7;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i8;
-import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i9;
-import 'package:authinticationproj_server/src/generated/chat_message.dart'
-    as _i10;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i11;
-import 'package:authinticationproj_server/src/generated/credential.dart'
-    as _i12;
-import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i13;
+import 'package:carrerproj_server/src/generated/article.dart' as _i8;
+import 'package:carrerproj_server/src/generated/article_like.dart' as _i9;
+import 'package:carrerproj_server/src/generated/chat_message.dart' as _i10;
+import 'package:carrerproj_server/src/generated/comment.dart' as _i11;
+import 'package:carrerproj_server/src/generated/credential.dart' as _i12;
+import 'package:carrerproj_server/src/generated/user_profile.dart' as _i13;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i14;
 
 class Endpoints extends _i1.EndpointDispatch {

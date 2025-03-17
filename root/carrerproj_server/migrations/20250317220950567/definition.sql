@@ -31,6 +31,22 @@ CREATE TABLE "article_like" (
 CREATE UNIQUE INDEX "user_article_unique_idx" ON "article_like" USING btree ("userId", "articleId");
 
 --
+-- Class ChatMessage as table chat_message
+--
+CREATE TABLE "chat_message" (
+    "id" bigserial PRIMARY KEY,
+    "senderId" bigint NOT NULL,
+    "receiverId" bigint NOT NULL,
+    "text" text NOT NULL,
+    "sentAt" timestamp without time zone NOT NULL,
+    "isRead" boolean NOT NULL
+);
+
+-- Indexes
+CREATE INDEX "sender_chat_idx" ON "chat_message" USING btree ("senderId");
+CREATE INDEX "receiver_chat_idx" ON "chat_message" USING btree ("receiverId");
+
+--
 -- Class Comment as table comment
 --
 CREATE TABLE "comment" (
@@ -429,6 +445,22 @@ ALTER TABLE ONLY "article_like"
     ON UPDATE NO ACTION;
 
 --
+-- Foreign relations for "chat_message" table
+--
+ALTER TABLE ONLY "chat_message"
+    ADD CONSTRAINT "chat_message_fk_0"
+    FOREIGN KEY("senderId")
+    REFERENCES "serverpod_user_info"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+ALTER TABLE ONLY "chat_message"
+    ADD CONSTRAINT "chat_message_fk_1"
+    FOREIGN KEY("receiverId")
+    REFERENCES "serverpod_user_info"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
 -- Foreign relations for "comment" table
 --
 ALTER TABLE ONLY "comment"
@@ -496,12 +528,12 @@ ALTER TABLE ONLY "serverpod_query_log"
 
 
 --
--- MIGRATION VERSION FOR authinticationproj
+-- MIGRATION VERSION FOR carrerproj
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('authinticationproj', '20250311001211644', now())
+    VALUES ('carrerproj', '20250317220950567', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20250311001211644', "timestamp" = now();
+    DO UPDATE SET "version" = '20250317220950567', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod

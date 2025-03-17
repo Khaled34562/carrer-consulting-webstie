@@ -1,10 +1,10 @@
 {
-  "moduleName": "authinticationproj",
+  "moduleName": "carrerproj",
   "tables": [
     {
       "name": "article",
       "dartName": "Article",
-      "module": "authinticationproj",
+      "module": "carrerproj",
       "schema": "public",
       "columns": [
         {
@@ -103,7 +103,7 @@
     {
       "name": "article_like",
       "dartName": "ArticleLike",
-      "module": "authinticationproj",
+      "module": "carrerproj",
       "schema": "public",
       "columns": [
         {
@@ -193,9 +193,121 @@
       "managed": true
     },
     {
+      "name": "chat_message",
+      "dartName": "ChatMessage",
+      "module": "carrerproj",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('chat_message_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "senderId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "receiverId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "text",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "sentAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isRead",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "chat_message_fk_0",
+          "columns": [
+            "senderId"
+          ],
+          "referenceTable": "serverpod_user_info",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "chat_message_fk_1",
+          "columns": [
+            "receiverId"
+          ],
+          "referenceTable": "serverpod_user_info",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "chat_message_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "sender_chat_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "senderId"
+            }
+          ],
+          "type": "btree",
+          "isUnique": false,
+          "isPrimary": false
+        },
+        {
+          "indexName": "receiver_chat_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "receiverId"
+            }
+          ],
+          "type": "btree",
+          "isUnique": false,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
       "name": "comment",
       "dartName": "Comment",
-      "module": "authinticationproj",
+      "module": "carrerproj",
       "schema": "public",
       "columns": [
         {
@@ -301,7 +413,7 @@
     {
       "name": "credentials",
       "dartName": "Credentials",
-      "module": "authinticationproj",
+      "module": "carrerproj",
       "schema": "public",
       "columns": [
         {
@@ -400,7 +512,7 @@
     {
       "name": "user_profile",
       "dartName": "UserProfile",
-      "module": "authinticationproj",
+      "module": "carrerproj",
       "schema": "public",
       "columns": [
         {
@@ -541,10 +653,6 @@
     {
       "module": "serverpod_auth",
       "version": "20240520102713718"
-    },
-    {
-      "module": "authinticationproj",
-      "version": "20250311001211644"
     }
   ],
   "migrationApiVersion": 1

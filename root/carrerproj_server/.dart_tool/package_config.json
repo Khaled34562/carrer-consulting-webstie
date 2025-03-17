@@ -584,13 +584,13 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "authinticationproj_server",
+      "name": "carrerproj_server",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-03-17T03:36:07.093429Z",
+  "generated": "2025-03-17T22:02:54.526884Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///Users/abdullah/Downloads/flutter",

@@ -9,7 +9,7 @@
 # avoid any underscores.
 # NOTE: the project name cannot use underscore, spaces, or any special
 # characters.
-project_name = "authinticationproj"
+project_name = "carrerproj"
 
 # The region where to deploy the server. If you change the region you will also
 # need to update the instance_ami variable (see below) and update the region in
@@ -81,8 +81,8 @@ staging_autoscaling_desired_capacity = 1
 
 # The deployment bucket name needs to be unique and can only contain lower case
 # letters and dashes (no underscored allowed).
-deployment_bucket_name              = "authinticationproj-deployment-4444124"
-public_storage_bucket_name          = "authinticationproj-public-storage-4444124"
-private_storage_bucket_name         = "authinticationproj-private-storage-4444124"
-public_storage_bucket_name_staging  = "authinticationproj-public-storage-staging-4444124"
-private_storage_bucket_name_staging = "authinticationproj-private-storage-staging-4444124"
+deployment_bucket_name              = "carrerproj-deployment-4444124"
+public_storage_bucket_name          = "carrerproj-public-storage-4444124"
+private_storage_bucket_name         = "carrerproj-private-storage-4444124"
+public_storage_bucket_name_staging  = "carrerproj-public-storage-staging-4444124"
+private_storage_bucket_name_staging = "carrerproj-private-storage-staging-4444124"
