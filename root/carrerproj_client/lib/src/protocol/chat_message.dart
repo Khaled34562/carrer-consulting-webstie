@@ -11,8 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-abstract class Message implements _i1.SerializableModel {
-  Message._({
+abstract class ChatMessage implements _i1.SerializableModel {
+  ChatMessage._({
     this.id,
     required this.senderId,
     required this.receiverId,
@@ -21,17 +21,17 @@ abstract class Message implements _i1.SerializableModel {
     required this.isRead,
   });
 
-  factory Message({
+  factory ChatMessage({
     int? id,
     required int senderId,
     required int receiverId,
     required String text,
     required DateTime sentAt,
     required bool isRead,
-  }) = _MessageImpl;
+  }) = _ChatMessageImpl;
 
-  factory Message.fromJson(Map<String, dynamic> jsonSerialization) {
-    return Message(
+  factory ChatMessage.fromJson(Map<String, dynamic> jsonSerialization) {
+    return ChatMessage(
       id: jsonSerialization['id'] as int?,
       senderId: jsonSerialization['senderId'] as int,
       receiverId: jsonSerialization['receiverId'] as int,
@@ -56,7 +56,7 @@ abstract class Message implements _i1.SerializableModel {
 
   bool isRead;
 
-  Message copyWith({
+  ChatMessage copyWith({
     int? id,
     int? senderId,
     int? receiverId,
@@ -84,8 +84,8 @@ abstract class Message implements _i1.SerializableModel {
 
 class _Undefined {}
 
-class _MessageImpl extends Message {
-  _MessageImpl({
+class _ChatMessageImpl extends ChatMessage {
+  _ChatMessageImpl({
     int? id,
     required int senderId,
     required int receiverId,
@@ -102,7 +102,7 @@ class _MessageImpl extends Message {
         );
 
   @override
-  Message copyWith({
+  ChatMessage copyWith({
     Object? id = _Undefined,
     int? senderId,
     int? receiverId,
@@ -110,7 +110,7 @@ class _MessageImpl extends Message {
     DateTime? sentAt,
     bool? isRead,
   }) {
-    return Message(
+    return ChatMessage(
       id: id is int? ? id : this.id,
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,

@@ -19,7 +19,8 @@ import '../endpoints/user_profile.dart' as _i7;
 import 'package:authinticationproj_server/src/generated/article.dart' as _i8;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
     as _i9;
-import 'package:authinticationproj_server/src/generated/message.dart' as _i10;
+import 'package:authinticationproj_server/src/generated/chat_message.dart'
+    as _i10;
 import 'package:authinticationproj_server/src/generated/comment.dart' as _i11;
 import 'package:authinticationproj_server/src/generated/credential.dart'
     as _i12;
@@ -283,7 +284,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'message': _i1.ParameterDescription(
               name: 'message',
-              type: _i1.getType<_i10.Message>(),
+              type: _i1.getType<_i10.ChatMessage>(),
               nullable: false,
             )
           },

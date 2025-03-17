@@ -12,22 +12,21 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'article.dart' as _i2;
 import 'article_like.dart' as _i3;
-import 'comment.dart' as _i4;
-import 'credential.dart' as _i5;
-import 'message.dart' as _i6;
+import 'chat_message.dart' as _i4;
+import 'comment.dart' as _i5;
+import 'credential.dart' as _i6;
 import 'user_profile.dart' as _i7;
-import 'package:authinticationproj_client/src/protocol/article.dart' as _i8;
-import 'package:authinticationproj_client/src/protocol/article_like.dart'
-    as _i9;
-import 'package:authinticationproj_client/src/protocol/message.dart' as _i10;
-import 'package:authinticationproj_client/src/protocol/comment.dart' as _i11;
-import 'package:authinticationproj_client/src/protocol/credential.dart' as _i12;
+import 'package:carrerproj_client/src/protocol/article.dart' as _i8;
+import 'package:carrerproj_client/src/protocol/article_like.dart' as _i9;
+import 'package:carrerproj_client/src/protocol/chat_message.dart' as _i10;
+import 'package:carrerproj_client/src/protocol/comment.dart' as _i11;
+import 'package:carrerproj_client/src/protocol/credential.dart' as _i12;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i13;
 export 'article.dart';
 export 'article_like.dart';
+export 'chat_message.dart';
 export 'comment.dart';
 export 'credential.dart';
-export 'message.dart';
 export 'user_profile.dart';
 export 'client.dart';
 
@@ -50,14 +49,14 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i3.ArticleLike) {
       return _i3.ArticleLike.fromJson(data) as T;
     }
-    if (t == _i4.Comment) {
-      return _i4.Comment.fromJson(data) as T;
+    if (t == _i4.ChatMessage) {
+      return _i4.ChatMessage.fromJson(data) as T;
     }
-    if (t == _i5.Credentials) {
-      return _i5.Credentials.fromJson(data) as T;
+    if (t == _i5.Comment) {
+      return _i5.Comment.fromJson(data) as T;
     }
-    if (t == _i6.Message) {
-      return _i6.Message.fromJson(data) as T;
+    if (t == _i6.Credentials) {
+      return _i6.Credentials.fromJson(data) as T;
     }
     if (t == _i7.UserProfile) {
       return _i7.UserProfile.fromJson(data) as T;
@@ -68,14 +67,14 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i3.ArticleLike?>()) {
       return (data != null ? _i3.ArticleLike.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i4.Comment?>()) {
-      return (data != null ? _i4.Comment.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i4.ChatMessage?>()) {
+      return (data != null ? _i4.ChatMessage.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i5.Credentials?>()) {
-      return (data != null ? _i5.Credentials.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i5.Comment?>()) {
+      return (data != null ? _i5.Comment.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.Message?>()) {
-      return (data != null ? _i6.Message.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i6.Credentials?>()) {
+      return (data != null ? _i6.Credentials.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i7.UserProfile?>()) {
       return (data != null ? _i7.UserProfile.fromJson(data) : null) as T;
@@ -92,9 +91,10 @@ class Protocol extends _i1.SerializationManager {
       return (data as List).map((e) => deserialize<_i9.ArticleLike>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i10.Message>) {
-      return (data as List).map((e) => deserialize<_i10.Message>(e)).toList()
-          as dynamic;
+    if (t == List<_i10.ChatMessage>) {
+      return (data as List)
+          .map((e) => deserialize<_i10.ChatMessage>(e))
+          .toList() as dynamic;
     }
     if (t == List<_i11.Comment>) {
       return (data as List).map((e) => deserialize<_i11.Comment>(e)).toList()
@@ -121,14 +121,14 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i3.ArticleLike) {
       return 'ArticleLike';
     }
-    if (data is _i4.Comment) {
+    if (data is _i4.ChatMessage) {
+      return 'ChatMessage';
+    }
+    if (data is _i5.Comment) {
       return 'Comment';
     }
-    if (data is _i5.Credentials) {
+    if (data is _i6.Credentials) {
       return 'Credentials';
-    }
-    if (data is _i6.Message) {
-      return 'Message';
     }
     if (data is _i7.UserProfile) {
       return 'UserProfile';
@@ -152,14 +152,14 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName == 'ArticleLike') {
       return deserialize<_i3.ArticleLike>(data['data']);
     }
+    if (dataClassName == 'ChatMessage') {
+      return deserialize<_i4.ChatMessage>(data['data']);
+    }
     if (dataClassName == 'Comment') {
-      return deserialize<_i4.Comment>(data['data']);
+      return deserialize<_i5.Comment>(data['data']);
     }
     if (dataClassName == 'Credentials') {
-      return deserialize<_i5.Credentials>(data['data']);
-    }
-    if (dataClassName == 'Message') {
-      return deserialize<_i6.Message>(data['data']);
+      return deserialize<_i6.Credentials>(data['data']);
     }
     if (dataClassName == 'UserProfile') {
       return deserialize<_i7.UserProfile>(data['data']);

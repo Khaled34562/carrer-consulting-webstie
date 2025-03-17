@@ -11,14 +11,12 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'package:authinticationproj_client/src/protocol/article.dart' as _i3;
-import 'package:authinticationproj_client/src/protocol/article_like.dart'
-    as _i4;
-import 'package:authinticationproj_client/src/protocol/message.dart' as _i5;
-import 'package:authinticationproj_client/src/protocol/comment.dart' as _i6;
-import 'package:authinticationproj_client/src/protocol/credential.dart' as _i7;
-import 'package:authinticationproj_client/src/protocol/user_profile.dart'
-    as _i8;
+import 'package:carrerproj_client/src/protocol/article.dart' as _i3;
+import 'package:carrerproj_client/src/protocol/article_like.dart' as _i4;
+import 'package:carrerproj_client/src/protocol/chat_message.dart' as _i5;
+import 'package:carrerproj_client/src/protocol/comment.dart' as _i6;
+import 'package:carrerproj_client/src/protocol/credential.dart' as _i7;
+import 'package:carrerproj_client/src/protocol/user_profile.dart' as _i8;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i9;
 import 'protocol.dart' as _i10;
 
@@ -237,6 +235,7 @@ class EndpointArticleLike extends _i1.EndpointRef {
       );
 }
 
+/// Endpoint for handling direct message operations between users.
 /// {@category Endpoint}
 class EndpointChat extends _i1.EndpointRef {
   EndpointChat(_i1.EndpointCaller caller) : super(caller);
@@ -244,18 +243,32 @@ class EndpointChat extends _i1.EndpointRef {
   @override
   String get name => 'chat';
 
-  _i2.Future<bool> sendDirectMessage(_i5.Message message) =>
+  /// Sends a direct message to another user.
+  ///
+  /// - [session]: The current [Session] object.
+  /// - [message]: The [Message] object containing details such as sender ID, receiver ID, content, and timestamp.
+  ///
+  /// Saves the message to the database and broadcasts it to the appropriate channel.
+  /// Returns `true` if the message is successfully broadcasted.
+  _i2.Future<bool> sendDirectMessage(_i5.ChatMessage message) =>
       caller.callServerEndpoint<bool>(
         'chat',
         'sendDirectMessage',
         {'message': message},
       );
 
-  _i2.Future<_i2.Stream<_i5.Message>> observeDirectMessages(
+  /// Observes messages exchanged between two specific users in real-time.
+  ///
+  /// - [session]: The current [Session] object.
+  /// - [userId1]: The first user's unique identifier.
+  /// - [userId2]: The second user's unique identifier.
+  ///
+  /// Returns a stream of [ChatMessage] objects as they are sent.
+  _i2.Future<_i2.Stream<_i5.ChatMessage>> observeDirectMessages(
     int userId1,
     int userId2,
   ) =>
-      caller.callServerEndpoint<_i2.Stream<_i5.Message>>(
+      caller.callServerEndpoint<_i2.Stream<_i5.ChatMessage>>(
         'chat',
         'observeDirectMessages',
         {
@@ -264,11 +277,19 @@ class EndpointChat extends _i1.EndpointRef {
         },
       );
 
-  _i2.Future<List<_i5.Message>> getDirectMessageHistory(
+  /// Retrieves the message history between two users.
+  ///
+  /// - [session]: The current [Session] object.
+  /// - [userId1]: The first user's unique identifier.
+  /// - [userId2]: The second user's unique identifier.
+  ///
+  /// Messages are retrieved in ascending order based on `sentAt` timestamp.
+  /// Returns a list of [ChatMessage] objects, with a maximum of 50 messages.
+  _i2.Future<List<_i5.ChatMessage>> getDirectMessageHistory(
     int userId1,
     int userId2,
   ) =>
-      caller.callServerEndpoint<List<_i5.Message>>(
+      caller.callServerEndpoint<List<_i5.ChatMessage>>(
         'chat',
         'getDirectMessageHistory',
         {
@@ -277,6 +298,13 @@ class EndpointChat extends _i1.EndpointRef {
         },
       );
 
+  /// Marks messages as read between a sender and a receiver.
+  ///
+  /// - [session]: The current [Session] object.
+  /// - [senderId]: The sender's unique identifier.
+  /// - [receiverId]: The receiver's unique identifier.
+  ///
+  /// **Note:** This method is currently not implemented.
   _i2.Future<void> markMessagesAsRead(
     int senderId,
     int receiverId,

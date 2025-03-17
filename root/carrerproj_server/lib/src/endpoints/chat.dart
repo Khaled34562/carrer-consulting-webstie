@@ -22,9 +22,9 @@ class ChatEndpoint extends Endpoint {
   ///
   /// Saves the message to the database and broadcasts it to the appropriate channel.
   /// Returns `true` if the message is successfully broadcasted.
-  Future<bool> sendDirectMessage(Session session, Message message) async {
+  Future<bool> sendDirectMessage(Session session, ChatMessage message) async {
     // Save message to database
-    await Message.db.insertRow(session, message);
+    await ChatMessage.db.insertRow(session, message);
 
     // Create a unique channel name for this conversation
     String channelName =
@@ -40,8 +40,8 @@ class ChatEndpoint extends Endpoint {
   /// - [userId1]: The first user's unique identifier.
   /// - [userId2]: The second user's unique identifier.
   ///
-  /// Returns a stream of [Message] objects as they are sent.
-  Future<Stream<Message>> observeDirectMessages(
+  /// Returns a stream of [ChatMessage] objects as they are sent.
+  Future<Stream<ChatMessage>> observeDirectMessages(
     Session session,
     int userId1,
     int userId2,
@@ -52,7 +52,7 @@ class ChatEndpoint extends Endpoint {
     var stream = session.messages.createStream(channelName);
 
     // Convert the dynamic stream to a Message stream
-    return stream.map((message) => message as Message);
+    return stream.map((message) => message as ChatMessage);
   }
 
   /// Retrieves the message history between two users.
@@ -62,13 +62,13 @@ class ChatEndpoint extends Endpoint {
   /// - [userId2]: The second user's unique identifier.
   ///
   /// Messages are retrieved in ascending order based on `sentAt` timestamp.
-  /// Returns a list of [Message] objects, with a maximum of 50 messages.
-  Future<List<Message>> getDirectMessageHistory(
+  /// Returns a list of [ChatMessage] objects, with a maximum of 50 messages.
+  Future<List<ChatMessage>> getDirectMessageHistory(
     Session session,
     int userId1,
     int userId2,
   ) async {
-    return await Message.db.find(
+    return await ChatMessage.db.find(
       session,
       where: (t) =>
           ((t.senderId.equals(userId1) & t.receiverId.equals(userId2)) |

@@ -11,8 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class Message implements _i1.TableRow, _i1.ProtocolSerialization {
-  Message._({
+abstract class ChatMessage implements _i1.TableRow, _i1.ProtocolSerialization {
+  ChatMessage._({
     this.id,
     required this.senderId,
     required this.receiverId,
@@ -21,17 +21,17 @@ abstract class Message implements _i1.TableRow, _i1.ProtocolSerialization {
     required this.isRead,
   });
 
-  factory Message({
+  factory ChatMessage({
     int? id,
     required int senderId,
     required int receiverId,
     required String text,
     required DateTime sentAt,
     required bool isRead,
-  }) = _MessageImpl;
+  }) = _ChatMessageImpl;
 
-  factory Message.fromJson(Map<String, dynamic> jsonSerialization) {
-    return Message(
+  factory ChatMessage.fromJson(Map<String, dynamic> jsonSerialization) {
+    return ChatMessage(
       id: jsonSerialization['id'] as int?,
       senderId: jsonSerialization['senderId'] as int,
       receiverId: jsonSerialization['receiverId'] as int,
@@ -41,9 +41,9 @@ abstract class Message implements _i1.TableRow, _i1.ProtocolSerialization {
     );
   }
 
-  static final t = MessageTable();
+  static final t = ChatMessageTable();
 
-  static const db = MessageRepository._();
+  static const db = ChatMessageRepository._();
 
   @override
   int? id;
@@ -61,7 +61,7 @@ abstract class Message implements _i1.TableRow, _i1.ProtocolSerialization {
   @override
   _i1.Table get table => t;
 
-  Message copyWith({
+  ChatMessage copyWith({
     int? id,
     int? senderId,
     int? receiverId,
@@ -93,26 +93,26 @@ abstract class Message implements _i1.TableRow, _i1.ProtocolSerialization {
     };
   }
 
-  static MessageInclude include() {
-    return MessageInclude._();
+  static ChatMessageInclude include() {
+    return ChatMessageInclude._();
   }
 
-  static MessageIncludeList includeList({
-    _i1.WhereExpressionBuilder<MessageTable>? where,
+  static ChatMessageIncludeList includeList({
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<MessageTable>? orderBy,
+    _i1.OrderByBuilder<ChatMessageTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<MessageTable>? orderByList,
-    MessageInclude? include,
+    _i1.OrderByListBuilder<ChatMessageTable>? orderByList,
+    ChatMessageInclude? include,
   }) {
-    return MessageIncludeList._(
+    return ChatMessageIncludeList._(
       where: where,
       limit: limit,
       offset: offset,
-      orderBy: orderBy?.call(Message.t),
+      orderBy: orderBy?.call(ChatMessage.t),
       orderDescending: orderDescending,
-      orderByList: orderByList?.call(Message.t),
+      orderByList: orderByList?.call(ChatMessage.t),
       include: include,
     );
   }
@@ -125,8 +125,8 @@ abstract class Message implements _i1.TableRow, _i1.ProtocolSerialization {
 
 class _Undefined {}
 
-class _MessageImpl extends Message {
-  _MessageImpl({
+class _ChatMessageImpl extends ChatMessage {
+  _ChatMessageImpl({
     int? id,
     required int senderId,
     required int receiverId,
@@ -143,7 +143,7 @@ class _MessageImpl extends Message {
         );
 
   @override
-  Message copyWith({
+  ChatMessage copyWith({
     Object? id = _Undefined,
     int? senderId,
     int? receiverId,
@@ -151,7 +151,7 @@ class _MessageImpl extends Message {
     DateTime? sentAt,
     bool? isRead,
   }) {
-    return Message(
+    return ChatMessage(
       id: id is int? ? id : this.id,
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,
@@ -162,8 +162,8 @@ class _MessageImpl extends Message {
   }
 }
 
-class MessageTable extends _i1.Table {
-  MessageTable({super.tableRelation}) : super(tableName: 'message') {
+class ChatMessageTable extends _i1.Table {
+  ChatMessageTable({super.tableRelation}) : super(tableName: 'chat_message') {
     senderId = _i1.ColumnInt(
       'senderId',
       this,
@@ -207,19 +207,19 @@ class MessageTable extends _i1.Table {
       ];
 }
 
-class MessageInclude extends _i1.IncludeObject {
-  MessageInclude._();
+class ChatMessageInclude extends _i1.IncludeObject {
+  ChatMessageInclude._();
 
   @override
   Map<String, _i1.Include?> get includes => {};
 
   @override
-  _i1.Table get table => Message.t;
+  _i1.Table get table => ChatMessage.t;
 }
 
-class MessageIncludeList extends _i1.IncludeList {
-  MessageIncludeList._({
-    _i1.WhereExpressionBuilder<MessageTable>? where,
+class ChatMessageIncludeList extends _i1.IncludeList {
+  ChatMessageIncludeList._({
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
     super.limit,
     super.offset,
     super.orderBy,
@@ -227,33 +227,33 @@ class MessageIncludeList extends _i1.IncludeList {
     super.orderByList,
     super.include,
   }) {
-    super.where = where?.call(Message.t);
+    super.where = where?.call(ChatMessage.t);
   }
 
   @override
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => Message.t;
+  _i1.Table get table => ChatMessage.t;
 }
 
-class MessageRepository {
-  const MessageRepository._();
+class ChatMessageRepository {
+  const ChatMessageRepository._();
 
-  Future<List<Message>> find(
+  Future<List<ChatMessage>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<MessageTable>? where,
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<MessageTable>? orderBy,
+    _i1.OrderByBuilder<ChatMessageTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<MessageTable>? orderByList,
+    _i1.OrderByListBuilder<ChatMessageTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.find<Message>(
-      where: where?.call(Message.t),
-      orderBy: orderBy?.call(Message.t),
-      orderByList: orderByList?.call(Message.t),
+    return session.db.find<ChatMessage>(
+      where: where?.call(ChatMessage.t),
+      orderBy: orderBy?.call(ChatMessage.t),
+      orderByList: orderByList?.call(ChatMessage.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -261,125 +261,125 @@ class MessageRepository {
     );
   }
 
-  Future<Message?> findFirstRow(
+  Future<ChatMessage?> findFirstRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<MessageTable>? where,
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
     int? offset,
-    _i1.OrderByBuilder<MessageTable>? orderBy,
+    _i1.OrderByBuilder<ChatMessageTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<MessageTable>? orderByList,
+    _i1.OrderByListBuilder<ChatMessageTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findFirstRow<Message>(
-      where: where?.call(Message.t),
-      orderBy: orderBy?.call(Message.t),
-      orderByList: orderByList?.call(Message.t),
+    return session.db.findFirstRow<ChatMessage>(
+      where: where?.call(ChatMessage.t),
+      orderBy: orderBy?.call(ChatMessage.t),
+      orderByList: orderByList?.call(ChatMessage.t),
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
     );
   }
 
-  Future<Message?> findById(
+  Future<ChatMessage?> findById(
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findById<Message>(
+    return session.db.findById<ChatMessage>(
       id,
       transaction: transaction,
     );
   }
 
-  Future<List<Message>> insert(
+  Future<List<ChatMessage>> insert(
     _i1.Session session,
-    List<Message> rows, {
+    List<ChatMessage> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<Message>(
+    return session.db.insert<ChatMessage>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<Message> insertRow(
+  Future<ChatMessage> insertRow(
     _i1.Session session,
-    Message row, {
+    ChatMessage row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<Message>(
+    return session.db.insertRow<ChatMessage>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<Message>> update(
+  Future<List<ChatMessage>> update(
     _i1.Session session,
-    List<Message> rows, {
-    _i1.ColumnSelections<MessageTable>? columns,
+    List<ChatMessage> rows, {
+    _i1.ColumnSelections<ChatMessageTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<Message>(
+    return session.db.update<ChatMessage>(
       rows,
-      columns: columns?.call(Message.t),
+      columns: columns?.call(ChatMessage.t),
       transaction: transaction,
     );
   }
 
-  Future<Message> updateRow(
+  Future<ChatMessage> updateRow(
     _i1.Session session,
-    Message row, {
-    _i1.ColumnSelections<MessageTable>? columns,
+    ChatMessage row, {
+    _i1.ColumnSelections<ChatMessageTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<Message>(
+    return session.db.updateRow<ChatMessage>(
       row,
-      columns: columns?.call(Message.t),
+      columns: columns?.call(ChatMessage.t),
       transaction: transaction,
     );
   }
 
-  Future<List<Message>> delete(
+  Future<List<ChatMessage>> delete(
     _i1.Session session,
-    List<Message> rows, {
+    List<ChatMessage> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Message>(
+    return session.db.delete<ChatMessage>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<Message> deleteRow(
+  Future<ChatMessage> deleteRow(
     _i1.Session session,
-    Message row, {
+    ChatMessage row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<Message>(
+    return session.db.deleteRow<ChatMessage>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<Message>> deleteWhere(
+  Future<List<ChatMessage>> deleteWhere(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<MessageTable> where,
+    required _i1.WhereExpressionBuilder<ChatMessageTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<Message>(
-      where: where(Message.t),
+    return session.db.deleteWhere<ChatMessage>(
+      where: where(ChatMessage.t),
       transaction: transaction,
     );
   }
 
   Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<MessageTable>? where,
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Message>(
-      where: where?.call(Message.t),
+    return session.db.count<ChatMessage>(
+      where: where?.call(ChatMessage.t),
       limit: limit,
       transaction: transaction,
     );

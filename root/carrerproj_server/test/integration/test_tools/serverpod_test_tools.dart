@@ -17,7 +17,8 @@ import 'dart:async' as _i3;
 import 'package:authinticationproj_server/src/generated/article.dart' as _i4;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
     as _i5;
-import 'package:authinticationproj_server/src/generated/message.dart' as _i6;
+import 'package:authinticationproj_server/src/generated/chat_message.dart'
+    as _i6;
 import 'package:authinticationproj_server/src/generated/comment.dart' as _i7;
 import 'package:authinticationproj_server/src/generated/credential.dart' as _i8;
 import 'package:authinticationproj_server/src/generated/user_profile.dart'
@@ -500,7 +501,7 @@ class _ChatEndpoint {
 
   _i3.Future<bool> sendDirectMessage(
     _i1.TestSessionBuilder sessionBuilder,
-    _i6.Message message,
+    _i6.ChatMessage message,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -527,7 +528,7 @@ class _ChatEndpoint {
     });
   }
 
-  _i3.Future<_i3.Stream<_i6.Message>> observeDirectMessages(
+  _i3.Future<_i3.Stream<_i6.ChatMessage>> observeDirectMessages(
     _i1.TestSessionBuilder sessionBuilder,
     int userId1,
     int userId2,
@@ -552,7 +553,7 @@ class _ChatEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i3.Stream<_i6.Message>>);
+        ) as _i3.Future<_i3.Stream<_i6.ChatMessage>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -560,7 +561,7 @@ class _ChatEndpoint {
     });
   }
 
-  _i3.Future<List<_i6.Message>> getDirectMessageHistory(
+  _i3.Future<List<_i6.ChatMessage>> getDirectMessageHistory(
     _i1.TestSessionBuilder sessionBuilder,
     int userId1,
     int userId2,
@@ -585,7 +586,7 @@ class _ChatEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i6.Message>>);
+        ) as _i3.Future<List<_i6.ChatMessage>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
