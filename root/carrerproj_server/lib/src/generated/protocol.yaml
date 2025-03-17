@@ -11,6 +11,11 @@ articleLike:
   - unlikeArticle:
   - getLikedArticlesByUser:
   - getLikeCount:
+chat:
+  - sendDirectMessage:
+  - observeDirectMessages:
+  - getDirectMessageHistory:
+  - markMessagesAsRead:
 comment:
   - insertComment:
   - getCommentsByArticle:

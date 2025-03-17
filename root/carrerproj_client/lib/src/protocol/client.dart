@@ -14,12 +14,13 @@ import 'dart:async' as _i2;
 import 'package:authinticationproj_client/src/protocol/article.dart' as _i3;
 import 'package:authinticationproj_client/src/protocol/article_like.dart'
     as _i4;
-import 'package:authinticationproj_client/src/protocol/comment.dart' as _i5;
-import 'package:authinticationproj_client/src/protocol/credential.dart' as _i6;
+import 'package:authinticationproj_client/src/protocol/message.dart' as _i5;
+import 'package:authinticationproj_client/src/protocol/comment.dart' as _i6;
+import 'package:authinticationproj_client/src/protocol/credential.dart' as _i7;
 import 'package:authinticationproj_client/src/protocol/user_profile.dart'
-    as _i7;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i8;
-import 'protocol.dart' as _i9;
+    as _i8;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i9;
+import 'protocol.dart' as _i10;
 
 /// Endpoint for handling article-related operations.
 /// {@category Endpoint}
@@ -236,6 +237,60 @@ class EndpointArticleLike extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointChat extends _i1.EndpointRef {
+  EndpointChat(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'chat';
+
+  _i2.Future<bool> sendDirectMessage(_i5.Message message) =>
+      caller.callServerEndpoint<bool>(
+        'chat',
+        'sendDirectMessage',
+        {'message': message},
+      );
+
+  _i2.Future<_i2.Stream<_i5.Message>> observeDirectMessages(
+    int userId1,
+    int userId2,
+  ) =>
+      caller.callServerEndpoint<_i2.Stream<_i5.Message>>(
+        'chat',
+        'observeDirectMessages',
+        {
+          'userId1': userId1,
+          'userId2': userId2,
+        },
+      );
+
+  _i2.Future<List<_i5.Message>> getDirectMessageHistory(
+    int userId1,
+    int userId2,
+  ) =>
+      caller.callServerEndpoint<List<_i5.Message>>(
+        'chat',
+        'getDirectMessageHistory',
+        {
+          'userId1': userId1,
+          'userId2': userId2,
+        },
+      );
+
+  _i2.Future<void> markMessagesAsRead(
+    int senderId,
+    int receiverId,
+  ) =>
+      caller.callServerEndpoint<void>(
+        'chat',
+        'markMessagesAsRead',
+        {
+          'senderId': senderId,
+          'receiverId': receiverId,
+        },
+      );
+}
+
 /// Endpoint for handling comment-related operations.
 /// {@category Endpoint}
 class EndpointComment extends _i1.EndpointRef {
@@ -256,8 +311,8 @@ class EndpointComment extends _i1.EndpointRef {
   /// ```dart
   /// Comment result = await client.comment.insertComment(Comment: newComment);
   /// ```
-  _i2.Future<_i5.Comment> insertComment(_i5.Comment comment) =>
-      caller.callServerEndpoint<_i5.Comment>(
+  _i2.Future<_i6.Comment> insertComment(_i6.Comment comment) =>
+      caller.callServerEndpoint<_i6.Comment>(
         'comment',
         'insertComment',
         {'comment': comment},
@@ -275,8 +330,8 @@ class EndpointComment extends _i1.EndpointRef {
   /// ```dart
   /// List<Comment> comments = await client.comment.getCommentsByArticle(articleId);
   /// ```
-  _i2.Future<List<_i5.Comment>> getCommentsByArticle(int articleId) =>
-      caller.callServerEndpoint<List<_i5.Comment>>(
+  _i2.Future<List<_i6.Comment>> getCommentsByArticle(int articleId) =>
+      caller.callServerEndpoint<List<_i6.Comment>>(
         'comment',
         'getCommentsByArticle',
         {'articleId': articleId},
@@ -294,8 +349,8 @@ class EndpointComment extends _i1.EndpointRef {
   /// ```dart
   /// List<Comment> userComments = await client.comment.getCommentsByUser(userId);
   /// ```
-  _i2.Future<List<_i5.Comment>> getCommentsByUser(int userId) =>
-      caller.callServerEndpoint<List<_i5.Comment>>(
+  _i2.Future<List<_i6.Comment>> getCommentsByUser(int userId) =>
+      caller.callServerEndpoint<List<_i6.Comment>>(
         'comment',
         'getCommentsByUser',
         {'userId': userId},
@@ -312,8 +367,8 @@ class EndpointComment extends _i1.EndpointRef {
   /// ```dart
   /// Comment result = await client.comment.deleteComment(Comment: commentToDelete);
   /// ```
-  _i2.Future<_i5.Comment> deleteComment(_i5.Comment comment) =>
-      caller.callServerEndpoint<_i5.Comment>(
+  _i2.Future<_i6.Comment> deleteComment(_i6.Comment comment) =>
+      caller.callServerEndpoint<_i6.Comment>(
         'comment',
         'deleteComment',
         {'comment': comment},
@@ -329,35 +384,35 @@ class EndpointCredentials extends _i1.EndpointRef {
   String get name => 'credentials';
 
   /// Creates a new credential for a user.
-  _i2.Future<_i6.Credentials?> createCredential(_i6.Credentials credential) =>
-      caller.callServerEndpoint<_i6.Credentials?>(
+  _i2.Future<_i7.Credentials?> createCredential(_i7.Credentials credential) =>
+      caller.callServerEndpoint<_i7.Credentials?>(
         'credentials',
         'createCredential',
         {'credential': credential},
       );
 
   /// Retrieves all credentials for a specific user.
-  _i2.Future<List<_i6.Credentials>> getCredentialsByUserId(int userId) =>
-      caller.callServerEndpoint<List<_i6.Credentials>>(
+  _i2.Future<List<_i7.Credentials>> getCredentialsByUserId(int userId) =>
+      caller.callServerEndpoint<List<_i7.Credentials>>(
         'credentials',
         'getCredentialsByUserId',
         {'userId': userId},
       );
 
   /// Updates an existing credential.
-  _i2.Future<_i6.Credentials?> updateCredential(_i6.Credentials credential) =>
-      caller.callServerEndpoint<_i6.Credentials?>(
+  _i2.Future<_i7.Credentials?> updateCredential(_i7.Credentials credential) =>
+      caller.callServerEndpoint<_i7.Credentials?>(
         'credentials',
         'updateCredential',
         {'credential': credential},
       );
 
-  /// Deletes a credential by its ID.
-  _i2.Future<bool> deleteCredential(int credentialId) =>
-      caller.callServerEndpoint<bool>(
+  /// Deletes a credential.
+  _i2.Future<_i7.Credentials> deleteCredential(_i7.Credentials credential) =>
+      caller.callServerEndpoint<_i7.Credentials>(
         'credentials',
         'deleteCredential',
-        {'credentialId': credentialId},
+        {'credential': credential},
       );
 }
 
@@ -377,8 +432,8 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? user = await client.user.getUserProfile(userId);
   /// ```
-  _i2.Future<_i7.UserProfile?> getUserProfile(int userId) =>
-      caller.callServerEndpoint<_i7.UserProfile?>(
+  _i2.Future<_i8.UserProfile?> getUserProfile(int userId) =>
+      caller.callServerEndpoint<_i8.UserProfile?>(
         'user',
         'getUserProfile',
         {'userId': userId},
@@ -392,9 +447,9 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? result = await client.user.updateUserProfile(UserProfile: updatedUserProfile);
   /// ```
-  _i2.Future<_i7.UserProfile?> updateUserProfile(
-          _i7.UserProfile updatedUserProfile) =>
-      caller.callServerEndpoint<_i7.UserProfile?>(
+  _i2.Future<_i8.UserProfile?> updateUserProfile(
+          _i8.UserProfile updatedUserProfile) =>
+      caller.callServerEndpoint<_i8.UserProfile?>(
         'user',
         'updateUserProfile',
         {'updatedUserProfile': updatedUserProfile},
@@ -408,9 +463,9 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? result = await client.user.createUserProfile(UserProfile: newUserProfile);
   /// ```
-  _i2.Future<_i7.UserProfile?> createUserProfile(
-          _i7.UserProfile newUserProfile) =>
-      caller.callServerEndpoint<_i7.UserProfile?>(
+  _i2.Future<_i8.UserProfile?> createUserProfile(
+          _i8.UserProfile newUserProfile) =>
+      caller.callServerEndpoint<_i8.UserProfile?>(
         'user',
         'createUserProfile',
         {'newUserProfile': newUserProfile},
@@ -419,10 +474,10 @@ class EndpointUser extends _i1.EndpointRef {
 
 class Modules {
   Modules(Client client) {
-    auth = _i8.Caller(client);
+    auth = _i9.Caller(client);
   }
 
-  late final _i8.Caller auth;
+  late final _i9.Caller auth;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -441,7 +496,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i9.Protocol(),
+          _i10.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -453,6 +508,7 @@ class Client extends _i1.ServerpodClientShared {
         ) {
     article = EndpointArticle(this);
     articleLike = EndpointArticleLike(this);
+    chat = EndpointChat(this);
     comment = EndpointComment(this);
     credentials = EndpointCredentials(this);
     user = EndpointUser(this);
@@ -462,6 +518,8 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointArticle article;
 
   late final EndpointArticleLike articleLike;
+
+  late final EndpointChat chat;
 
   late final EndpointComment comment;
 
@@ -475,6 +533,7 @@ class Client extends _i1.ServerpodClientShared {
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
         'article': article,
         'articleLike': articleLike,
+        'chat': chat,
         'comment': comment,
         'credentials': credentials,
         'user': user,

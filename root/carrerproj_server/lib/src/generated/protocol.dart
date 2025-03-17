@@ -16,17 +16,20 @@ import 'article.dart' as _i4;
 import 'article_like.dart' as _i5;
 import 'comment.dart' as _i6;
 import 'credential.dart' as _i7;
-import 'user_profile.dart' as _i8;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i9;
+import 'message.dart' as _i8;
+import 'user_profile.dart' as _i9;
+import 'package:authinticationproj_server/src/generated/article.dart' as _i10;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i10;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i11;
+    as _i11;
+import 'package:authinticationproj_server/src/generated/message.dart' as _i12;
+import 'package:authinticationproj_server/src/generated/comment.dart' as _i13;
 import 'package:authinticationproj_server/src/generated/credential.dart'
-    as _i12;
+    as _i14;
 export 'article.dart';
 export 'article_like.dart';
 export 'comment.dart';
 export 'credential.dart';
+export 'message.dart';
 export 'user_profile.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -424,6 +427,115 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
+      name: 'message',
+      dartName: 'Message',
+      schema: 'public',
+      module: 'authinticationproj',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'message_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'senderId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'receiverId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'text',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'sentAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'isRead',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'message_fk_0',
+          columns: ['senderId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'message_fk_1',
+          columns: ['receiverId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'message_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'sender_chat_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'senderId',
+            )
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'receiver_chat_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'receiverId',
+            )
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
       name: 'user_profile',
       dartName: 'UserProfile',
       schema: 'public',
@@ -579,8 +691,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i7.Credentials) {
       return _i7.Credentials.fromJson(data) as T;
     }
-    if (t == _i8.UserProfile) {
-      return _i8.UserProfile.fromJson(data) as T;
+    if (t == _i8.Message) {
+      return _i8.Message.fromJson(data) as T;
+    }
+    if (t == _i9.UserProfile) {
+      return _i9.UserProfile.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Article?>()) {
       return (data != null ? _i4.Article.fromJson(data) : null) as T;
@@ -594,29 +709,36 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i7.Credentials?>()) {
       return (data != null ? _i7.Credentials.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.UserProfile?>()) {
-      return (data != null ? _i8.UserProfile.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.Message?>()) {
+      return (data != null ? _i8.Message.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i9.UserProfile?>()) {
+      return (data != null ? _i9.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i9.Article>) {
-      return (data as List).map((e) => deserialize<_i9.Article>(e)).toList()
+    if (t == List<_i10.Article>) {
+      return (data as List).map((e) => deserialize<_i10.Article>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i10.ArticleLike>) {
+    if (t == List<_i11.ArticleLike>) {
       return (data as List)
-          .map((e) => deserialize<_i10.ArticleLike>(e))
+          .map((e) => deserialize<_i11.ArticleLike>(e))
           .toList() as dynamic;
     }
-    if (t == List<_i11.Comment>) {
-      return (data as List).map((e) => deserialize<_i11.Comment>(e)).toList()
+    if (t == List<_i12.Message>) {
+      return (data as List).map((e) => deserialize<_i12.Message>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i12.Credentials>) {
+    if (t == List<_i13.Comment>) {
+      return (data as List).map((e) => deserialize<_i13.Comment>(e)).toList()
+          as dynamic;
+    }
+    if (t == List<_i14.Credentials>) {
       return (data as List)
-          .map((e) => deserialize<_i12.Credentials>(e))
+          .map((e) => deserialize<_i14.Credentials>(e))
           .toList() as dynamic;
     }
     try {
@@ -644,7 +766,10 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i7.Credentials) {
       return 'Credentials';
     }
-    if (data is _i8.UserProfile) {
+    if (data is _i8.Message) {
+      return 'Message';
+    }
+    if (data is _i9.UserProfile) {
       return 'UserProfile';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -676,8 +801,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'Credentials') {
       return deserialize<_i7.Credentials>(data['data']);
     }
+    if (dataClassName == 'Message') {
+      return deserialize<_i8.Message>(data['data']);
+    }
     if (dataClassName == 'UserProfile') {
-      return deserialize<_i8.UserProfile>(data['data']);
+      return deserialize<_i9.UserProfile>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -713,8 +841,10 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i6.Comment.t;
       case _i7.Credentials:
         return _i7.Credentials.t;
-      case _i8.UserProfile:
-        return _i8.UserProfile.t;
+      case _i8.Message:
+        return _i8.Message.t;
+      case _i9.UserProfile:
+        return _i9.UserProfile.t;
     }
     return null;
   }

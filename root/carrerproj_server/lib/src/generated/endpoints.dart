@@ -12,18 +12,20 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/article.dart' as _i2;
 import '../endpoints/article_like.dart' as _i3;
-import '../endpoints/comment.dart' as _i4;
-import '../endpoints/credential.dart' as _i5;
-import '../endpoints/user_profile.dart' as _i6;
-import 'package:authinticationproj_server/src/generated/article.dart' as _i7;
+import '../endpoints/chat.dart' as _i4;
+import '../endpoints/comment.dart' as _i5;
+import '../endpoints/credential.dart' as _i6;
+import '../endpoints/user_profile.dart' as _i7;
+import 'package:authinticationproj_server/src/generated/article.dart' as _i8;
 import 'package:authinticationproj_server/src/generated/article_like.dart'
-    as _i8;
-import 'package:authinticationproj_server/src/generated/comment.dart' as _i9;
+    as _i9;
+import 'package:authinticationproj_server/src/generated/message.dart' as _i10;
+import 'package:authinticationproj_server/src/generated/comment.dart' as _i11;
 import 'package:authinticationproj_server/src/generated/credential.dart'
-    as _i10;
+    as _i12;
 import 'package:authinticationproj_server/src/generated/user_profile.dart'
-    as _i11;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i12;
+    as _i13;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i14;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -41,19 +43,25 @@ class Endpoints extends _i1.EndpointDispatch {
           'articleLike',
           null,
         ),
-      'comment': _i4.CommentEndpoint()
+      'chat': _i4.ChatEndpoint()
+        ..initialize(
+          server,
+          'chat',
+          null,
+        ),
+      'comment': _i5.CommentEndpoint()
         ..initialize(
           server,
           'comment',
           null,
         ),
-      'credentials': _i5.CredentialsEndpoint()
+      'credentials': _i6.CredentialsEndpoint()
         ..initialize(
           server,
           'credentials',
           null,
         ),
-      'user': _i6.UserEndpoint()
+      'user': _i7.UserEndpoint()
         ..initialize(
           server,
           'user',
@@ -69,7 +77,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'article': _i1.ParameterDescription(
               name: 'article',
-              type: _i1.getType<_i7.Article>(),
+              type: _i1.getType<_i8.Article>(),
               nullable: false,
             )
           },
@@ -134,7 +142,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'updatedArticle': _i1.ParameterDescription(
               name: 'updatedArticle',
-              type: _i1.getType<_i7.Article>(),
+              type: _i1.getType<_i8.Article>(),
               nullable: false,
             )
           },
@@ -170,7 +178,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'article': _i1.ParameterDescription(
               name: 'article',
-              type: _i1.getType<_i7.Article>(),
+              type: _i1.getType<_i8.Article>(),
               nullable: false,
             )
           },
@@ -194,7 +202,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'like': _i1.ParameterDescription(
               name: 'like',
-              type: _i1.getType<_i8.ArticleLike>(),
+              type: _i1.getType<_i9.ArticleLike>(),
               nullable: false,
             )
           },
@@ -212,7 +220,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'like': _i1.ParameterDescription(
               name: 'like',
-              type: _i1.getType<_i8.ArticleLike>(),
+              type: _i1.getType<_i9.ArticleLike>(),
               nullable: false,
             )
           },
@@ -266,6 +274,102 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['chat'] = _i1.EndpointConnector(
+      name: 'chat',
+      endpoint: endpoints['chat']!,
+      methodConnectors: {
+        'sendDirectMessage': _i1.MethodConnector(
+          name: 'sendDirectMessage',
+          params: {
+            'message': _i1.ParameterDescription(
+              name: 'message',
+              type: _i1.getType<_i10.Message>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['chat'] as _i4.ChatEndpoint).sendDirectMessage(
+            session,
+            params['message'],
+          ),
+        ),
+        'observeDirectMessages': _i1.MethodConnector(
+          name: 'observeDirectMessages',
+          params: {
+            'userId1': _i1.ParameterDescription(
+              name: 'userId1',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'userId2': _i1.ParameterDescription(
+              name: 'userId2',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['chat'] as _i4.ChatEndpoint).observeDirectMessages(
+            session,
+            params['userId1'],
+            params['userId2'],
+          ),
+        ),
+        'getDirectMessageHistory': _i1.MethodConnector(
+          name: 'getDirectMessageHistory',
+          params: {
+            'userId1': _i1.ParameterDescription(
+              name: 'userId1',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'userId2': _i1.ParameterDescription(
+              name: 'userId2',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['chat'] as _i4.ChatEndpoint).getDirectMessageHistory(
+            session,
+            params['userId1'],
+            params['userId2'],
+          ),
+        ),
+        'markMessagesAsRead': _i1.MethodConnector(
+          name: 'markMessagesAsRead',
+          params: {
+            'senderId': _i1.ParameterDescription(
+              name: 'senderId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'receiverId': _i1.ParameterDescription(
+              name: 'receiverId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['chat'] as _i4.ChatEndpoint).markMessagesAsRead(
+            session,
+            params['senderId'],
+            params['receiverId'],
+          ),
+        ),
+      },
+    );
     connectors['comment'] = _i1.EndpointConnector(
       name: 'comment',
       endpoint: endpoints['comment']!,
@@ -275,7 +379,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'comment': _i1.ParameterDescription(
               name: 'comment',
-              type: _i1.getType<_i9.Comment>(),
+              type: _i1.getType<_i11.Comment>(),
               nullable: false,
             )
           },
@@ -283,7 +387,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['comment'] as _i4.CommentEndpoint).insertComment(
+              (endpoints['comment'] as _i5.CommentEndpoint).insertComment(
             session,
             params['comment'],
           ),
@@ -301,7 +405,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['comment'] as _i4.CommentEndpoint)
+              (endpoints['comment'] as _i5.CommentEndpoint)
                   .getCommentsByArticle(
             session,
             params['articleId'],
@@ -320,7 +424,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['comment'] as _i4.CommentEndpoint).getCommentsByUser(
+              (endpoints['comment'] as _i5.CommentEndpoint).getCommentsByUser(
             session,
             params['userId'],
           ),
@@ -330,7 +434,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'comment': _i1.ParameterDescription(
               name: 'comment',
-              type: _i1.getType<_i9.Comment>(),
+              type: _i1.getType<_i11.Comment>(),
               nullable: false,
             )
           },
@@ -338,7 +442,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['comment'] as _i4.CommentEndpoint).deleteComment(
+              (endpoints['comment'] as _i5.CommentEndpoint).deleteComment(
             session,
             params['comment'],
           ),
@@ -354,7 +458,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'credential': _i1.ParameterDescription(
               name: 'credential',
-              type: _i1.getType<_i10.Credentials>(),
+              type: _i1.getType<_i12.Credentials>(),
               nullable: false,
             )
           },
@@ -362,7 +466,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
                   .createCredential(
             session,
             params['credential'],
@@ -381,7 +485,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
                   .getCredentialsByUserId(
             session,
             params['userId'],
@@ -392,7 +496,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'credential': _i1.ParameterDescription(
               name: 'credential',
-              type: _i1.getType<_i10.Credentials>(),
+              type: _i1.getType<_i12.Credentials>(),
               nullable: false,
             )
           },
@@ -400,7 +504,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
                   .updateCredential(
             session,
             params['credential'],
@@ -409,9 +513,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'deleteCredential': _i1.MethodConnector(
           name: 'deleteCredential',
           params: {
-            'credentialId': _i1.ParameterDescription(
-              name: 'credentialId',
-              type: _i1.getType<int>(),
+            'credential': _i1.ParameterDescription(
+              name: 'credential',
+              type: _i1.getType<_i12.Credentials>(),
               nullable: false,
             )
           },
@@ -419,10 +523,10 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['credentials'] as _i5.CredentialsEndpoint)
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
                   .deleteCredential(
             session,
-            params['credentialId'],
+            params['credential'],
           ),
         ),
       },
@@ -444,7 +548,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i6.UserEndpoint).getUserProfile(
+              (endpoints['user'] as _i7.UserEndpoint).getUserProfile(
             session,
             params['userId'],
           ),
@@ -454,7 +558,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'updatedUserProfile': _i1.ParameterDescription(
               name: 'updatedUserProfile',
-              type: _i1.getType<_i11.UserProfile>(),
+              type: _i1.getType<_i13.UserProfile>(),
               nullable: false,
             )
           },
@@ -462,7 +566,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i6.UserEndpoint).updateUserProfile(
+              (endpoints['user'] as _i7.UserEndpoint).updateUserProfile(
             session,
             params['updatedUserProfile'],
           ),
@@ -472,7 +576,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'newUserProfile': _i1.ParameterDescription(
               name: 'newUserProfile',
-              type: _i1.getType<_i11.UserProfile>(),
+              type: _i1.getType<_i13.UserProfile>(),
               nullable: false,
             )
           },
@@ -480,13 +584,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['user'] as _i6.UserEndpoint).createUserProfile(
+              (endpoints['user'] as _i7.UserEndpoint).createUserProfile(
             session,
             params['newUserProfile'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i12.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i14.Endpoints()..initializeEndpoints(server);
   }
 }
