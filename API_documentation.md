@@ -44,152 +44,50 @@ Deletes a specific comment.
 
 ---
 
-## 2. Article Like Endpoint (article_like.dart)
+## 2. Chat Endpoint (chat.dart)
 
-Handles operations related to article likes.
-
-### Methods:
-
-#### likeArticle(Session session, ArticleLike like) -> Future<ArticleLike>
-
-Likes an article or re-likes it if previously unliked.
-
-- **Parameters:**
-  - `like`: An `ArticleLike` object containing `userId` and `articleId`.
-  - `session`: The current `Session` object.
-- **Returns:** The created `ArticleLike` object.
-
-#### unlikeArticle(Session session, ArticleLike like) -> Future<ArticleLike>
-
-Unlikes an article.
-
-- **Parameters:**
-  - `like`: An `ArticleLike` object containing `userId` and `articleId`.
-  - `session`: The current `Session` object.
-- **Returns:** The deleted `ArticleLike` object.
-
-#### getLikedArticlesByUser(Session session, int userId) -> Future<List<ArticleLike>>
-
-Retrieves all articles liked by a specific user.
-
-- **Parameters:**
-  - `userId`: The unique identifier of the user.
-  - `session`: The current `Session` object.
-- **Returns:** A list of `ArticleLike` objects.
-
-#### getLikeCount(Session session, int articleId) -> Future<int>
-
-Retrieves the total count of likes for a specific article.
-
-- **Parameters:**
-  - `articleId`: The unique identifier of the article.
-  - `session`: The current `Session` object.
-- **Returns:** The total number of likes.
-
----
-
-## 3. Article Endpoint (article.dart)
-
-Handles operations related to articles.
+Handles direct messaging between users.
 
 ### Methods:
 
-#### insertArticle(Session session, Article article) -> Future<Article>
+#### sendDirectMessage(Session session, Message message) -> Future<bool>
 
-Inserts a new article into the database.
-
-- **Parameters:**
-  - `article`: The `Article` object containing article details.
-  - `session`: The current `Session` object.
-- **Returns:** The inserted `Article` object.
-
-#### getRecentArticles(Session session) -> Future<List<Article>>
-
-Retrieves the 10 most recent articles.
+Sends a direct message to another user.
 
 - **Parameters:**
+  - `message`: The `Message` object containing details like sender ID, receiver ID, content, and timestamp.
   - `session`: The current `Session` object.
-- **Returns:** A list of up to 10 `Article` objects.
+- **Returns:** `true` if the message is successfully broadcasted.
 
-#### shareArticle(Session session, int articleId) -> Future<Article>
+#### observeDirectMessages(Session session, int userId1, int userId2) -> Future<Stream<Message>>
 
-Increments the share count of an article.
+Observes messages exchanged between two users in real-time.
 
 - **Parameters:**
-  - `articleId`: The unique identifier of the article.
+  - `userId1`: The first user's unique identifier.
+  - `userId2`: The second user's unique identifier.
   - `session`: The current `Session` object.
-- **Returns:** The updated `Article` object.
+- **Returns:** A stream of `Message` objects.
 
-#### getArticlesByConsultant(Session session, int userId) -> Future<List<Article>>
+#### getDirectMessageHistory(Session session, int userId1, int userId2) -> Future<List<Message>>
 
-Retrieves all articles authored by a specific consultant.
+Retrieves the message history between two users.
 
 - **Parameters:**
-  - `userId`: The unique identifier of the consultant.
+  - `userId1`: The first user's unique identifier.
+  - `userId2`: The second user's unique identifier.
   - `session`: The current `Session` object.
-- **Returns:** A list of `Article` objects.
+- **Returns:** A list of `Message` objects, sorted by `sentAt`, with a maximum of 50 messages.
 
-#### updateArticle(Session session, Article updatedArticle) -> Future<Article>
+#### markMessagesAsRead(Session session, int senderId, int receiverId) -> Future<void>
 
-Updates an existing article.
+Marks messages as read between a sender and a receiver.
 
 - **Parameters:**
-  - `updatedArticle`: The updated `Article` object.
+  - `senderId`: The sender's unique identifier.
+  - `receiverId`: The receiver's unique identifier.
   - `session`: The current `Session` object.
-- **Returns:** The updated `Article` object.
-
-#### getArticle(Session session, int articleId) -> Future<Article?>
-
-Retrieves a specific article by its ID.
-
-- **Parameters:**
-  - `articleId`: The unique identifier of the article.
-  - `session`: The current `Session` object.
-- **Returns:** The `Article` object if found, otherwise `null`.
-
-#### deleteArticle(Session session, Article article) -> Future<Article>
-
-Deletes an existing article.
-
-- **Parameters:**
-  - `article`: The `Article` object to be deleted.
-  - `session`: The current `Session` object.
-- **Returns:** The deleted `Article` object.
-
----
-
-## 4. User Profile Endpoint (user_profile.dart)
-
-Handles operations related to user profiles.
-
-### Methods:
-
-#### getUserProfile(Session session, int userId) -> Future<UserProfile?>
-
-Retrieves a user profile by their user ID.
-
-- **Parameters:**
-  - `userId`: The unique identifier of the user.
-  - `session`: The current `Session` object.
-- **Returns:** A `UserProfile` object if found, otherwise `null`.
-
-#### updateUserProfile(Session session, UserProfile updatedUserProfile) -> Future<UserProfile?>
-
-Updates an existing user profile.
-
-- **Parameters:**
-  - `updatedUserProfile`: The updated `UserProfile` object.
-  - `session`: The current `Session` object.
-- **Returns:** The updated `UserProfile` if successful, otherwise `null`.
-
-#### createUserProfile(Session session, UserProfile newUserProfile) -> Future<UserProfile?>
-
-Creates a new user profile.
-
-- **Parameters:**
-  - `newUserProfile`: The `UserProfile` object containing new user details.
-  - `session`: The current `Session` object.
-- **Returns:** The created `UserProfile` if successful, otherwise `null`.
+- **Returns:** Nothing (method not yet implemented).
 
 ---
 
