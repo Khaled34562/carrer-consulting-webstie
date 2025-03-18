@@ -19,6 +19,7 @@ abstract class Credentials implements _i1.SerializableModel {
     required this.date,
     required this.version,
     required this.fileUrl,
+    required this.filePath,
     this.description,
     this.issuer,
     this.expirationDate,
@@ -32,6 +33,7 @@ abstract class Credentials implements _i1.SerializableModel {
     required DateTime date,
     required String version,
     required String fileUrl,
+    required String filePath,
     String? description,
     String? issuer,
     DateTime? expirationDate,
@@ -46,6 +48,7 @@ abstract class Credentials implements _i1.SerializableModel {
       date: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['date']),
       version: jsonSerialization['version'] as String,
       fileUrl: jsonSerialization['fileUrl'] as String,
+      filePath: jsonSerialization['filePath'] as String,
       description: jsonSerialization['description'] as String?,
       issuer: jsonSerialization['issuer'] as String?,
       expirationDate: jsonSerialization['expirationDate'] == null
@@ -71,6 +74,8 @@ abstract class Credentials implements _i1.SerializableModel {
 
   String fileUrl;
 
+  String filePath;
+
   String? description;
 
   String? issuer;
@@ -86,6 +91,7 @@ abstract class Credentials implements _i1.SerializableModel {
     DateTime? date,
     String? version,
     String? fileUrl,
+    String? filePath,
     String? description,
     String? issuer,
     DateTime? expirationDate,
@@ -100,6 +106,7 @@ abstract class Credentials implements _i1.SerializableModel {
       'date': date.toJson(),
       'version': version,
       'fileUrl': fileUrl,
+      'filePath': filePath,
       if (description != null) 'description': description,
       if (issuer != null) 'issuer': issuer,
       if (expirationDate != null) 'expirationDate': expirationDate?.toJson(),
@@ -123,6 +130,7 @@ class _CredentialsImpl extends Credentials {
     required DateTime date,
     required String version,
     required String fileUrl,
+    required String filePath,
     String? description,
     String? issuer,
     DateTime? expirationDate,
@@ -134,6 +142,7 @@ class _CredentialsImpl extends Credentials {
           date: date,
           version: version,
           fileUrl: fileUrl,
+          filePath: filePath,
           description: description,
           issuer: issuer,
           expirationDate: expirationDate,
@@ -148,6 +157,7 @@ class _CredentialsImpl extends Credentials {
     DateTime? date,
     String? version,
     String? fileUrl,
+    String? filePath,
     Object? description = _Undefined,
     Object? issuer = _Undefined,
     Object? expirationDate = _Undefined,
@@ -160,6 +170,7 @@ class _CredentialsImpl extends Credentials {
       date: date ?? this.date,
       version: version ?? this.version,
       fileUrl: fileUrl ?? this.fileUrl,
+      filePath: filePath ?? this.filePath,
       description: description is String? ? description : this.description,
       issuer: issuer is String? ? issuer : this.issuer,
       expirationDate:

@@ -411,7 +411,36 @@ class EndpointCredentials extends _i1.EndpointRef {
   @override
   String get name => 'credentials';
 
-  /// Creates a new credential for a user.
+  /// Gets an upload description for a file.
+  _i2.Future<String?> getUploadDescription(String path) =>
+      caller.callServerEndpoint<String?>(
+        'credentials',
+        'getUploadDescription',
+        {'path': path},
+      );
+
+  /// Verifies that a file was uploaded successfully.
+  _i2.Future<bool> verifyUpload(String path) => caller.callServerEndpoint<bool>(
+        'credentials',
+        'verifyUpload',
+        {'path': path},
+      );
+
+  /// Creates a new credential for a user with a file.
+  _i2.Future<_i7.Credentials?> createCredentialWithFile(
+    _i7.Credentials credential,
+    String filePath,
+  ) =>
+      caller.callServerEndpoint<_i7.Credentials?>(
+        'credentials',
+        'createCredentialWithFile',
+        {
+          'credential': credential,
+          'filePath': filePath,
+        },
+      );
+
+  /// Creates a new credential without a file.
   _i2.Future<_i7.Credentials?> createCredential(_i7.Credentials credential) =>
       caller.callServerEndpoint<_i7.Credentials?>(
         'credentials',
@@ -427,7 +456,21 @@ class EndpointCredentials extends _i1.EndpointRef {
         {'userId': userId},
       );
 
-  /// Updates an existing credential.
+  /// Updates an existing credential with a new file.
+  _i2.Future<_i7.Credentials?> updateCredentialWithFile(
+    _i7.Credentials credential,
+    String filePath,
+  ) =>
+      caller.callServerEndpoint<_i7.Credentials?>(
+        'credentials',
+        'updateCredentialWithFile',
+        {
+          'credential': credential,
+          'filePath': filePath,
+        },
+      );
+
+  /// Updates an existing credential without changing the file.
   _i2.Future<_i7.Credentials?> updateCredential(_i7.Credentials credential) =>
       caller.callServerEndpoint<_i7.Credentials?>(
         'credentials',
@@ -435,7 +478,7 @@ class EndpointCredentials extends _i1.EndpointRef {
         {'credential': credential},
       );
 
-  /// Deletes a credential.
+  /// Deletes a credential and its associated file.
   _i2.Future<_i7.Credentials> deleteCredential(_i7.Credentials credential) =>
       caller.callServerEndpoint<_i7.Credentials>(
         'credentials',

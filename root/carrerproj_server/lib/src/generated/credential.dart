@@ -19,6 +19,7 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
     required this.date,
     required this.version,
     required this.fileUrl,
+    required this.filePath,
     this.description,
     this.issuer,
     this.expirationDate,
@@ -32,6 +33,7 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
     required DateTime date,
     required String version,
     required String fileUrl,
+    required String filePath,
     String? description,
     String? issuer,
     DateTime? expirationDate,
@@ -46,6 +48,7 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
       date: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['date']),
       version: jsonSerialization['version'] as String,
       fileUrl: jsonSerialization['fileUrl'] as String,
+      filePath: jsonSerialization['filePath'] as String,
       description: jsonSerialization['description'] as String?,
       issuer: jsonSerialization['issuer'] as String?,
       expirationDate: jsonSerialization['expirationDate'] == null
@@ -73,6 +76,8 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
 
   String fileUrl;
 
+  String filePath;
+
   String? description;
 
   String? issuer;
@@ -91,6 +96,7 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
     DateTime? date,
     String? version,
     String? fileUrl,
+    String? filePath,
     String? description,
     String? issuer,
     DateTime? expirationDate,
@@ -105,6 +111,7 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
       'date': date.toJson(),
       'version': version,
       'fileUrl': fileUrl,
+      'filePath': filePath,
       if (description != null) 'description': description,
       if (issuer != null) 'issuer': issuer,
       if (expirationDate != null) 'expirationDate': expirationDate?.toJson(),
@@ -121,6 +128,7 @@ abstract class Credentials implements _i1.TableRow, _i1.ProtocolSerialization {
       'date': date.toJson(),
       'version': version,
       'fileUrl': fileUrl,
+      'filePath': filePath,
       if (description != null) 'description': description,
       if (issuer != null) 'issuer': issuer,
       if (expirationDate != null) 'expirationDate': expirationDate?.toJson(),
@@ -168,6 +176,7 @@ class _CredentialsImpl extends Credentials {
     required DateTime date,
     required String version,
     required String fileUrl,
+    required String filePath,
     String? description,
     String? issuer,
     DateTime? expirationDate,
@@ -179,6 +188,7 @@ class _CredentialsImpl extends Credentials {
           date: date,
           version: version,
           fileUrl: fileUrl,
+          filePath: filePath,
           description: description,
           issuer: issuer,
           expirationDate: expirationDate,
@@ -193,6 +203,7 @@ class _CredentialsImpl extends Credentials {
     DateTime? date,
     String? version,
     String? fileUrl,
+    String? filePath,
     Object? description = _Undefined,
     Object? issuer = _Undefined,
     Object? expirationDate = _Undefined,
@@ -205,6 +216,7 @@ class _CredentialsImpl extends Credentials {
       date: date ?? this.date,
       version: version ?? this.version,
       fileUrl: fileUrl ?? this.fileUrl,
+      filePath: filePath ?? this.filePath,
       description: description is String? ? description : this.description,
       issuer: issuer is String? ? issuer : this.issuer,
       expirationDate:
@@ -236,6 +248,10 @@ class CredentialsTable extends _i1.Table {
       'fileUrl',
       this,
     );
+    filePath = _i1.ColumnString(
+      'filePath',
+      this,
+    );
     description = _i1.ColumnString(
       'description',
       this,
@@ -264,6 +280,8 @@ class CredentialsTable extends _i1.Table {
 
   late final _i1.ColumnString fileUrl;
 
+  late final _i1.ColumnString filePath;
+
   late final _i1.ColumnString description;
 
   late final _i1.ColumnString issuer;
@@ -280,6 +298,7 @@ class CredentialsTable extends _i1.Table {
         date,
         version,
         fileUrl,
+        filePath,
         description,
         issuer,
         expirationDate,

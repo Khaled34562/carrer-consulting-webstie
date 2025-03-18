@@ -1,11 +1,11 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:serverpod/serverpod.dart';
-
 import 'package:carrerproj_server/src/web/routes/root.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 import 'src/generated/protocol.dart';
 import 'src/generated/endpoints.dart';
+import 'package:serverpod_cloud_storage_s3/serverpod_cloud_storage_s3.dart' as s3;
 // Import the OpenAI endpoint
 
 // This is the starting point of your Serverpod server. In most cases, you will
@@ -92,6 +92,16 @@ void run(List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
+
+  // Add S3 cloud storage before starting the pod
+  pod.addCloudStorage(s3.S3CloudStorage(
+    serverpod: pod,
+    storageId: 'public',
+    public: true,
+    region: 'us-west-2', // replace with your AWS region
+    bucket: 'your-bucket-name', // replace with your bucket name
+    // publicHost: 'storage.yourdomain.com', // optional: if you have CloudFront set up
+  ));
 
   // Start the server.
   await pod.start();

@@ -450,6 +450,69 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'credentials',
       endpoint: endpoints['credentials']!,
       methodConnectors: {
+        'getUploadDescription': _i1.MethodConnector(
+          name: 'getUploadDescription',
+          params: {
+            'path': _i1.ParameterDescription(
+              name: 'path',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
+                  .getUploadDescription(
+            session,
+            params['path'],
+          ),
+        ),
+        'verifyUpload': _i1.MethodConnector(
+          name: 'verifyUpload',
+          params: {
+            'path': _i1.ParameterDescription(
+              name: 'path',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
+                  .verifyUpload(
+            session,
+            params['path'],
+          ),
+        ),
+        'createCredentialWithFile': _i1.MethodConnector(
+          name: 'createCredentialWithFile',
+          params: {
+            'credential': _i1.ParameterDescription(
+              name: 'credential',
+              type: _i1.getType<_i12.Credentials>(),
+              nullable: false,
+            ),
+            'filePath': _i1.ParameterDescription(
+              name: 'filePath',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
+                  .createCredentialWithFile(
+            session,
+            params['credential'],
+            params['filePath'],
+          ),
+        ),
         'createCredential': _i1.MethodConnector(
           name: 'createCredential',
           params: {
@@ -486,6 +549,31 @@ class Endpoints extends _i1.EndpointDispatch {
                   .getCredentialsByUserId(
             session,
             params['userId'],
+          ),
+        ),
+        'updateCredentialWithFile': _i1.MethodConnector(
+          name: 'updateCredentialWithFile',
+          params: {
+            'credential': _i1.ParameterDescription(
+              name: 'credential',
+              type: _i1.getType<_i12.Credentials>(),
+              nullable: false,
+            ),
+            'filePath': _i1.ParameterDescription(
+              name: 'filePath',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['credentials'] as _i6.CredentialsEndpoint)
+                  .updateCredentialWithFile(
+            session,
+            params['credential'],
+            params['filePath'],
           ),
         ),
         'updateCredential': _i1.MethodConnector(

@@ -22,8 +22,12 @@ comment:
   - getCommentsByUser:
   - deleteComment:
 credentials:
+  - getUploadDescription:
+  - verifyUpload:
+  - createCredentialWithFile:
   - createCredential:
   - getCredentialsByUserId:
+  - updateCredentialWithFile:
   - updateCredential:
   - deleteCredential:
 user:

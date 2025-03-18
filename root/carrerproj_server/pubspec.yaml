@@ -11,6 +11,7 @@ dependencies:
   mailer: ^6.4.1
   serverpod: 2.3.1
   serverpod_auth_server: 2.3.1
+  serverpod_cloud_storage_s3: any
 
 dev_dependencies:
   lints: '>=3.0.0 <6.0.0'
