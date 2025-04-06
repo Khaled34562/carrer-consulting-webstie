@@ -1,6 +1,7 @@
 import 'package:carrerproj_flutter/screens/consultant/widgets/dashboardcontent.dart';
 import 'package:carrerproj_flutter/screens/consultant/widgets/articlecontent.dart';
 import 'package:carrerproj_flutter/screens/consultant/widgets/profilecontent.dart';
+import 'package:carrerproj_flutter/screens/consultant/widgets/messages.dart';
 import 'package:carrerproj_flutter/screens/consultant/widgets/credentials.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _DashboardPageState extends State<DashboardPage> {
     const DashboardContent(title: "Calendar View"),
     ProfileContent(),
     CredentialsPage(),
-    const DashboardContent(title: "Messages Inbox"),
+    MessagesContent(),
     const DashboardContent(title: "Payments Transactions"),
     ArticleContent(),
     const DashboardContent(title: "Settings Panel"),

@@ -1,5 +1,6 @@
 import 'package:carrerproj_flutter/screens/user/widgets/dashboardcontent.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/profilecontent.dart';
+import 'package:carrerproj_flutter/screens/user/widgets/messages.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/articles.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:carrerproj_flutter/screens/landing.dart';
@@ -21,7 +22,7 @@ class _DashboardPageState extends State<DashboardPageUser> {
     const DashboardContent(title: "Dashboard Overview"),
     const DashboardContent(title: "Calendar View"),
     ProfileContent(),
-    const DashboardContent(title: "Messages Inbox"),
+    MessagesContent(),
     const DashboardContent(title: "Payments Transactions"),
     ArticleContent(),
     const DashboardContent(title: "Settings Panel"),
@@ -147,25 +148,25 @@ class _DashboardPageState extends State<DashboardPageUser> {
                       SidebarTab(
                         icon: Icons.mail,
                         label: "Messages",
-                        isSelected: _selectedIndex == 4,
+                        isSelected: _selectedIndex == 3,
                         onTap: () => setState(() => _selectedIndex = 3),
                       ),
                       SidebarTab(
                         icon: Icons.payment,
                         label: "Payments",
-                        isSelected: _selectedIndex == 5,
+                        isSelected: _selectedIndex == 4,
                         onTap: () => setState(() => _selectedIndex = 4),
                       ),
                       SidebarTab(
                         icon: Icons.library_books,
                         label: "Articles",
-                        isSelected: _selectedIndex == 6,
+                        isSelected: _selectedIndex == 5,
                         onTap: () => setState(() => _selectedIndex = 5),
                       ),
                       SidebarTab(
                         icon: Icons.settings,
                         label: "Settings",
-                        isSelected: _selectedIndex == 7,
+                        isSelected: _selectedIndex == 6,
                         onTap: () => setState(() => _selectedIndex = 6),
                       ),
 

@@ -1,4 +1,4 @@
-import 'package:carrerproj_client/authinticationproj_client.dart';
+import 'package:carrerproj_client/carrerproj_client.dart';
 import 'package:flutter/material.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';

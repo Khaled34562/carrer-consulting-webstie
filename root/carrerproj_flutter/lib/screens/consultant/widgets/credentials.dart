@@ -1,4 +1,4 @@
-import 'package:carrerproj_client/authinticationproj_client.dart';
+import 'package:carrerproj_client/carrerproj_client.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +74,7 @@ class _CredentialsPageState extends State<CredentialsPage> {
       date: DateTime.parse(_issueDateController.text),
       expirationDate: _expiryDateController.text.isNotEmpty ? DateTime.parse(_expiryDateController.text) : null,
       fileUrl: _filePath!,
+      filePath: _filePath!,
       status: "Pending",
     );
     await client.credentials.createCredential(newCredential);

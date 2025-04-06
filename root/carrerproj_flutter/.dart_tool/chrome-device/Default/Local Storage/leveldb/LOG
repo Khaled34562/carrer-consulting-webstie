@@ -1,3 +1,6 @@
-2025/03/11-06:57:46.822 3e5c Reusing MANIFEST C:\Users\rakan\AppData\Local\Temp\flutter_tools.64581eef\flutter_tools_chrome_device.e4314640\Default\Local Storage\leveldb/MANIFEST-000001
-2025/03/11-06:57:46.839 3e5c Recovering log #3
-2025/03/11-06:57:46.844 3e5c Reusing old log C:\Users\rakan\AppData\Local\Temp\flutter_tools.64581eef\flutter_tools_chrome_device.e4314640\Default\Local Storage\leveldb/000003.log 
+2025/04/06-20:11:44.403 11574c Reusing MANIFEST /private/var/folders/ch/msp5fdjj2snf64254zp6rr2c0000gn/T/flutter_tools.Er7aTi/flutter_tools_chrome_device.dmcr3Z/Default/Local Storage/leveldb/MANIFEST-000001
+2025/04/06-20:11:44.405 11574c Recovering log #3
+2025/04/06-20:11:44.405 11574c Reusing old log /private/var/folders/ch/msp5fdjj2snf64254zp6rr2c0000gn/T/flutter_tools.Er7aTi/flutter_tools_chrome_device.dmcr3Z/Default/Local Storage/leveldb/000003.log 
+2025/04/06-20:16:09.960 11574e Level-0 table #5: started
+2025/04/06-20:16:09.964 11574e Level-0 table #5: 69437 bytes OK
+2025/04/06-20:16:09.968 11574e Delete type=0 #3

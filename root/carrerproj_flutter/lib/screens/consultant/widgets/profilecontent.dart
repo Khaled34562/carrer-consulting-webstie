@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:carrerproj_client/authinticationproj_client.dart';
+import 'package:carrerproj_client/carrerproj_client.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
