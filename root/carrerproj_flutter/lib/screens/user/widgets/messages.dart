@@ -5,7 +5,6 @@ import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
-// MessagesContent widget for the Messages tab
 class MessagesContent extends StatefulWidget {
   const MessagesContent({Key? key}) : super(key: key);
 
@@ -13,7 +12,7 @@ class MessagesContent extends StatefulWidget {
   _MessagesContentState createState() => _MessagesContentState();
 }
 
-class _MessagesContentState extends State<MessagesContent> {
+class _MessagesContentState extends State<MessagesContent> with SingleTickerProviderStateMixin {
   final TextEditingController _messageController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
   UserInfo? _currentUser;
@@ -21,20 +20,30 @@ class _MessagesContentState extends State<MessagesContent> {
   List<UserProfile> _searchResults = [];
   UserProfile? _selectedContact;
   final List<ChatMessage> _messages = [];
-  Stream<ChatMessage>? _messageStream;
+  Map<int, Stream<ChatMessage>> _messageStreams = {};
   bool _showEmojiPicker = false;
+  bool _isSending = false;
+  late AnimationController _sendAnimationController;
+  late Animation<double> _bubbleAnimation;
 
   @override
   void initState() {
     super.initState();
     _loadCurrentUser();
-    // Add listener to update send button state
-    _messageController.addListener(() {
-      setState(() {}); // Trigger rebuild when text changes
-    });
+    _messageController.addListener(() => setState(() {}));
+    
+    _sendAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    _bubbleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _sendAnimationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
   }
 
-  // Fetch the current user and load existing conversations
   Future<void> _loadCurrentUser() async {
     try {
       _currentUser = await sessionManager.signedInUser;
@@ -43,13 +52,13 @@ class _MessagesContentState extends State<MessagesContent> {
         return;
       }
       await _loadExistingConversations();
+      await _subscribeToAllMessages();
       setState(() {});
     } catch (e) {
       print('Failed to load user: $e');
     }
   }
 
-  // Load existing conversations and add contacts to PEOPLE section
   Future<void> _loadExistingConversations() async {
     for (var userId = 0; userId <= 1000; userId++) {
       final userProfile = await client.user.getUserProfile(userId);
@@ -59,15 +68,61 @@ class _MessagesContentState extends State<MessagesContent> {
         _currentUser!.id!,
         userId,
       );
-      if (messages.isNotEmpty) {
-        if (userProfile != null) {
-          _addContact(userProfile);
-        }
+      if (messages.isNotEmpty && userProfile != null) {
+        _addContact(userProfile);
       }
     }
   }
 
-  // Search for users
+  Future<void> _subscribeToAllMessages() async {
+    if (_currentUser == null) return;
+
+    try {
+      // Clear existing streams
+      for (var stream in _messageStreams.values) {
+        await stream.drain();
+      }
+      _messageStreams.clear();
+
+      // Subscribe to messages for each contact
+      for (var contact in _contacts) {
+        final stream = await client.chat.observeDirectMessages(
+          _currentUser!.id!,
+          contact.userId,
+        );
+        
+        _messageStreams[contact.userId] = stream;
+        
+        stream.listen((message) async {
+          if (!_messages.any((m) => m.id == message.id && m.id != 0)) {
+            setState(() {
+              _messages.add(message);
+              if (_selectedContact != null && 
+                  message.senderId == _selectedContact!.userId) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScrollController().animateTo(
+                    ScrollController().position.maxScrollExtent,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                  );
+                });
+              }
+            });
+            
+            final senderProfile = await client.user.getUserProfile(message.senderId);
+            if (senderProfile != null) {
+              _addContact(senderProfile);
+            }
+          }
+        }, onError: (e) {
+          print('Message stream error for contact ${contact.userId}: $e');
+        });
+      }
+    } catch (e) {
+      print('Failed to subscribe to messages: $e');
+    }
+  }
+
   Future<void> _searchUsers(String query) async {
     if (query.isEmpty) {
       setState(() {
@@ -93,16 +148,56 @@ class _MessagesContentState extends State<MessagesContent> {
     });
   }
 
-  // Add a contact to the PEOPLE section
   void _addContact(UserProfile contact) {
     if (!_contacts.any((c) => c.userId == contact.userId)) {
       setState(() {
         _contacts.add(contact);
+        // Subscribe to new contact's messages
+        _subscribeToContactMessages(contact.userId);
       });
     }
   }
 
-  // Load message history for the selected contact
+  Future<void> _subscribeToContactMessages(int contactId) async {
+    if (_currentUser == null || _messageStreams.containsKey(contactId)) return;
+
+    try {
+      final stream = await client.chat.observeDirectMessages(
+        _currentUser!.id!,
+        contactId,
+      );
+      
+      _messageStreams[contactId] = stream;
+      
+      stream.listen((message) async {
+        if (!_messages.any((m) => m.id == message.id && m.id != 0)) {
+          setState(() {
+            _messages.add(message);
+            if (_selectedContact != null && 
+                message.senderId == _selectedContact!.userId) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScrollController().animateTo(
+                  ScrollController().position.maxScrollExtent,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
+              });
+            }
+          });
+          
+          final senderProfile = await client.user.getUserProfile(message.senderId);
+          if (senderProfile != null) {
+            _addContact(senderProfile);
+          }
+        }
+      }, onError: (e) {
+        print('Message stream error for contact $contactId: $e');
+      });
+    } catch (e) {
+      print('Failed to subscribe to messages for contact $contactId: $e');
+    }
+  }
+
   Future<void> _loadMessages() async {
     if (_currentUser == null || _selectedContact == null) return;
 
@@ -120,41 +215,6 @@ class _MessagesContentState extends State<MessagesContent> {
     }
   }
 
-  // Subscribe to new messages for the selected contact
-  Future<void> _subscribeToMessages() async {
-    if (_currentUser == null || _selectedContact == null) return;
-
-    try {
-      // Cancel any existing stream subscription first
-      await _messageStream?.drain();
-      _messageStream = await client.chat.observeDirectMessages(
-        _currentUser!.id!,
-        _selectedContact!.userId,
-      );
-      
-      _messageStream!.listen((message) async {
-        if (!_messages.any((m) => m.id == message.id && m.id != 0)) {
-          setState(() {
-            _messages.add(message);
-          });
-        }
-
-        if (message.senderId != _currentUser!.id && 
-            message.senderId == _selectedContact!.userId) {
-          final senderProfile = await client.user.getUserProfile(message.senderId);
-          if (senderProfile != null) {
-            _addContact(senderProfile);
-          }
-        }
-      }, onError: (e) {
-        print('Message stream error: $e');
-      });
-    } catch (e) {
-      print('Failed to subscribe to messages: $e');
-    }
-  }
-
-  // Send a message to the selected contact
   Future<void> _sendMessage(String text) async {
     if (text.isEmpty || _currentUser == null || _selectedContact == null) return;
 
@@ -167,23 +227,32 @@ class _MessagesContentState extends State<MessagesContent> {
       isRead: false,
     );
 
-    try {
-      setState(() {
-        _messages.add(message);
-        _messageController.clear();
-      });
+    setState(() {
+      _messages.add(message);
+      _isSending = true;
+    });
+    
+    _sendAnimationController.forward();
 
+    try {
       await client.chat.sendDirectMessage(message);
       _addContact(_selectedContact!);
+      
+      await Future.delayed(Duration(milliseconds: 400));
+      _sendAnimationController.reset();
     } catch (e) {
       print('Failed to send message: $e');
       setState(() {
         _messages.remove(message);
       });
+    } finally {
+      setState(() {
+        _isSending = false;
+        _messageController.clear();
+      });
     }
   }
 
-  // Pick an emoji
   void _onEmojiSelected(Emoji emoji) {
     setState(() {
       _messageController.text = _messageController.text + emoji.emoji;
@@ -196,7 +265,10 @@ class _MessagesContentState extends State<MessagesContent> {
       children: [
         Container(
           width: 300,
-          color: Colors.grey[100],
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -249,7 +321,6 @@ class _MessagesContentState extends State<MessagesContent> {
                                 _searchResults = [];
                                 _searchController.clear();
                                 _loadMessages();
-                                _subscribeToMessages();
                                 _addContact(user);
                               });
                             },
@@ -303,7 +374,6 @@ class _MessagesContentState extends State<MessagesContent> {
                                 setState(() {
                                   _selectedContact = contact;
                                   _loadMessages();
-                                  _subscribeToMessages();
                                 });
                               },
                               selected: _selectedContact?.userId == contact.userId,
@@ -355,40 +425,52 @@ class _MessagesContentState extends State<MessagesContent> {
                   child: _messages.isEmpty
                       ? Center(child: Text('No messages yet'))
                       : ListView.builder(
+                          controller: ScrollController(),
                           padding: const EdgeInsets.all(16.0),
                           itemCount: _messages.length,
                           itemBuilder: (context, index) {
                             final message = _messages[index];
                             final bool isMe = message.senderId == _currentUser!.id;
                             final localTime = message.sentAt.toLocal();
+                            final isLatestSent = isMe && index == _messages.length - 1 && _isSending;
+
                             return Align(
                               alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: isMe ? Colors.blue : Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      message.text,
-                                      style: TextStyle(
-                                        color: isMe ? Colors.white : Colors.black,
+                              child: AnimatedBuilder(
+                                animation: _bubbleAnimation,
+                                builder: (context, child) {
+                                  return Transform.scale(
+                                    scale: isLatestSent ? _bubbleAnimation.value : 1.0,
+                                    alignment: isMe ? Alignment.bottomRight : Alignment.bottomLeft,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 5),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: isMe ? Colors.blue : Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            message.text,
+                                            style: TextStyle(
+                                              color: isMe ? Colors.white : Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            '${localTime.hour}:${localTime.minute.toString().padLeft(2, '0')}',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: isMe ? Colors.white70 : Colors.grey[600],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      '${localTime.hour}:${localTime.minute.toString().padLeft(2, '0')}',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: isMe ? Colors.white70 : Colors.grey[600],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  );
+                                },
                               ),
                             );
                           },
@@ -433,22 +515,35 @@ class _MessagesContentState extends State<MessagesContent> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          IconButton(
-                            icon: Icon(
-                              Icons.send,
-                              color: _messageController.text.isNotEmpty && _selectedContact != null
-                                  ? Colors.blue
-                                  : Colors.grey,
-                            ),
-                            onPressed: _messageController.text.isNotEmpty && _selectedContact != null
-                                ? () => _sendMessage(_messageController.text)
-                                : null,
+                          AnimatedBuilder(
+                            animation: _bubbleAnimation,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale: 1.0 + (_isSending ? _bubbleAnimation.value * 0.2 : 0),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.send,
+                                    color: _messageController.text.isNotEmpty && _selectedContact != null
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                  ),
+                                  onPressed: _messageController.text.isNotEmpty && _selectedContact != null && !_isSending
+                                      ? () => _sendMessage(_messageController.text)
+                                      : null,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
+                      const SizedBox(height: 8),
                       if (_showEmojiPicker)
-                        SizedBox(
+                        Container(
                           height: 250,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.grey[100],
+                          ),
                           child: EmojiPicker(
                             onEmojiSelected: (category, emoji) {
                               _onEmojiSelected(emoji);
@@ -456,6 +551,7 @@ class _MessagesContentState extends State<MessagesContent> {
                             config: Config(
                               columns: 7,
                               emojiSizeMax: 32,
+                              bgColor: Colors.transparent,
                             ),
                           ),
                         ),
@@ -472,9 +568,13 @@ class _MessagesContentState extends State<MessagesContent> {
 
   @override
   void dispose() {
-    _messageStream?.drain();
+    for (var stream in _messageStreams.values) {
+      stream.drain();
+    }
+    _messageStreams.clear();
     _messageController.dispose();
     _searchController.dispose();
+    _sendAnimationController.dispose();
     super.dispose();
   }
 }

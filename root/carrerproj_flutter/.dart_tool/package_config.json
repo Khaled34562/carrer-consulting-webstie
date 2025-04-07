@@ -128,6 +128,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "csslib",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/csslib-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
@@ -140,10 +146,22 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "dart_quill_delta",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/dart_quill_delta-10.8.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "dbus",
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/dbus-0.7.11",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "diff_match_patch",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/diff_match_patch-0.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "email_validator",
@@ -236,16 +254,70 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "flutter_colorpicker",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_colorpicker-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "flutter_keyboard_visibility_linux",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_keyboard_visibility_linux-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_keyboard_visibility_macos",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_keyboard_visibility_macos-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_keyboard_visibility_platform_interface",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_keyboard_visibility_platform_interface-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_keyboard_visibility_temp_fork",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_keyboard_visibility_temp_fork-0.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_keyboard_visibility_windows",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_keyboard_visibility_windows-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///Users/rakanalomari/development/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
       "name": "flutter_plugin_android_lifecycle",
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.27",
       "packageUri": "lib/",
       "languageVersion": "3.6"
+    },
+    {
+      "name": "flutter_quill",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_quill-11.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_quill_delta_from_html",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/flutter_quill_delta_from_html-1.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "flutter_sound",
@@ -292,6 +364,12 @@
     {
       "name": "googleapis_auth",
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/googleapis_auth-1.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "html",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/html-0.15.5",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -381,9 +459,9 @@
     },
     {
       "name": "intl",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/intl-0.20.2",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/intl-0.19.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.0"
     },
     {
       "name": "jose",
@@ -432,6 +510,12 @@
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/logging-1.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "markdown",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/markdown-7.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "matcher",
@@ -594,6 +678,54 @@
       "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/postgres-3.5.5",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "quill_native_bridge",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge-11.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_android",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_android-0.0.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_ios",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_ios-0.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_linux",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_linux-0.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_macos",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_macos-0.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_platform_interface",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_platform_interface-0.0.2+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_web",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_web-0.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "quill_native_bridge_windows",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/quill_native_bridge_windows-0.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "quiver",
@@ -956,7 +1088,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-04-06T14:44:38.987139Z",
+  "generated": "2025-04-07T18:07:21.196561Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///Users/rakanalomari/development/flutter",
