@@ -765,55 +765,55 @@
     },
     {
       "name": "serverpod",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_auth_client",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_client-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_client-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_auth_email_flutter",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_email_flutter-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_email_flutter-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_auth_server",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_server-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_server-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_auth_shared_flutter",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_shared_flutter-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_auth_shared_flutter-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_client",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_client-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_client-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_flutter",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_flutter-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_flutter-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_serialization",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_serialization-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_serialization-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "serverpod_shared",
-      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_shared-2.3.1",
+      "rootUri": "file:///Users/rakanalomari/.pub-cache/hosted/pub.dev/serverpod_shared-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -1088,7 +1088,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-04-07T18:07:21.196561Z",
+  "generated": "2025-04-10T20:07:38.078524Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///Users/rakanalomari/development/flutter",

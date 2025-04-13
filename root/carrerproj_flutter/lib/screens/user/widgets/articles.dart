@@ -258,7 +258,7 @@ class _ArticlePreviewPageState extends State<ArticlePreviewPage> {
       final comment = Comment(
         articleId: widget.article.id!,
         userId: sessionManager.signedInUser!.id!,
-        comment: _commentController.text, 
+        comment: _commentController.text,
         createdAt: DateTime.now(),
       );
       await client.comment.insertComment(comment);
@@ -281,6 +281,32 @@ class _ArticlePreviewPageState extends State<ArticlePreviewPage> {
               await client.article.deleteArticle(widget.article);
               Navigator.pop(context); // Close dialog
               Navigator.pop(context); // Return to ArticleContent
+              widget.onArticleUpdated();
+            },
+            child: Text("Delete"),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDeleteCommentDialog(Comment comment) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Delete Comment"),
+        content: Text("Are you sure you want to delete this comment?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await client.comment.deleteComment(comment);
+              Navigator.pop(context); // Close dialog
+              setState(() {}); // Refresh comments
               widget.onArticleUpdated();
             },
             child: Text("Delete"),
@@ -381,15 +407,48 @@ class _ArticlePreviewPageState extends State<ArticlePreviewPage> {
                   itemCount: comments.length,
                   itemBuilder: (context, index) {
                     final comment = comments[index];
-                    return FutureBuilder<String>(
-                      future: _getUserName(comment.userId),
-                      builder: (context, userSnapshot) {
-                        final commenterName = userSnapshot.data ?? 'Unknown';
-                        return ListTile(
-                          title: Text(comment.comment),
-                          subtitle: Text("By: $commenterName - ${comment.createdAt}"),
-                        );
-                      },
+                    final isCurrentUserComment = comment.userId == currentUserId;
+
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 8),
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey.shade50,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: FutureBuilder<String>(
+                                  future: _getUserName(comment.userId),
+                                  builder: (context, userSnapshot) {
+                                    final commenterName = userSnapshot.data ?? 'Unknown';
+                                    return Text(
+                                      "By: $commenterName${isCurrentUserComment ? ' (You)' : ''} - ${comment.createdAt}",
+                                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                                    );
+                                  },
+                                ),
+                              ),
+                              if (isCurrentUserComment)
+                                IconButton(
+                                  icon: Icon(Icons.delete, size: 20, color: Colors.red),
+                                  onPressed: () => _showDeleteCommentDialog(comment),
+                                ),
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            comment.comment,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );
