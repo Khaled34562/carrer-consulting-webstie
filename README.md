@@ -13,15 +13,17 @@ For the development phase, Flutter files are located on the Front-End-Branch and
 git clone -b Back-End-Branch https://github.com/Khaled34562/carrer-consulting-webstie.git
 ```
 
-2. Remove all contents of the directory to a temporary file
+2. Remove all contents of the directory (Except the .git directory) to a temporary file
 
-3. In terminal 
+3. Delete the now-empty carrer-consulting-website directory
+
+4. In terminal 
 ```
 git clone -b Front-End-Branch https://github.com/Khaled34562/carrer-consulting-webstie.git
 ```
-4. Return the backend files to the root directory
+5. Return the backend files to the root directory
 
-5. Make sure all pubspec.yaml files are using the same serverpod version
+6. Make sure all pubspec.yaml files are using the same serverpod version
 
 # Demo 
 
