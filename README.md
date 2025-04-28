@@ -40,7 +40,6 @@ dart bin/main.dart --apply-migrations
 
 3. In a separate terminal, navigate to the Flutter app directory and run: 
 ```
-flutter pub get
 cd root/carrerproj_flutter  
 flutter run
 ```
