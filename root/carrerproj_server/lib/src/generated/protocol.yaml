@@ -1,0 +1,36 @@
+article:
+  - insertArticle:
+  - getRecentArticles:
+  - shareArticle:
+  - getArticlesByConsultant:
+  - updateArticle:
+  - getArticle:
+  - deleteArticle:
+articleLike:
+  - likeArticle:
+  - unlikeArticle:
+  - getLikedArticlesByUser:
+  - getLikeCount:
+chat:
+  - sendDirectMessage:
+  - observeDirectMessages:
+  - getDirectMessageHistory:
+  - markMessagesAsRead:
+comment:
+  - insertComment:
+  - getCommentsByArticle:
+  - getCommentsByUser:
+  - deleteComment:
+credentials:
+  - getUploadDescription:
+  - verifyUpload:
+  - createCredentialWithFile:
+  - createCredential:
+  - getCredentialsByUserId:
+  - updateCredentialWithFile:
+  - updateCredential:
+  - deleteCredential:
+user:
+  - getUserProfile:
+  - updateUserProfile:
+  - createUserProfile:

@@ -1,0 +1,387 @@
+/* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
+/*   To generate run: "serverpod generate"    */
+
+// ignore_for_file: implementation_imports
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
+// ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:serverpod/serverpod.dart' as _i1;
+
+abstract class ChatMessage implements _i1.TableRow, _i1.ProtocolSerialization {
+  ChatMessage._({
+    this.id,
+    required this.senderId,
+    required this.receiverId,
+    required this.text,
+    required this.sentAt,
+    required this.isRead,
+  });
+
+  factory ChatMessage({
+    int? id,
+    required int senderId,
+    required int receiverId,
+    required String text,
+    required DateTime sentAt,
+    required bool isRead,
+  }) = _ChatMessageImpl;
+
+  factory ChatMessage.fromJson(Map<String, dynamic> jsonSerialization) {
+    return ChatMessage(
+      id: jsonSerialization['id'] as int?,
+      senderId: jsonSerialization['senderId'] as int,
+      receiverId: jsonSerialization['receiverId'] as int,
+      text: jsonSerialization['text'] as String,
+      sentAt: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['sentAt']),
+      isRead: jsonSerialization['isRead'] as bool,
+    );
+  }
+
+  static final t = ChatMessageTable();
+
+  static const db = ChatMessageRepository._();
+
+  @override
+  int? id;
+
+  int senderId;
+
+  int receiverId;
+
+  String text;
+
+  DateTime sentAt;
+
+  bool isRead;
+
+  @override
+  _i1.Table get table => t;
+
+  ChatMessage copyWith({
+    int? id,
+    int? senderId,
+    int? receiverId,
+    String? text,
+    DateTime? sentAt,
+    bool? isRead,
+  });
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      if (id != null) 'id': id,
+      'senderId': senderId,
+      'receiverId': receiverId,
+      'text': text,
+      'sentAt': sentAt.toJson(),
+      'isRead': isRead,
+    };
+  }
+
+  @override
+  Map<String, dynamic> toJsonForProtocol() {
+    return {
+      if (id != null) 'id': id,
+      'senderId': senderId,
+      'receiverId': receiverId,
+      'text': text,
+      'sentAt': sentAt.toJson(),
+      'isRead': isRead,
+    };
+  }
+
+  static ChatMessageInclude include() {
+    return ChatMessageInclude._();
+  }
+
+  static ChatMessageIncludeList includeList({
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<ChatMessageTable>? orderBy,
+    bool orderDescending = false,
+    _i1.OrderByListBuilder<ChatMessageTable>? orderByList,
+    ChatMessageInclude? include,
+  }) {
+    return ChatMessageIncludeList._(
+      where: where,
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(ChatMessage.t),
+      orderDescending: orderDescending,
+      orderByList: orderByList?.call(ChatMessage.t),
+      include: include,
+    );
+  }
+
+  @override
+  String toString() {
+    return _i1.SerializationManager.encode(this);
+  }
+}
+
+class _Undefined {}
+
+class _ChatMessageImpl extends ChatMessage {
+  _ChatMessageImpl({
+    int? id,
+    required int senderId,
+    required int receiverId,
+    required String text,
+    required DateTime sentAt,
+    required bool isRead,
+  }) : super._(
+          id: id,
+          senderId: senderId,
+          receiverId: receiverId,
+          text: text,
+          sentAt: sentAt,
+          isRead: isRead,
+        );
+
+  @override
+  ChatMessage copyWith({
+    Object? id = _Undefined,
+    int? senderId,
+    int? receiverId,
+    String? text,
+    DateTime? sentAt,
+    bool? isRead,
+  }) {
+    return ChatMessage(
+      id: id is int? ? id : this.id,
+      senderId: senderId ?? this.senderId,
+      receiverId: receiverId ?? this.receiverId,
+      text: text ?? this.text,
+      sentAt: sentAt ?? this.sentAt,
+      isRead: isRead ?? this.isRead,
+    );
+  }
+}
+
+class ChatMessageTable extends _i1.Table {
+  ChatMessageTable({super.tableRelation}) : super(tableName: 'chat_message') {
+    senderId = _i1.ColumnInt(
+      'senderId',
+      this,
+    );
+    receiverId = _i1.ColumnInt(
+      'receiverId',
+      this,
+    );
+    text = _i1.ColumnString(
+      'text',
+      this,
+    );
+    sentAt = _i1.ColumnDateTime(
+      'sentAt',
+      this,
+    );
+    isRead = _i1.ColumnBool(
+      'isRead',
+      this,
+    );
+  }
+
+  late final _i1.ColumnInt senderId;
+
+  late final _i1.ColumnInt receiverId;
+
+  late final _i1.ColumnString text;
+
+  late final _i1.ColumnDateTime sentAt;
+
+  late final _i1.ColumnBool isRead;
+
+  @override
+  List<_i1.Column> get columns => [
+        id,
+        senderId,
+        receiverId,
+        text,
+        sentAt,
+        isRead,
+      ];
+}
+
+class ChatMessageInclude extends _i1.IncludeObject {
+  ChatMessageInclude._();
+
+  @override
+  Map<String, _i1.Include?> get includes => {};
+
+  @override
+  _i1.Table get table => ChatMessage.t;
+}
+
+class ChatMessageIncludeList extends _i1.IncludeList {
+  ChatMessageIncludeList._({
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
+    super.limit,
+    super.offset,
+    super.orderBy,
+    super.orderDescending,
+    super.orderByList,
+    super.include,
+  }) {
+    super.where = where?.call(ChatMessage.t);
+  }
+
+  @override
+  Map<String, _i1.Include?> get includes => include?.includes ?? {};
+
+  @override
+  _i1.Table get table => ChatMessage.t;
+}
+
+class ChatMessageRepository {
+  const ChatMessageRepository._();
+
+  Future<List<ChatMessage>> find(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<ChatMessageTable>? orderBy,
+    bool orderDescending = false,
+    _i1.OrderByListBuilder<ChatMessageTable>? orderByList,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.find<ChatMessage>(
+      where: where?.call(ChatMessage.t),
+      orderBy: orderBy?.call(ChatMessage.t),
+      orderByList: orderByList?.call(ChatMessage.t),
+      orderDescending: orderDescending,
+      limit: limit,
+      offset: offset,
+      transaction: transaction,
+    );
+  }
+
+  Future<ChatMessage?> findFirstRow(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
+    int? offset,
+    _i1.OrderByBuilder<ChatMessageTable>? orderBy,
+    bool orderDescending = false,
+    _i1.OrderByListBuilder<ChatMessageTable>? orderByList,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.findFirstRow<ChatMessage>(
+      where: where?.call(ChatMessage.t),
+      orderBy: orderBy?.call(ChatMessage.t),
+      orderByList: orderByList?.call(ChatMessage.t),
+      orderDescending: orderDescending,
+      offset: offset,
+      transaction: transaction,
+    );
+  }
+
+  Future<ChatMessage?> findById(
+    _i1.Session session,
+    int id, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.findById<ChatMessage>(
+      id,
+      transaction: transaction,
+    );
+  }
+
+  Future<List<ChatMessage>> insert(
+    _i1.Session session,
+    List<ChatMessage> rows, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.insert<ChatMessage>(
+      rows,
+      transaction: transaction,
+    );
+  }
+
+  Future<ChatMessage> insertRow(
+    _i1.Session session,
+    ChatMessage row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.insertRow<ChatMessage>(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  Future<List<ChatMessage>> update(
+    _i1.Session session,
+    List<ChatMessage> rows, {
+    _i1.ColumnSelections<ChatMessageTable>? columns,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.update<ChatMessage>(
+      rows,
+      columns: columns?.call(ChatMessage.t),
+      transaction: transaction,
+    );
+  }
+
+  Future<ChatMessage> updateRow(
+    _i1.Session session,
+    ChatMessage row, {
+    _i1.ColumnSelections<ChatMessageTable>? columns,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateRow<ChatMessage>(
+      row,
+      columns: columns?.call(ChatMessage.t),
+      transaction: transaction,
+    );
+  }
+
+  Future<List<ChatMessage>> delete(
+    _i1.Session session,
+    List<ChatMessage> rows, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.delete<ChatMessage>(
+      rows,
+      transaction: transaction,
+    );
+  }
+
+  Future<ChatMessage> deleteRow(
+    _i1.Session session,
+    ChatMessage row, {
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.deleteRow<ChatMessage>(
+      row,
+      transaction: transaction,
+    );
+  }
+
+  Future<List<ChatMessage>> deleteWhere(
+    _i1.Session session, {
+    required _i1.WhereExpressionBuilder<ChatMessageTable> where,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.deleteWhere<ChatMessage>(
+      where: where(ChatMessage.t),
+      transaction: transaction,
+    );
+  }
+
+  Future<int> count(
+    _i1.Session session, {
+    _i1.WhereExpressionBuilder<ChatMessageTable>? where,
+    int? limit,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.count<ChatMessage>(
+      where: where?.call(ChatMessage.t),
+      limit: limit,
+      transaction: transaction,
+    );
+  }
+}
