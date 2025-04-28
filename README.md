@@ -29,16 +29,37 @@ git clone -b Front-End-Branch https://github.com/Khaled34562/carrer-consulting-w
 
 # Demo 
 
-1. Open the Docker app
+1. Open the Docker app and let it run in the background
 
-2. Navigate to the server directory of your project and start the Docker containers:
+2.a If you're using VS code, click the "run pub get" to resolve dependencies. 
+
+2.b If you're using an IDE that doesn't prompt you to run pub get, you need to resolve dependencies manually:  
+
+In a terminal: 
+```
+cd root/carrerproj_client
+dart pub get --no-example
+
+cd ..
+cd carrerproj_server
+dart pub get --no-example
+
+cd ..
+cd carrerproj_flutter
+flutter pub get --no-example 
+```
+  
+
+3. In a new terminal, navigate to the server directory of your project and start the Docker containers:
 ```
 cd root/carrerproj_server 
 docker compose up --build --detach
 dart bin/main.dart --apply-migrations
 ```
 
-3. In a separate terminal, navigate to the Flutter app directory and run: 
+
+
+4. In a new terminal, navigate to the Flutter app directory and run: 
 ```
 cd root/carrerproj_flutter  
 flutter run
