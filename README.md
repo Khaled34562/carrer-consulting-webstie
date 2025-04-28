@@ -21,9 +21,11 @@ git clone -b Back-End-Branch https://github.com/Khaled34562/carrer-consulting-we
 ```
 git clone -b Front-End-Branch https://github.com/Khaled34562/carrer-consulting-webstie.git
 ```
-5. Return the backend files to the root directory
+5. Return the carrerproj_server and the carrerproj_client directories to the root directory
 
-6. Make sure all pubspec.yaml files are using the same serverpod version
+6. Return the rest of the files to the new carrer-consulting-website directory 
+
+7. Make sure all pubspec.yaml files are using the same serverpod version (3 pubspec.yaml files)
 
 # Demo 
 
