@@ -9,12 +9,12 @@ environment:
 dependencies:
   dart_openai: ^5.1.0
   mailer: ^6.4.1
-  serverpod: 2.3.1
-  serverpod_auth_server: 2.3.1
+  serverpod: 2.4.0
+  serverpod_auth_server: 2.4.0
   serverpod_cloud_storage_s3: any
 
 dev_dependencies:
   lints: '>=3.0.0 <6.0.0'
   test: '^1.24.2'
-  serverpod_test: 2.3.1
+  serverpod_test: 2.4.0
 
