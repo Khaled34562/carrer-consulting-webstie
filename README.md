@@ -56,7 +56,7 @@ git clone -b Front-End-Branch https://github.com/Khaled34562/carrer-consulting-w
 
 6. Return the rest of the files to the new carrer-consulting-website directory
 
-7. ** Make sure all pubspec.yaml files are using the same serverpod version (3 pubspec.yaml files) **
+7. **Make sure all pubspec.yaml files are using the same serverpod version (3 pubspec.yaml files)**
 
 
 # Demo
