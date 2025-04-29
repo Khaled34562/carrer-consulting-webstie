@@ -1,5 +1,4 @@
-2025/04/29-00:30:00.818 36c0 Log #3: 47 ops saved to Table #4 OK
-2025/04/29-00:30:00.822 36c0 Archiving C:\Users\ENG~1.ABB\AppData\Local\Temp\flutter_tools.d001f88c\flutter_tools_chrome_device.d1bb475\Default\Site Characteristics Database/000003.log: OK
-2025/04/29-00:30:00.823 36c0 Table #4: 47 entries OK
-2025/04/29-00:30:00.835 36c0 Archiving C:\Users\ENG~1.ABB\AppData\Local\Temp\flutter_tools.d001f88c\flutter_tools_chrome_device.d1bb475\Default\Site Characteristics Database/MANIFEST-000001: OK
-2025/04/29-00:30:00.880 36c0 **** Repaired leveldb C:\Users\ENG~1.ABB\AppData\Local\Temp\flutter_tools.d001f88c\flutter_tools_chrome_device.d1bb475\Default\Site Characteristics Database; recovered 1 files; 1432 bytes. Some data may have been lost. ****
+2025/04/29-05:58:38.766 42f8 Reusing MANIFEST C:\Users\ENG~1.ABB\AppData\Local\Temp\flutter_tools.fe95d816\flutter_tools_chrome_device.2bed1986\Default\Site Characteristics Database/MANIFEST-000001
+2025/04/29-05:58:38.768 42f8 Recovering log #6
+2025/04/29-05:58:38.769 42f8 Reusing old log C:\Users\ENG~1.ABB\AppData\Local\Temp\flutter_tools.fe95d816\flutter_tools_chrome_device.2bed1986\Default\Site Characteristics Database/000006.log 
+2025/04/29-05:58:38.786 42f8 Delete type=0 #3

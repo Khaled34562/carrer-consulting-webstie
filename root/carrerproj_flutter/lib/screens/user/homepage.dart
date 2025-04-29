@@ -4,6 +4,7 @@ import 'package:carrerproj_flutter/screens/user/widgets/messages.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/articles.dart';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:carrerproj_flutter/screens/landing.dart';
+import 'widgets/CVpage.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPageUser extends StatefulWidget {
@@ -26,6 +27,7 @@ class _DashboardPageState extends State<DashboardPageUser> {
     const DashboardContent(title: "Payments Transactions"),
     ArticleContent(),
     const DashboardContent(title: "Settings Panel"),
+    CVPage(),
   ];
 
   @override
@@ -168,6 +170,12 @@ class _DashboardPageState extends State<DashboardPageUser> {
                         label: "Settings",
                         isSelected: _selectedIndex == 6,
                         onTap: () => setState(() => _selectedIndex = 6),
+                      ),
+                      SidebarTab(
+                        icon: Icons.description,
+                        label: "CV",
+                        isSelected: _selectedIndex == 7,
+                        onTap: () => setState(() => _selectedIndex = 7),
                       ),
 
                       const Spacer(),
