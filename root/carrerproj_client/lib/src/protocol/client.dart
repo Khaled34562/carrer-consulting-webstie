@@ -16,9 +16,11 @@ import 'package:carrerproj_client/src/protocol/article_like.dart' as _i4;
 import 'package:carrerproj_client/src/protocol/chat_message.dart' as _i5;
 import 'package:carrerproj_client/src/protocol/comment.dart' as _i6;
 import 'package:carrerproj_client/src/protocol/credential.dart' as _i7;
-import 'package:carrerproj_client/src/protocol/user_profile.dart' as _i8;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i9;
-import 'protocol.dart' as _i10;
+import 'package:carrerproj_client/src/protocol/cv_generation.dart' as _i8;
+import 'package:carrerproj_client/src/protocol/cv_review.dart' as _i9;
+import 'package:carrerproj_client/src/protocol/user_profile.dart' as _i10;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i11;
+import 'protocol.dart' as _i12;
 
 /// Endpoint for handling article-related operations.
 /// {@category Endpoint}
@@ -487,6 +489,117 @@ class EndpointCredentials extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointCVGeneration extends _i1.EndpointRef {
+  EndpointCVGeneration(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'cVGeneration';
+
+  /// Generates a CV based on user's profile data
+  _i2.Future<_i8.CVGeneration> generateCV(
+    int userId,
+    dynamic CVGenerationStatus,
+  ) =>
+      caller.callServerEndpoint<_i8.CVGeneration>(
+        'cVGeneration',
+        'generateCV',
+        {
+          'userId': userId,
+          'CVGenerationStatus': CVGenerationStatus,
+        },
+      );
+
+  /// Gets all CV generations for a user
+  _i2.Future<List<_i8.CVGeneration>> getUserGenerations(
+    int userId, {
+    required int limit,
+    required int offset,
+  }) =>
+      caller.callServerEndpoint<List<_i8.CVGeneration>>(
+        'cVGeneration',
+        'getUserGenerations',
+        {
+          'userId': userId,
+          'limit': limit,
+          'offset': offset,
+        },
+      );
+
+  /// Gets a specific generation by ID
+  _i2.Future<_i8.CVGeneration?> getGeneration(int generationId) =>
+      caller.callServerEndpoint<_i8.CVGeneration?>(
+        'cVGeneration',
+        'getGeneration',
+        {'generationId': generationId},
+      );
+
+  /// Deletes a CV generation
+  _i2.Future<void> deleteGeneration(int generationId) =>
+      caller.callServerEndpoint<void>(
+        'cVGeneration',
+        'deleteGeneration',
+        {'generationId': generationId},
+      );
+}
+
+/// {@category Endpoint}
+class EndpointCVReview extends _i1.EndpointRef {
+  EndpointCVReview(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'cVReview';
+
+  /// Reviews a user's CV by sending it to OpenAI for feedback
+  /// Returns a CVReview object containing the feedback
+  _i2.Future<_i9.CVReview> reviewCV(
+    String cvText,
+    int userId,
+    dynamic CVReviewStatus,
+  ) =>
+      caller.callServerEndpoint<_i9.CVReview>(
+        'cVReview',
+        'reviewCV',
+        {
+          'cvText': cvText,
+          'userId': userId,
+          'CVReviewStatus': CVReviewStatus,
+        },
+      );
+
+  /// Gets all CV reviews for a user
+  _i2.Future<List<_i9.CVReview>> getUserReviews(
+    int userId, {
+    required int limit,
+    required int offset,
+  }) =>
+      caller.callServerEndpoint<List<_i9.CVReview>>(
+        'cVReview',
+        'getUserReviews',
+        {
+          'userId': userId,
+          'limit': limit,
+          'offset': offset,
+        },
+      );
+
+  /// Gets a specific review by ID
+  _i2.Future<_i9.CVReview?> getReview(int reviewId) =>
+      caller.callServerEndpoint<_i9.CVReview?>(
+        'cVReview',
+        'getReview',
+        {'reviewId': reviewId},
+      );
+
+  /// Deletes a CV review
+  _i2.Future<void> deleteReview(int reviewId) =>
+      caller.callServerEndpoint<void>(
+        'cVReview',
+        'deleteReview',
+        {'reviewId': reviewId},
+      );
+}
+
 /// Endpoint for handling user-related operations.
 /// {@category Endpoint}
 class EndpointUser extends _i1.EndpointRef {
@@ -503,8 +616,8 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? user = await client.user.getUserProfile(userId);
   /// ```
-  _i2.Future<_i8.UserProfile?> getUserProfile(int userId) =>
-      caller.callServerEndpoint<_i8.UserProfile?>(
+  _i2.Future<_i10.UserProfile?> getUserProfile(int userId) =>
+      caller.callServerEndpoint<_i10.UserProfile?>(
         'user',
         'getUserProfile',
         {'userId': userId},
@@ -518,9 +631,9 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? result = await client.user.updateUserProfile(UserProfile: updatedUserProfile);
   /// ```
-  _i2.Future<_i8.UserProfile?> updateUserProfile(
-          _i8.UserProfile updatedUserProfile) =>
-      caller.callServerEndpoint<_i8.UserProfile?>(
+  _i2.Future<_i10.UserProfile?> updateUserProfile(
+          _i10.UserProfile updatedUserProfile) =>
+      caller.callServerEndpoint<_i10.UserProfile?>(
         'user',
         'updateUserProfile',
         {'updatedUserProfile': updatedUserProfile},
@@ -534,9 +647,9 @@ class EndpointUser extends _i1.EndpointRef {
   /// ```dart
   /// UserProfile? result = await client.user.createUserProfile(UserProfile: newUserProfile);
   /// ```
-  _i2.Future<_i8.UserProfile?> createUserProfile(
-          _i8.UserProfile newUserProfile) =>
-      caller.callServerEndpoint<_i8.UserProfile?>(
+  _i2.Future<_i10.UserProfile?> createUserProfile(
+          _i10.UserProfile newUserProfile) =>
+      caller.callServerEndpoint<_i10.UserProfile?>(
         'user',
         'createUserProfile',
         {'newUserProfile': newUserProfile},
@@ -545,10 +658,10 @@ class EndpointUser extends _i1.EndpointRef {
 
 class Modules {
   Modules(Client client) {
-    auth = _i9.Caller(client);
+    auth = _i11.Caller(client);
   }
 
-  late final _i9.Caller auth;
+  late final _i11.Caller auth;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -567,7 +680,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i10.Protocol(),
+          _i12.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -582,6 +695,8 @@ class Client extends _i1.ServerpodClientShared {
     chat = EndpointChat(this);
     comment = EndpointComment(this);
     credentials = EndpointCredentials(this);
+    cVGeneration = EndpointCVGeneration(this);
+    cVReview = EndpointCVReview(this);
     user = EndpointUser(this);
     modules = Modules(this);
   }
@@ -596,6 +711,10 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointCredentials credentials;
 
+  late final EndpointCVGeneration cVGeneration;
+
+  late final EndpointCVReview cVReview;
+
   late final EndpointUser user;
 
   late final Modules modules;
@@ -607,6 +726,8 @@ class Client extends _i1.ServerpodClientShared {
         'chat': chat,
         'comment': comment,
         'credentials': credentials,
+        'cVGeneration': cVGeneration,
+        'cVReview': cVReview,
         'user': user,
       };
 

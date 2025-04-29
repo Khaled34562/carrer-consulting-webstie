@@ -17,17 +17,23 @@ import 'article_like.dart' as _i5;
 import 'chat_message.dart' as _i6;
 import 'comment.dart' as _i7;
 import 'credential.dart' as _i8;
-import 'user_profile.dart' as _i9;
-import 'package:carrerproj_server/src/generated/article.dart' as _i10;
-import 'package:carrerproj_server/src/generated/article_like.dart' as _i11;
-import 'package:carrerproj_server/src/generated/chat_message.dart' as _i12;
-import 'package:carrerproj_server/src/generated/comment.dart' as _i13;
-import 'package:carrerproj_server/src/generated/credential.dart' as _i14;
+import 'cv_generation.dart' as _i9;
+import 'cv_review.dart' as _i10;
+import 'user_profile.dart' as _i11;
+import 'package:carrerproj_server/src/generated/article.dart' as _i12;
+import 'package:carrerproj_server/src/generated/article_like.dart' as _i13;
+import 'package:carrerproj_server/src/generated/chat_message.dart' as _i14;
+import 'package:carrerproj_server/src/generated/comment.dart' as _i15;
+import 'package:carrerproj_server/src/generated/credential.dart' as _i16;
+import 'package:carrerproj_server/src/generated/cv_generation.dart' as _i17;
+import 'package:carrerproj_server/src/generated/cv_review.dart' as _i18;
 export 'article.dart';
 export 'article_like.dart';
 export 'chat_message.dart';
 export 'comment.dart';
 export 'credential.dart';
+export 'cv_generation.dart';
+export 'cv_review.dart';
 export 'user_profile.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -540,6 +546,200 @@ class Protocol extends _i1.SerializationManagerServer {
       managed: true,
     ),
     _i2.TableDefinition(
+      name: 'cv_generations',
+      dartName: 'CVGeneration',
+      schema: 'public',
+      module: 'carrerproj',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'cv_generations_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'cvId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userProfileSnapshot',
+          columnType: _i2.ColumnType.json,
+          isNullable: false,
+          dartType: 'protocol:UserProfile',
+        ),
+        _i2.ColumnDefinition(
+          name: 'generatedCV',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'status',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'error',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'generatedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'cv_generations_fk_0',
+          columns: ['userId'],
+          referenceTable: 'user_profile',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'cv_generations_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'cv_reviews',
+      dartName: 'CVReview',
+      schema: 'public',
+      module: 'carrerproj',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'cv_reviews_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'cvId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'originalCV',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'feedback',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'targetLanguage',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'targetCountry',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'status',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'error',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'reviewedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'cv_reviews_fk_0',
+          columns: ['userId'],
+          referenceTable: 'user_profile',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'cv_reviews_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
       name: 'user_profile',
       dartName: 'UserProfile',
       schema: 'public',
@@ -698,8 +898,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i8.Credentials) {
       return _i8.Credentials.fromJson(data) as T;
     }
-    if (t == _i9.UserProfile) {
-      return _i9.UserProfile.fromJson(data) as T;
+    if (t == _i9.CVGeneration) {
+      return _i9.CVGeneration.fromJson(data) as T;
+    }
+    if (t == _i10.CVReview) {
+      return _i10.CVReview.fromJson(data) as T;
+    }
+    if (t == _i11.UserProfile) {
+      return _i11.UserProfile.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Article?>()) {
       return (data != null ? _i4.Article.fromJson(data) : null) as T;
@@ -716,35 +922,50 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i8.Credentials?>()) {
       return (data != null ? _i8.Credentials.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i9.UserProfile?>()) {
-      return (data != null ? _i9.UserProfile.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i9.CVGeneration?>()) {
+      return (data != null ? _i9.CVGeneration.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i10.CVReview?>()) {
+      return (data != null ? _i10.CVReview.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i11.UserProfile?>()) {
+      return (data != null ? _i11.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i10.Article>) {
-      return (data as List).map((e) => deserialize<_i10.Article>(e)).toList()
+    if (t == List<_i12.Article>) {
+      return (data as List).map((e) => deserialize<_i12.Article>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i11.ArticleLike>) {
+    if (t == List<_i13.ArticleLike>) {
       return (data as List)
-          .map((e) => deserialize<_i11.ArticleLike>(e))
+          .map((e) => deserialize<_i13.ArticleLike>(e))
           .toList() as dynamic;
     }
-    if (t == List<_i12.ChatMessage>) {
+    if (t == List<_i14.ChatMessage>) {
       return (data as List)
-          .map((e) => deserialize<_i12.ChatMessage>(e))
+          .map((e) => deserialize<_i14.ChatMessage>(e))
           .toList() as dynamic;
     }
-    if (t == List<_i13.Comment>) {
-      return (data as List).map((e) => deserialize<_i13.Comment>(e)).toList()
+    if (t == List<_i15.Comment>) {
+      return (data as List).map((e) => deserialize<_i15.Comment>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i14.Credentials>) {
+    if (t == List<_i16.Credentials>) {
       return (data as List)
-          .map((e) => deserialize<_i14.Credentials>(e))
+          .map((e) => deserialize<_i16.Credentials>(e))
           .toList() as dynamic;
+    }
+    if (t == List<_i17.CVGeneration>) {
+      return (data as List)
+          .map((e) => deserialize<_i17.CVGeneration>(e))
+          .toList() as dynamic;
+    }
+    if (t == List<_i18.CVReview>) {
+      return (data as List).map((e) => deserialize<_i18.CVReview>(e)).toList()
+          as dynamic;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -774,7 +995,13 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i8.Credentials) {
       return 'Credentials';
     }
-    if (data is _i9.UserProfile) {
+    if (data is _i9.CVGeneration) {
+      return 'CVGeneration';
+    }
+    if (data is _i10.CVReview) {
+      return 'CVReview';
+    }
+    if (data is _i11.UserProfile) {
       return 'UserProfile';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -809,8 +1036,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'Credentials') {
       return deserialize<_i8.Credentials>(data['data']);
     }
+    if (dataClassName == 'CVGeneration') {
+      return deserialize<_i9.CVGeneration>(data['data']);
+    }
+    if (dataClassName == 'CVReview') {
+      return deserialize<_i10.CVReview>(data['data']);
+    }
     if (dataClassName == 'UserProfile') {
-      return deserialize<_i9.UserProfile>(data['data']);
+      return deserialize<_i11.UserProfile>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -848,8 +1081,12 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i7.Comment.t;
       case _i8.Credentials:
         return _i8.Credentials.t;
-      case _i9.UserProfile:
-        return _i9.UserProfile.t;
+      case _i9.CVGeneration:
+        return _i9.CVGeneration.t;
+      case _i10.CVReview:
+        return _i10.CVReview.t;
+      case _i11.UserProfile:
+        return _i11.UserProfile.t;
     }
     return null;
   }

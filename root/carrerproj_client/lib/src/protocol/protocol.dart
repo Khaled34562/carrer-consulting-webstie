@@ -15,18 +15,24 @@ import 'article_like.dart' as _i3;
 import 'chat_message.dart' as _i4;
 import 'comment.dart' as _i5;
 import 'credential.dart' as _i6;
-import 'user_profile.dart' as _i7;
-import 'package:carrerproj_client/src/protocol/article.dart' as _i8;
-import 'package:carrerproj_client/src/protocol/article_like.dart' as _i9;
-import 'package:carrerproj_client/src/protocol/chat_message.dart' as _i10;
-import 'package:carrerproj_client/src/protocol/comment.dart' as _i11;
-import 'package:carrerproj_client/src/protocol/credential.dart' as _i12;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i13;
+import 'cv_generation.dart' as _i7;
+import 'cv_review.dart' as _i8;
+import 'user_profile.dart' as _i9;
+import 'package:carrerproj_client/src/protocol/article.dart' as _i10;
+import 'package:carrerproj_client/src/protocol/article_like.dart' as _i11;
+import 'package:carrerproj_client/src/protocol/chat_message.dart' as _i12;
+import 'package:carrerproj_client/src/protocol/comment.dart' as _i13;
+import 'package:carrerproj_client/src/protocol/credential.dart' as _i14;
+import 'package:carrerproj_client/src/protocol/cv_generation.dart' as _i15;
+import 'package:carrerproj_client/src/protocol/cv_review.dart' as _i16;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i17;
 export 'article.dart';
 export 'article_like.dart';
 export 'chat_message.dart';
 export 'comment.dart';
 export 'credential.dart';
+export 'cv_generation.dart';
+export 'cv_review.dart';
 export 'user_profile.dart';
 export 'client.dart';
 
@@ -58,8 +64,14 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i6.Credentials) {
       return _i6.Credentials.fromJson(data) as T;
     }
-    if (t == _i7.UserProfile) {
-      return _i7.UserProfile.fromJson(data) as T;
+    if (t == _i7.CVGeneration) {
+      return _i7.CVGeneration.fromJson(data) as T;
+    }
+    if (t == _i8.CVReview) {
+      return _i8.CVReview.fromJson(data) as T;
+    }
+    if (t == _i9.UserProfile) {
+      return _i9.UserProfile.fromJson(data) as T;
     }
     if (t == _i1.getType<_i2.Article?>()) {
       return (data != null ? _i2.Article.fromJson(data) : null) as T;
@@ -76,37 +88,53 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i6.Credentials?>()) {
       return (data != null ? _i6.Credentials.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i7.UserProfile?>()) {
-      return (data != null ? _i7.UserProfile.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.CVGeneration?>()) {
+      return (data != null ? _i7.CVGeneration.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i8.CVReview?>()) {
+      return (data != null ? _i8.CVReview.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i9.UserProfile?>()) {
+      return (data != null ? _i9.UserProfile.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i8.Article>) {
-      return (data as List).map((e) => deserialize<_i8.Article>(e)).toList()
+    if (t == List<_i10.Article>) {
+      return (data as List).map((e) => deserialize<_i10.Article>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i9.ArticleLike>) {
-      return (data as List).map((e) => deserialize<_i9.ArticleLike>(e)).toList()
-          as dynamic;
-    }
-    if (t == List<_i10.ChatMessage>) {
+    if (t == List<_i11.ArticleLike>) {
       return (data as List)
-          .map((e) => deserialize<_i10.ChatMessage>(e))
+          .map((e) => deserialize<_i11.ArticleLike>(e))
           .toList() as dynamic;
     }
-    if (t == List<_i11.Comment>) {
-      return (data as List).map((e) => deserialize<_i11.Comment>(e)).toList()
+    if (t == List<_i12.ChatMessage>) {
+      return (data as List)
+          .map((e) => deserialize<_i12.ChatMessage>(e))
+          .toList() as dynamic;
+    }
+    if (t == List<_i13.Comment>) {
+      return (data as List).map((e) => deserialize<_i13.Comment>(e)).toList()
           as dynamic;
     }
-    if (t == List<_i12.Credentials>) {
+    if (t == List<_i14.Credentials>) {
       return (data as List)
-          .map((e) => deserialize<_i12.Credentials>(e))
+          .map((e) => deserialize<_i14.Credentials>(e))
           .toList() as dynamic;
+    }
+    if (t == List<_i15.CVGeneration>) {
+      return (data as List)
+          .map((e) => deserialize<_i15.CVGeneration>(e))
+          .toList() as dynamic;
+    }
+    if (t == List<_i16.CVReview>) {
+      return (data as List).map((e) => deserialize<_i16.CVReview>(e)).toList()
+          as dynamic;
     }
     try {
-      return _i13.Protocol().deserialize<T>(data, t);
+      return _i17.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -130,10 +158,16 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i6.Credentials) {
       return 'Credentials';
     }
-    if (data is _i7.UserProfile) {
+    if (data is _i7.CVGeneration) {
+      return 'CVGeneration';
+    }
+    if (data is _i8.CVReview) {
+      return 'CVReview';
+    }
+    if (data is _i9.UserProfile) {
       return 'UserProfile';
     }
-    className = _i13.Protocol().getClassNameForObject(data);
+    className = _i17.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
@@ -161,12 +195,18 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName == 'Credentials') {
       return deserialize<_i6.Credentials>(data['data']);
     }
+    if (dataClassName == 'CVGeneration') {
+      return deserialize<_i7.CVGeneration>(data['data']);
+    }
+    if (dataClassName == 'CVReview') {
+      return deserialize<_i8.CVReview>(data['data']);
+    }
     if (dataClassName == 'UserProfile') {
-      return deserialize<_i7.UserProfile>(data['data']);
+      return deserialize<_i9.UserProfile>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth.')) {
       data['className'] = dataClassName.substring(15);
-      return _i13.Protocol().deserializeByClassName(data);
+      return _i17.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }
