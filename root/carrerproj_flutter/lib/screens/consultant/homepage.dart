@@ -3,6 +3,9 @@ import 'package:carrerproj_flutter/screens/consultant/widgets/articlecontent.dar
 import 'package:carrerproj_flutter/screens/consultant/widgets/profilecontent.dart';
 import 'package:carrerproj_flutter/screens/consultant/widgets/messages.dart';
 import 'package:carrerproj_flutter/screens/consultant/widgets/credentials.dart';
+import 'package:carrerproj_flutter/screens/user/widgets/help.dart';
+import 'package:carrerproj_flutter/screens/user/widgets/payments.dart';
+
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:flutter/material.dart';
 import 'package:carrerproj_flutter/screens/landing.dart';
@@ -24,9 +27,9 @@ class _DashboardPageState extends State<DashboardPage> {
     ProfileContent(),
     CredentialsPage(),
     MessagesContent(),
-    const DashboardContent(title: "Payments Transactions"),
+    PaymentsPage(),
     ArticleContent(),
-    const DashboardContent(title: "Settings Panel"),
+    HelpPage(), 
   ];
 
   @override
@@ -164,27 +167,22 @@ class _DashboardPageState extends State<DashboardPage> {
                         isSelected: _selectedIndex == 5,
                         onTap: () => setState(() => _selectedIndex = 5),
                       ),
+                      
                       SidebarTab(
                         icon: Icons.library_books,
                         label: "Articles",
                         isSelected: _selectedIndex == 6,
                         onTap: () => setState(() => _selectedIndex = 6),
                       ),
-                      SidebarTab(
-                        icon: Icons.settings,
-                        label: "Settings",
-                        isSelected: _selectedIndex == 7,
-                        onTap: () => setState(() => _selectedIndex = 7),
-                      ),
-
+                      
                       const Spacer(),
 
                       /// Help Button
                       SidebarTab(
                         icon: Icons.help_outline,
-                        label: "Help",
-                        isSelected: false,
-                        onTap: () {},
+                        label: "help",
+                        isSelected: _selectedIndex == 7,
+                        onTap: () => setState(() => _selectedIndex = 7),
                       ),
                     ],
                   ),
