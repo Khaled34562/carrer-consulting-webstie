@@ -56,6 +56,9 @@ abstract class ChatMessage implements _i1.SerializableModel {
 
   bool isRead;
 
+  /// Returns a shallow copy of this [ChatMessage]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   ChatMessage copyWith({
     int? id,
     int? senderId,
@@ -101,6 +104,9 @@ class _ChatMessageImpl extends ChatMessage {
           isRead: isRead,
         );
 
+  /// Returns a shallow copy of this [ChatMessage]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   ChatMessage copyWith({
     Object? id = _Undefined,

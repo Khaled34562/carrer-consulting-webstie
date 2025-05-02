@@ -1,0 +1,13 @@
+class: CVReview
+table: cv_reviews
+fields:
+  cvId: int
+  userId: int, relation(parent=user_profile)
+  originalCV: String
+  feedback: String?
+  targetLanguage: String?
+  targetCountry: String?
+  status: String?
+  error: String?
+  createdAt: DateTime
+  reviewedAt: DateTime?

@@ -84,6 +84,9 @@ abstract class Credentials implements _i1.SerializableModel {
 
   String? status;
 
+  /// Returns a shallow copy of this [Credentials]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   Credentials copyWith({
     int? id,
     int? userId,
@@ -149,6 +152,9 @@ class _CredentialsImpl extends Credentials {
           status: status,
         );
 
+  /// Returns a shallow copy of this [Credentials]
+  /// with some or all fields replaced by the given arguments.
+  @_i1.useResult
   @override
   Credentials copyWith({
     Object? id = _Undefined,

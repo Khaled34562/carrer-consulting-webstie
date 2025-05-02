@@ -1,0 +1,11 @@
+class: CVGeneration
+table: cv_generations
+fields:
+  cvId: int
+  userId: int, relation(parent=user_profile)
+  userProfileSnapshot: UserProfile
+  generatedCV: String?
+  status: String?
+  error: String?
+  createdAt: DateTime
+  generatedAt: DateTime?

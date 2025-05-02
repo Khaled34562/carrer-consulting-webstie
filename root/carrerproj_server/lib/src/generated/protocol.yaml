@@ -30,6 +30,16 @@ credentials:
   - updateCredentialWithFile:
   - updateCredential:
   - deleteCredential:
+cVGeneration:
+  - generateCV:
+  - getUserGenerations:
+  - getGeneration:
+  - deleteGeneration:
+cVReview:
+  - reviewCV:
+  - getUserReviews:
+  - getReview:
+  - deleteReview:
 user:
   - getUserProfile:
   - updateUserProfile:

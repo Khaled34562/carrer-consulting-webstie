@@ -1,7 +1,8 @@
+import 'package:carrerproj_client/carrerproj_client.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
+import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class ProfileContent extends StatefulWidget {
   @override
@@ -10,109 +11,179 @@ class ProfileContent extends StatefulWidget {
 
 class _ProfileContentState extends State<ProfileContent> {
   bool isEditing = false;
+  int? _profileId;
 
   // Controllers for text fields
   TextEditingController fullNameController = TextEditingController();
   TextEditingController nickNameController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController languageController = TextEditingController();
-  TextEditingController timeZoneController = TextEditingController();
-  TextEditingController eduController = TextEditingController();
+  TextEditingController dateOfBirthController = TextEditingController();
+  TextEditingController educationLevelController = TextEditingController();
+
+  String? selectedGender;
+  String? selectedCountry;
+  List<String> selectedLanguages = [];
+  String? selectedTimeZone;
+  String? selectedEducationLevel;
+  DateTime? dateOfBirth;
+
+  final List<String> genderOptions = ['Male', 'Female'];
+  final List<String> countryOptions = ['Saudi Arabia', 'USA', 'Canada', 'UK', 'India', 'Germany'];
+  final List<String> languageOptions = ['Arabic', 'English', 'Spanish', 'French', 'German'];
+  final List<String> timeZoneOptions = ['UTC-5', 'UTC+0', 'UTC+3', 'UTC+9'];
+  final List<String> educationLevelOptions = ['High School', 'Bachelor', 'Master', 'PhD'];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProfileHeader(),
-                  SizedBox(height: 20),
-                  ProfileForm(
-                    isEditing: isEditing,
-                    fullNameController: fullNameController,
-                    nickNameController: nickNameController,
-                    genderController: genderController,
-                    countryController: countryController,
-                    languageController: languageController,
-                    timeZoneController: timeZoneController,
-                    eduController: eduController,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isEditing = !isEditing;
-                      });
-                    },
-                    child: Text(isEditing ? 'Save' : 'Edit'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    _loadUserProfile();
   }
-}
 
-class ProfileHeader extends StatefulWidget {
-  @override
-  _ProfileHeaderState createState() => _ProfileHeaderState();
-}
+  Future<void> _loadUserProfile() async {
+    final userId = sessionManager.signedInUser!.id;
+    final profile = await client.user.getUserProfile(userId!);
 
-class _ProfileHeaderState extends State<ProfileHeader> {
-  File? _image;
-  String? _imagePath;
-
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+    if (profile != null) {
       setState(() {
-        _image = File(pickedFile.path);
-        _imagePath = pickedFile.path;
+        _profileId = profile.id;
+        fullNameController.text = profile.fullName;
+        nickNameController.text = profile.nickname;
+        selectedGender = genderOptions.contains(profile.gender) ? profile.gender : null;
+        selectedCountry = countryOptions.contains(profile.country) ? profile.country : null;
+        selectedLanguages = profile.languages.where((lang) => languageOptions.contains(lang)).toList();
+        selectedTimeZone = timeZoneOptions.contains(profile.timezone) ? profile.timezone : null;
+        dateOfBirth = profile.dateOfBirth;
+        dateOfBirthController.text = dateOfBirth != null
+            ? "${dateOfBirth!.day}/${dateOfBirth!.month}/${dateOfBirth!.year}"
+            : '';
+        selectedEducationLevel = educationLevelOptions.contains(profile.educationLevel) ? profile.educationLevel : null;
+        educationLevelController.text = selectedEducationLevel ?? '';
+      });
+    }
+  }
+
+  Future<void> _saveProfile() async {
+    final userId = sessionManager.signedInUser!.id;
+    final profile = await client.user.getUserProfile(userId!);
+
+    final updatedUser = UserProfile(
+      id: _profileId,
+      userId: userId,
+      role: profile?.role ?? 'user',
+      fullName: fullNameController.text,
+      nickname: nickNameController.text,
+      dateOfBirth: dateOfBirth ?? DateTime.now(),
+      gender: selectedGender ?? '',
+      country: selectedCountry ?? '',
+      languages: selectedLanguages,
+      timezone: selectedTimeZone ?? '',
+      educationLevel: selectedEducationLevel,
+      profileImage: profile?.profileImage,
+      creditCardInfo: profile?.creditCardInfo,
+    );
+
+    UserProfile? result;
+    if (profile != null) {
+      result = await client.user.updateUserProfile(updatedUser);
+    } else {
+      result = await client.user.createUserProfile(updatedUser);
+    }
+
+    if (result != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile saved successfully!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save profile.')),
+      );
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: dateOfBirth ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != dateOfBirth) {
+      setState(() {
+        dateOfBirth = picked;
+        dateOfBirthController.text = "${picked.day}/${picked.month}/${picked.year}";
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Stack(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Row(
           children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey[400], // Placeholder
-              backgroundImage: _imagePath != null ? FileImage(File(_imagePath!)) : null,
-              child: _imagePath == null ? Icon(Icons.person, color: Colors.white) : null,
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: InkWell(
-                onTap: _pickImage,
-                child: CircleAvatar(
-                  radius: 15,
-                  backgroundColor: Colors.blue,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                    size: 15,
-                  ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProfileHeader(sessionManager: sessionManager),
+                    SizedBox(height: 20),
+                    ProfileForm(
+                      isEditing: isEditing,
+                      fullNameController: fullNameController,
+                      nickNameController: nickNameController,
+                      dateOfBirthController: dateOfBirthController,
+                      educationLevelController: educationLevelController,
+                      selectedGender: selectedGender,
+                      selectedCountry: selectedCountry,
+                      selectedLanguages: selectedLanguages,
+                      selectedTimeZone: selectedTimeZone,
+                      selectedEducationLevel: selectedEducationLevel,
+                      onGenderChanged: (value) => setState(() => selectedGender = value),
+                      onCountryChanged: (value) => setState(() => selectedCountry = value),
+                      onLanguagesChanged: (values) => setState(() => selectedLanguages = values.cast<String>()),
+                      onTimeZoneChanged: (value) => setState(() => selectedTimeZone = value),
+                      onEducationChanged: (value) => setState(() => selectedEducationLevel = value),
+                      onDateTap: () => _selectDate(context),
+                      genderOptions: genderOptions,
+                      countryOptions: countryOptions,
+                      languageOptions: languageOptions,
+                      timeZoneOptions: timeZoneOptions,
+                      educationLevelOptions: educationLevelOptions,
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (isEditing) {
+                          await _saveProfile();
+                        }
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
+                      child: Text(isEditing ? 'Save' : 'Edit'),
+                    ),
+                  ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ProfileHeader extends StatelessWidget {
+  final SessionManager sessionManager;
+
+  ProfileHeader({required this.sessionManager});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        UserImageButton(sessionManager: sessionManager),
         SizedBox(width: 20),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,21 +204,47 @@ class ProfileForm extends StatelessWidget {
   final bool isEditing;
   final TextEditingController fullNameController;
   final TextEditingController nickNameController;
-  final TextEditingController genderController;
-  final TextEditingController countryController;
-  final TextEditingController languageController;
-  final TextEditingController timeZoneController;
-  final TextEditingController eduController;
+  final TextEditingController dateOfBirthController;
+  final TextEditingController educationLevelController;
+  final String? selectedGender;
+  final String? selectedCountry;
+  final List<String> selectedLanguages;
+  final String? selectedTimeZone;
+  final String? selectedEducationLevel;
+  final Function(String?) onGenderChanged;
+  final Function(String?) onCountryChanged;
+  final void Function(List<String>) onLanguagesChanged;
+  final Function(String?) onTimeZoneChanged;
+  final Function(String?) onEducationChanged;
+  final VoidCallback onDateTap;
+  final List<String> genderOptions;
+  final List<String> countryOptions;
+  final List<String> languageOptions;
+  final List<String> timeZoneOptions;
+  final List<String> educationLevelOptions;
 
   ProfileForm({
     required this.isEditing,
     required this.fullNameController,
     required this.nickNameController,
-    required this.genderController,
-    required this.countryController,
-    required this.languageController,
-    required this.timeZoneController,
-    required this.eduController,
+    required this.dateOfBirthController,
+    required this.educationLevelController,
+    required this.selectedGender,
+    required this.selectedCountry,
+    required this.selectedLanguages,
+    required this.selectedTimeZone,
+    required this.selectedEducationLevel,
+    required this.onGenderChanged,
+    required this.onCountryChanged,
+    required this.onLanguagesChanged,
+    required this.onTimeZoneChanged,
+    required this.onEducationChanged,
+    required this.onDateTap,
+    required this.genderOptions,
+    required this.countryOptions,
+    required this.languageOptions,
+    required this.timeZoneOptions,
+    required this.educationLevelOptions,
   });
 
   @override
@@ -168,36 +265,56 @@ class ProfileForm extends StatelessWidget {
         ),
         SizedBox(height: 20),
         TextField(
-          controller: genderController,
+          controller: dateOfBirthController,
           enabled: isEditing,
+          readOnly: true,
+          onTap: isEditing ? onDateTap : null,
+          decoration: InputDecoration(
+            labelText: 'Date of Birth',
+            suffixIcon: Icon(Icons.calendar_today),
+          ),
+        ),
+        SizedBox(height: 20),
+        DropdownButtonFormField(
+          value: selectedGender,
+          items: genderOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onGenderChanged : null,
           decoration: InputDecoration(labelText: 'Gender'),
         ),
         SizedBox(height: 20),
-        TextField(
-          controller: countryController,
-          enabled: isEditing,
+        DropdownButtonFormField(
+          value: selectedCountry,
+          items: countryOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onCountryChanged : null,
           decoration: InputDecoration(labelText: 'Country'),
         ),
         SizedBox(height: 20),
-        TextField(
-          controller: languageController,
-          enabled: isEditing,
-          decoration: InputDecoration(labelText: 'Language'),
+        MultiSelectDialogField(
+          items: languageOptions.map((e) => MultiSelectItem<String>(e, e)).toList(),
+          initialValue: selectedLanguages,
+          onConfirm: onLanguagesChanged,
+          title: Text('Select Languages'),
+          buttonText: Text('Select Languages'),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5),
+          ),
         ),
         SizedBox(height: 20),
-        TextField(
-          controller: timeZoneController,
-          enabled: isEditing,
+        DropdownButtonFormField(
+          value: selectedTimeZone,
+          items: timeZoneOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onTimeZoneChanged : null,
           decoration: InputDecoration(labelText: 'Time Zone'),
         ),
         SizedBox(height: 20),
-        TextField(
-          controller: eduController,
-          enabled: isEditing,
+        DropdownButtonFormField(
+          value: selectedEducationLevel,
+          items: educationLevelOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onEducationChanged : null,
           decoration: InputDecoration(labelText: 'Education Level'),
         ),
       ],
     );
   }
 }
-

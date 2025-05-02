@@ -19,7 +19,9 @@ import 'package:carrerproj_server/src/generated/article_like.dart' as _i5;
 import 'package:carrerproj_server/src/generated/chat_message.dart' as _i6;
 import 'package:carrerproj_server/src/generated/comment.dart' as _i7;
 import 'package:carrerproj_server/src/generated/credential.dart' as _i8;
-import 'package:carrerproj_server/src/generated/user_profile.dart' as _i9;
+import 'package:carrerproj_server/src/generated/cv_generation.dart' as _i9;
+import 'package:carrerproj_server/src/generated/cv_review.dart' as _i10;
+import 'package:carrerproj_server/src/generated/user_profile.dart' as _i11;
 import 'package:carrerproj_server/src/generated/protocol.dart';
 import 'package:carrerproj_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -69,12 +71,15 @@ export 'package:serverpod_test/serverpod_test_public_exports.dart';
 /// [testGroupTagsOverride] By default Serverpod test tools tags the `withServerpod` test group with `"integration"`.
 /// This is to provide a simple way to only run unit or integration tests.
 /// This property allows this tag to be overridden to something else. Defaults to `['integration']`.
+///
+/// [experimentalFeatures] Optionally specify experimental features. See [Serverpod] for more information.
 @_i1.isTestGroup
 void withServerpod(
   String testGroupName,
   _i1.TestClosure<TestEndpoints> testClosure, {
   bool? applyMigrations,
   bool? enableSessionLogging,
+  _i2.ExperimentalFeatures? experimentalFeatures,
   _i1.RollbackDatabase? rollbackDatabase,
   String? runMode,
   _i2.ServerpodLoggingMode? serverpodLoggingMode,
@@ -91,6 +96,7 @@ void withServerpod(
       applyMigrations: applyMigrations,
       isDatabaseEnabled: true,
       serverpodLoggingMode: serverpodLoggingMode,
+      experimentalFeatures: experimentalFeatures,
     ),
     maybeRollbackDatabase: rollbackDatabase,
     maybeEnableSessionLogging: enableSessionLogging,
@@ -109,6 +115,10 @@ class TestEndpoints {
   late final _CommentEndpoint comment;
 
   late final _CredentialsEndpoint credentials;
+
+  late final _CVGenerationEndpoint cVGeneration;
+
+  late final _CVReviewEndpoint cVReview;
 
   late final _UserEndpoint user;
 }
@@ -137,6 +147,14 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     credentials = _CredentialsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    cVGeneration = _CVGenerationEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    cVReview = _CVReviewEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1003,6 +1021,276 @@ class _CredentialsEndpoint {
   }
 }
 
+class _CVGenerationEndpoint {
+  _CVGenerationEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i9.CVGeneration> generateCV(
+    _i1.TestSessionBuilder sessionBuilder,
+    int userId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVGeneration',
+        method: 'generateCV',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVGeneration',
+          methodName: 'generateCV',
+          parameters: _i1.testObjectToJson({'userId': userId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i9.CVGeneration>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i9.CVGeneration>> getUserGenerations(
+    _i1.TestSessionBuilder sessionBuilder,
+    int userId, {
+    required int limit,
+    required int offset,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVGeneration',
+        method: 'getUserGenerations',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVGeneration',
+          methodName: 'getUserGenerations',
+          parameters: _i1.testObjectToJson({
+            'userId': userId,
+            'limit': limit,
+            'offset': offset,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i9.CVGeneration>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i9.CVGeneration?> getGeneration(
+    _i1.TestSessionBuilder sessionBuilder,
+    int generationId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVGeneration',
+        method: 'getGeneration',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVGeneration',
+          methodName: 'getGeneration',
+          parameters: _i1.testObjectToJson({'generationId': generationId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i9.CVGeneration?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<void> deleteGeneration(
+    _i1.TestSessionBuilder sessionBuilder,
+    int generationId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVGeneration',
+        method: 'deleteGeneration',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVGeneration',
+          methodName: 'deleteGeneration',
+          parameters: _i1.testObjectToJson({'generationId': generationId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _CVReviewEndpoint {
+  _CVReviewEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i10.CVReview> reviewCV(
+    _i1.TestSessionBuilder sessionBuilder,
+    String cvText,
+    int userId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVReview',
+        method: 'reviewCV',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVReview',
+          methodName: 'reviewCV',
+          parameters: _i1.testObjectToJson({
+            'cvText': cvText,
+            'userId': userId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i10.CVReview>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i10.CVReview>> getUserReviews(
+    _i1.TestSessionBuilder sessionBuilder,
+    int userId, {
+    required int limit,
+    required int offset,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVReview',
+        method: 'getUserReviews',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVReview',
+          methodName: 'getUserReviews',
+          parameters: _i1.testObjectToJson({
+            'userId': userId,
+            'limit': limit,
+            'offset': offset,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i10.CVReview>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i10.CVReview?> getReview(
+    _i1.TestSessionBuilder sessionBuilder,
+    int reviewId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVReview',
+        method: 'getReview',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVReview',
+          methodName: 'getReview',
+          parameters: _i1.testObjectToJson({'reviewId': reviewId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i10.CVReview?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<void> deleteReview(
+    _i1.TestSessionBuilder sessionBuilder,
+    int reviewId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'cVReview',
+        method: 'deleteReview',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'cVReview',
+          methodName: 'deleteReview',
+          parameters: _i1.testObjectToJson({'reviewId': reviewId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _UserEndpoint {
   _UserEndpoint(
     this._endpointDispatch,
@@ -1013,7 +1301,7 @@ class _UserEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i9.UserProfile?> getUserProfile(
+  _i3.Future<_i11.UserProfile?> getUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
     int userId,
   ) async {
@@ -1034,7 +1322,7 @@ class _UserEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i9.UserProfile?>);
+        ) as _i3.Future<_i11.UserProfile?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1042,9 +1330,9 @@ class _UserEndpoint {
     });
   }
 
-  _i3.Future<_i9.UserProfile?> updateUserProfile(
+  _i3.Future<_i11.UserProfile?> updateUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
-    _i9.UserProfile updatedUserProfile,
+    _i11.UserProfile updatedUserProfile,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1064,7 +1352,7 @@ class _UserEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i9.UserProfile?>);
+        ) as _i3.Future<_i11.UserProfile?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1072,9 +1360,9 @@ class _UserEndpoint {
     });
   }
 
-  _i3.Future<_i9.UserProfile?> createUserProfile(
+  _i3.Future<_i11.UserProfile?> createUserProfile(
     _i1.TestSessionBuilder sessionBuilder,
-    _i9.UserProfile newUserProfile,
+    _i11.UserProfile newUserProfile,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1093,7 +1381,7 @@ class _UserEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i9.UserProfile?>);
+        ) as _i3.Future<_i11.UserProfile?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

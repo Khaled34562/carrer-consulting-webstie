@@ -2,9 +2,13 @@ import 'package:carrerproj_flutter/screens/user/widgets/dashboardcontent.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/profilecontent.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/messages.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/articles.dart';
+import 'package:carrerproj_flutter/screens/user/widgets/payments.dart';
+import 'package:carrerproj_flutter/screens/user/widgets/CVpage.dart';
+
+import 'package:carrerproj_flutter/screens/user/widgets/help.dart';
+
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:carrerproj_flutter/screens/landing.dart';
-import 'widgets/CVpage.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPageUser extends StatefulWidget {
@@ -24,10 +28,11 @@ class _DashboardPageState extends State<DashboardPageUser> {
     const DashboardContent(title: "Calendar View"),
     ProfileContent(),
     MessagesContent(),
-    const DashboardContent(title: "Payments Transactions"),
+    PaymentsPage(), 
     ArticleContent(),
-    const DashboardContent(title: "Settings Panel"),
     CVPage(),
+    HelpPage(), 
+
   ];
 
   @override
@@ -166,27 +171,22 @@ class _DashboardPageState extends State<DashboardPageUser> {
                         onTap: () => setState(() => _selectedIndex = 5),
                       ),
                       SidebarTab(
-                        icon: Icons.settings,
-                        label: "Settings",
-                        isSelected: _selectedIndex == 6,
-                        onTap: () => setState(() => _selectedIndex = 6),
-                      ),
-                      SidebarTab(
                         icon: Icons.description,
                         label: "CV",
-                        isSelected: _selectedIndex == 7,
-                        onTap: () => setState(() => _selectedIndex = 7),
+                        isSelected: _selectedIndex == 6,
+                        onTap: () => setState(() => _selectedIndex = 6),
                       ),
 
                       const Spacer(),
 
-                      /// Help Button
                       SidebarTab(
                         icon: Icons.help_outline,
                         label: "Help",
-                        isSelected: false,
-                        onTap: () {},
+                        isSelected: _selectedIndex == 7,
+                        onTap: () => setState(() => _selectedIndex = 7),
                       ),
+
+                      
                     ],
                   ),
                 ),

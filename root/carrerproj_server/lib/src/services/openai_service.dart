@@ -90,7 +90,7 @@ class OpenAIService {
       return content;
     } else if (content is List) {
       return content
-          .whereType<Map<String, dynamic>>()
+          ?.whereType<Map<String, dynamic>>()
           .map((item) => _parseContentItem(item))
           .join(' ');
     }

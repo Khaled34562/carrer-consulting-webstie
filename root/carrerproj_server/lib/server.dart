@@ -22,7 +22,7 @@ void run(List<String> args) async {
 
   // Get API key from secure config
   final openaiApiKey = pod.config.get('openai_api_key') ??
-      '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';
+      'Your-key';
   if (openaiApiKey.isEmpty) {
     throw Exception('Add OpenAI key to config/config.yaml');
   }
@@ -98,8 +98,8 @@ void run(List<String> args) async {
     serverpod: pod,
     storageId: 'public',
     public: true,
-    region: 'us-west-2', // replace with your AWS region
-    bucket: 'your-bucket-name', // replace with your bucket name
+    region: 'us-east-1', // replace with your AWS region
+    bucket: 'your-terraform-state-bucket-ahmed1178', // replace with your bucket name
     // publicHost: 'storage.yourdomain.com', // optional: if you have CloudFront set up
   ));
 
