@@ -60,7 +60,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
   }
 
   Future<void> _loadExistingConversations() async {
-    for (var userId = 0; userId <= 1000; userId++) {
+    for (var userId = 0; userId <= 50; userId++) {
       final userProfile = await client.user.getUserProfile(userId);
       if (userId == _currentUser!.id) continue;
       if (userProfile?.role == 'User') continue;
@@ -132,7 +132,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
     }
 
     final searchResults = <UserProfile>[];
-    for (var userId = 0; userId <= 1000; userId++) {
+    for (var userId = 0; userId <= 50; userId++) {
       final userProfile = await client.user.getUserProfile(userId);
       if (userId == _currentUser!.id) continue;
       if (userProfile?.role == 'User') continue;
@@ -314,7 +314,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                               backgroundColor: Colors.grey[300],
                               child: Icon(Icons.person, color: Colors.white),
                             ),
-                            title: Text(user.nickname ?? 'Unknown'),
+                            title: Text(user.fullName),
                             onTap: () {
                               setState(() {
                                 _selectedContact = user;
@@ -359,7 +359,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                                 backgroundColor: Colors.grey[300],
                                 child: Icon(Icons.person, color: Colors.white),
                               ),
-                              title: Text(contact.nickname ?? 'Unknown'),
+                              title: Text(contact.fullName),
                               subtitle: Text(''),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -409,7 +409,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _selectedContact!.nickname ?? 'Unknown',
+                              _selectedContact!.fullName,
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
