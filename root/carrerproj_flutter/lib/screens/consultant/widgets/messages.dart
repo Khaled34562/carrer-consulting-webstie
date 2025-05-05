@@ -78,13 +78,11 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
     if (_currentUser == null) return;
 
     try {
-      // Clear existing streams
       for (var stream in _messageStreams.values) {
         await stream.drain();
       }
       _messageStreams.clear();
 
-      // Subscribe to messages for each contact
       for (var contact in _contacts) {
         final stream = await client.chat.observeDirectMessages(
           _currentUser!.id!,
@@ -135,7 +133,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
     for (var userId = 0; userId <= 50; userId++) {
       final userProfile = await client.user.getUserProfile(userId);
       if (userId == _currentUser!.id) continue;
-      if (userProfile?.role == 'Conultant') continue;
+      if (userProfile?.role == 'Consultant') continue;
       if (userProfile != null && userProfile.nickname != null) {
         if (userProfile.nickname!.toLowerCase().contains(query.toLowerCase())) {
           searchResults.add(userProfile);
@@ -152,7 +150,6 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
     if (!_contacts.any((c) => c.userId == contact.userId)) {
       setState(() {
         _contacts.add(contact);
-        // Subscribe to new contact's messages
         _subscribeToContactMessages(contact.userId);
       });
     }
@@ -266,8 +263,9 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
         Container(
           width: 300,
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20),
+            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,16 +276,19 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Color(0xFF3AB8B5)),
                   ),
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+                      hintStyle: TextStyle(color: Color(0xFF1A2E44)),
+                      prefixIcon: Icon(Icons.search, color: Color(0xFF3AB8B5)),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     ),
                     onChanged: _searchUsers,
+                    style: TextStyle(color: Color(0xFF1A2E44)),
                   ),
                 ),
               ),
@@ -303,6 +304,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
+                        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
                       ),
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -311,10 +313,10 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                           final user = _searchResults[index];
                           return ListTile(
                             leading: CircleAvatar(
-                              backgroundColor: Colors.grey[300],
+                              backgroundColor: Color(0xFF3AB8B5),
                               child: Icon(Icons.person, color: Colors.white),
                             ),
-                            title: Text(user.fullName),
+                            title: Text(user.fullName, style: TextStyle(color: Color(0xFF1A2E44))),
                             onTap: () {
                               setState(() {
                                 _selectedContact = user;
@@ -337,7 +339,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey[600],
+                    color: Color(0xFF1A2E44),
                   ),
                 ),
               ),
@@ -347,26 +349,27 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
+                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
                   ),
                   child: _contacts.isEmpty
-                      ? Center(child: Text('No conversations yet'))
+                      ? Center(child: Text('No conversations yet', style: TextStyle(color: Color(0xFF1A2E44))))
                       : ListView.builder(
                           itemCount: _contacts.length,
                           itemBuilder: (context, index) {
                             final contact = _contacts[index];
                             return ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: Colors.grey[300],
+                                backgroundColor: Color(0xFF3AB8B5),
                                 child: Icon(Icons.person, color: Colors.white),
                               ),
-                              title: Text(contact.fullName),
-                              subtitle: Text(''),
+                              title: Text(contact.fullName, style: TextStyle(color: Color(0xFF1A2E44))),
+                              subtitle: Text('', style: TextStyle(color: Colors.grey)),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     '',
-                                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                                    style: TextStyle(color: Color(0xFF1A2E44), fontSize: 12),
                                   ),
                                 ],
                               ),
@@ -392,6 +395,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
+              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
             ),
             child: Column(
               children: [
@@ -401,7 +405,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Colors.grey[300],
+                          backgroundColor: Color(0xFF3AB8B5),
                           child: Icon(Icons.person, color: Colors.white),
                         ),
                         const SizedBox(width: 10),
@@ -410,11 +414,11 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                           children: [
                             Text(
                               _selectedContact!.fullName,
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
                             ),
                             Text(
                               'Online',
-                              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                              style: TextStyle(color: Colors.grey, fontSize: 12),
                             ),
                           ],
                         ),
@@ -423,7 +427,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                   ),
                 Expanded(
                   child: _messages.isEmpty
-                      ? Center(child: Text('No messages yet'))
+                      ? Center(child: Text('No messages yet', style: TextStyle(color: Color(0xFF1A2E44))))
                       : ListView.builder(
                           controller: ScrollController(),
                           padding: const EdgeInsets.all(16.0),
@@ -446,7 +450,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                                       margin: const EdgeInsets.symmetric(vertical: 5),
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: isMe ? Colors.blue : Colors.grey[200],
+                                        color: isMe ? Color(0xFF3AB8B5) : Colors.grey[200],
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Column(
@@ -455,7 +459,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                                           Text(
                                             message.text,
                                             style: TextStyle(
-                                              color: isMe ? Colors.white : Colors.black,
+                                              color: isMe ? Colors.white : Color(0xFF1A2E44),
                                             ),
                                           ),
                                           const SizedBox(height: 5),
@@ -463,7 +467,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                                             '${localTime.hour}:${localTime.minute.toString().padLeft(2, '0')}',
                                             style: TextStyle(
                                               fontSize: 10,
-                                              color: isMe ? Colors.white70 : Colors.grey[600],
+                                              color: isMe ? Colors.white70 : Colors.grey,
                                             ),
                                           ),
                                         ],
@@ -485,15 +489,16 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                           Expanded(
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Color(0xFF3AB8B5)),
                               ),
                               child: Row(
                                 children: [
                                   IconButton(
                                     icon: Icon(
                                       Icons.emoji_emotions_outlined,
-                                      color: _showEmojiPicker ? Colors.blue : Colors.grey[600],
+                                      color: _showEmojiPicker ? Color(0xFF3AB8B5) : Color(0xFF1A2E44),
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -506,8 +511,10 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                                       controller: _messageController,
                                       decoration: InputDecoration(
                                         hintText: 'Type your message here...',
+                                        hintStyle: TextStyle(color: Color(0xFF1A2E44)),
                                         border: InputBorder.none,
                                       ),
+                                      style: TextStyle(color: Color(0xFF1A2E44)),
                                     ),
                                   ),
                                 ],
@@ -524,7 +531,7 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                                   icon: Icon(
                                     Icons.send,
                                     color: _messageController.text.isNotEmpty && _selectedContact != null
-                                        ? Colors.blue
+                                        ? Color(0xFF3AB8B5)
                                         : Colors.grey,
                                   ),
                                   onPressed: _messageController.text.isNotEmpty && _selectedContact != null && !_isSending
@@ -542,7 +549,8 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
                           height: 250,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey[100],
+                            color: Colors.white,
+                            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
                           ),
                           child: EmojiPicker(
                             onEmojiSelected: (category, emoji) {

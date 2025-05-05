@@ -31,17 +31,8 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
     super.initState();
     _loadCurrentUser();
     _messageController.addListener(() => setState(() {}));
-    
-    _sendAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 400),
-      vsync: this,
-    );
-    _bubbleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _sendAnimationController,
-        curve: Curves.easeOutBack,
-      ),
-    );
+    _sendAnimationController = AnimationController(duration: const Duration(milliseconds: 400), vsync: this);
+    _bubbleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _sendAnimationController, curve: Curves.easeOutBack));
   }
 
   Future<void> _loadCurrentUser() async {
@@ -64,55 +55,31 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
       final userProfile = await client.user.getUserProfile(userId);
       if (userId == _currentUser!.id) continue;
       if (userProfile?.role == 'User') continue;
-      final messages = await client.chat.getDirectMessageHistory(
-        _currentUser!.id!,
-        userId,
-      );
-      if (messages.isNotEmpty && userProfile != null) {
-        _addContact(userProfile);
-      }
+      final messages = await client.chat.getDirectMessageHistory(_currentUser!.id!, userId);
+      if (messages.isNotEmpty && userProfile != null) _addContact(userProfile);
     }
   }
 
   Future<void> _subscribeToAllMessages() async {
     if (_currentUser == null) return;
-
     try {
-      // Clear existing streams
-      for (var stream in _messageStreams.values) {
-        await stream.drain();
-      }
+      for (var stream in _messageStreams.values) await stream.drain();
       _messageStreams.clear();
-
-      // Subscribe to messages for each contact
       for (var contact in _contacts) {
-        final stream = await client.chat.observeDirectMessages(
-          _currentUser!.id!,
-          contact.userId,
-        );
-        
+        final stream = await client.chat.observeDirectMessages(_currentUser!.id!, contact.userId);
         _messageStreams[contact.userId] = stream;
-        
         stream.listen((message) async {
           if (!_messages.any((m) => m.id == message.id && m.id != 0)) {
             setState(() {
               _messages.add(message);
-              if (_selectedContact != null && 
-                  message.senderId == _selectedContact!.userId) {
+              if (_selectedContact != null && message.senderId == _selectedContact!.userId) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  ScrollController().animateTo(
-                    ScrollController().position.maxScrollExtent,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeOut,
-                  );
+                  ScrollController().animateTo(ScrollController().position.maxScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
                 });
               }
             });
-            
             final senderProfile = await client.user.getUserProfile(message.senderId);
-            if (senderProfile != null) {
-              _addContact(senderProfile);
-            }
+            if (senderProfile != null) _addContact(senderProfile);
           }
         }, onError: (e) {
           print('Message stream error for contact ${contact.userId}: $e');
@@ -130,19 +97,13 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
       });
       return;
     }
-
     final searchResults = <UserProfile>[];
     for (var userId = 0; userId <= 50; userId++) {
       final userProfile = await client.user.getUserProfile(userId);
       if (userId == _currentUser!.id) continue;
       if (userProfile?.role == 'User') continue;
-      if (userProfile != null && userProfile.nickname != null) {
-        if (userProfile.nickname!.toLowerCase().contains(query.toLowerCase())) {
-          searchResults.add(userProfile);
-        }
-      }
+      if (userProfile != null && userProfile.nickname != null && userProfile.nickname!.toLowerCase().contains(query.toLowerCase())) searchResults.add(userProfile);
     }
-
     setState(() {
       _searchResults = searchResults;
     });
@@ -152,7 +113,6 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
     if (!_contacts.any((c) => c.userId == contact.userId)) {
       setState(() {
         _contacts.add(contact);
-        // Subscribe to new contact's messages
         _subscribeToContactMessages(contact.userId);
       });
     }
@@ -160,35 +120,21 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
 
   Future<void> _subscribeToContactMessages(int contactId) async {
     if (_currentUser == null || _messageStreams.containsKey(contactId)) return;
-
     try {
-      final stream = await client.chat.observeDirectMessages(
-        _currentUser!.id!,
-        contactId,
-      );
-      
+      final stream = await client.chat.observeDirectMessages(_currentUser!.id!, contactId);
       _messageStreams[contactId] = stream;
-      
       stream.listen((message) async {
         if (!_messages.any((m) => m.id == message.id && m.id != 0)) {
           setState(() {
             _messages.add(message);
-            if (_selectedContact != null && 
-                message.senderId == _selectedContact!.userId) {
+            if (_selectedContact != null && message.senderId == _selectedContact!.userId) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                ScrollController().animateTo(
-                  ScrollController().position.maxScrollExtent,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                );
+                ScrollController().animateTo(ScrollController().position.maxScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
               });
             }
           });
-          
           final senderProfile = await client.user.getUserProfile(message.senderId);
-          if (senderProfile != null) {
-            _addContact(senderProfile);
-          }
+          if (senderProfile != null) _addContact(senderProfile);
         }
       }, onError: (e) {
         print('Message stream error for contact $contactId: $e');
@@ -200,12 +146,8 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
 
   Future<void> _loadMessages() async {
     if (_currentUser == null || _selectedContact == null) return;
-
     try {
-      final messages = await client.chat.getDirectMessageHistory(
-        _currentUser!.id!,
-        _selectedContact!.userId,
-      );
+      final messages = await client.chat.getDirectMessageHistory(_currentUser!.id!, _selectedContact!.userId);
       setState(() {
         _messages.clear();
         _messages.addAll(messages);
@@ -217,7 +159,6 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
 
   Future<void> _sendMessage(String text) async {
     if (text.isEmpty || _currentUser == null || _selectedContact == null) return;
-
     final message = ChatMessage(
       id: 0,
       senderId: _currentUser!.id!,
@@ -226,18 +167,14 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
       sentAt: DateTime.now().toUtc(),
       isRead: false,
     );
-
     setState(() {
       _messages.add(message);
       _isSending = true;
     });
-    
     _sendAnimationController.forward();
-
     try {
       await client.chat.sendDirectMessage(message);
       _addContact(_selectedContact!);
-      
       await Future.delayed(Duration(milliseconds: 400));
       _sendAnimationController.reset();
     } catch (e) {
@@ -261,316 +198,298 @@ class _MessagesContentState extends State<MessagesContent> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 300,
+    return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
+      appBar: AppBar(
+        flexibleSpace: Container(
           decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                    ),
-                    onChanged: _searchUsers,
-                  ),
-                ),
+        ),
+        title: Image.asset('lib/assets/white_logo.png', height: 50),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 300,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(20),
               ),
-              if (_searchResults.isNotEmpty)
-                Positioned(
-                  top: 70,
-                  left: 16,
-                  right: 16,
-                  child: Material(
-                    elevation: 4,
-                    borderRadius: BorderRadius.circular(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _searchResults.length,
-                        itemBuilder: (context, index) {
-                          final user = _searchResults[index];
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.grey[300],
-                              child: Icon(Icons.person, color: Colors.white),
-                            ),
-                            title: Text(user.fullName),
-                            onTap: () {
-                              setState(() {
-                                _selectedContact = user;
-                                _searchResults = [];
-                                _searchController.clear();
-                                _loadMessages();
-                                _addContact(user);
-                              });
-                            },
-                          );
-                        },
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          prefixIcon: Icon(Icons.search, color: Color(0xFF3AB8B5)),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        ),
+                        onChanged: _searchUsers,
+                        style: TextStyle(color: Color(0xFF1A2E44)),
                       ),
                     ),
                   ),
-                ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'PEOPLE',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: _contacts.isEmpty
-                      ? Center(child: Text('No conversations yet'))
-                      : ListView.builder(
-                          itemCount: _contacts.length,
-                          itemBuilder: (context, index) {
-                            final contact = _contacts[index];
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey[300],
-                                child: Icon(Icons.person, color: Colors.white),
-                              ),
-                              title: Text(contact.fullName),
-                              subtitle: Text(''),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '',
-                                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  _selectedContact = contact;
-                                  _loadMessages();
-                                });
-                              },
-                              selected: _selectedContact?.userId == contact.userId,
-                              selectedTileColor: Colors.grey[200],
-                            );
-                          },
+                  if (_searchResults.isNotEmpty)
+                    Positioned(
+                      top: 70,
+                      left: 16,
+                      right: 16,
+                      child: Material(
+                        elevation: 4,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _searchResults.length,
+                            itemBuilder: (context, index) {
+                              final user = _searchResults[index];
+                              return ListTile(
+                                leading: CircleAvatar(backgroundColor: Color(0xFF3AB8B5), child: Icon(Icons.person, color: Colors.white)),
+                                title: Text(user.fullName, style: TextStyle(color: Color(0xFF1A2E44))),
+                                onTap: () {
+                                  setState(() {
+                                    _selectedContact = user;
+                                    _searchResults = [];
+                                    _searchController.clear();
+                                    _loadMessages();
+                                    _addContact(user);
+                                  });
+                                },
+                              );
+                            },
+                          ),
                         ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Container(
-            margin: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                if (_selectedContact != null)
-                  Container(
+                      ),
+                    ),
+                  Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.grey[300],
-                          child: Icon(Icons.person, color: Colors.white),
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _selectedContact!.fullName,
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    child: Text(
+                      'PEOPLE',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF3AB8B5)),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: _contacts.isEmpty
+                          ? Center(child: Text('No conversations yet', style: TextStyle(color: Color(0xFF1A2E44))))
+                          : ListView.builder(
+                              itemCount: _contacts.length,
+                              itemBuilder: (context, index) {
+                                final contact = _contacts[index];
+                                return ListTile(
+                                  leading: CircleAvatar(backgroundColor: Color(0xFF3AB8B5), child: Icon(Icons.person, color: Colors.white)),
+                                  title: Text(contact.fullName, style: TextStyle(color: Color(0xFF1A2E44))),
+                                  subtitle: Text(''),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedContact = contact;
+                                      _loadMessages();
+                                    });
+                                  },
+                                  selected: _selectedContact?.userId == contact.userId,
+                                  selectedTileColor: Colors.grey[200],
+                                );
+                              },
                             ),
-                            Text(
-                              'Online',
-                              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    if (_selectedContact != null)
+                      Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(backgroundColor: Color(0xFF3AB8B5), child: Icon(Icons.person, color: Colors.white)),
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_selectedContact!.fullName, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                                Text('Online', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                              ],
                             ),
                           ],
                         ),
-                      ],
+                      ),
+                    Expanded(
+                      child: _messages.isEmpty
+                          ? Center(child: Text('No messages yet', style: TextStyle(color: Color(0xFF1A2E44))))
+                          : ListView.builder(
+                              controller: ScrollController(),
+                              padding: const EdgeInsets.all(16.0),
+                              itemCount: _messages.length,
+                              itemBuilder: (context, index) {
+                                final message = _messages[index];
+                                final bool isMe = message.senderId == _currentUser!.id;
+                                final localTime = message.sentAt.toLocal();
+                                final isLatestSent = isMe && index == _messages.length - 1 && _isSending;
+                                return Align(
+                                  alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                                  child: AnimatedBuilder(
+                                    animation: _bubbleAnimation,
+                                    builder: (context, child) {
+                                      return Transform.scale(
+                                        scale: isLatestSent ? _bubbleAnimation.value : 1.0,
+                                        alignment: isMe ? Alignment.bottomRight : Alignment.bottomLeft,
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(vertical: 5),
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: isMe ? Color(0xFF3AB8B5) : Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              Text(message.text, style: TextStyle(color: isMe ? Colors.white : Color(0xFF1A2E44))),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                '${localTime.hour}:${localTime.minute.toString().padLeft(2, '0')}',
+                                                style: TextStyle(fontSize: 10, color: isMe ? Colors.white70 : Colors.grey[600]),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
                     ),
-                  ),
-                Expanded(
-                  child: _messages.isEmpty
-                      ? Center(child: Text('No messages yet'))
-                      : ListView.builder(
-                          controller: ScrollController(),
-                          padding: const EdgeInsets.all(16.0),
-                          itemCount: _messages.length,
-                          itemBuilder: (context, index) {
-                            final message = _messages[index];
-                            final bool isMe = message.senderId == _currentUser!.id;
-                            final localTime = message.sentAt.toLocal();
-                            final isLatestSent = isMe && index == _messages.length - 1 && _isSending;
-
-                            return Align(
-                              alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                              child: AnimatedBuilder(
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.emoji_emotions_outlined, color: _showEmojiPicker ? Color(0xFF3AB8B5) : Colors.grey[600]),
+                                        onPressed: () {
+                                          setState(() {
+                                            _showEmojiPicker = !_showEmojiPicker;
+                                          });
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _messageController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Type your message here...',
+                                            border: InputBorder.none,
+                                            hintStyle: TextStyle(color: Color(0xFF1A2E44)),
+                                          ),
+                                          style: TextStyle(color: Color(0xFF1A2E44)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              AnimatedBuilder(
                                 animation: _bubbleAnimation,
                                 builder: (context, child) {
                                   return Transform.scale(
-                                    scale: isLatestSent ? _bubbleAnimation.value : 1.0,
-                                    alignment: isMe ? Alignment.bottomRight : Alignment.bottomLeft,
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 5),
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: isMe ? Colors.blue : Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            message.text,
-                                            style: TextStyle(
-                                              color: isMe ? Colors.white : Colors.black,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            '${localTime.hour}:${localTime.minute.toString().padLeft(2, '0')}',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color: isMe ? Colors.white70 : Colors.grey[600],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                    scale: 1.0 + (_isSending ? _bubbleAnimation.value * 0.2 : 0),
+                                    child: IconButton(
+                                      icon: Icon(Icons.send, color: _messageController.text.isNotEmpty && _selectedContact != null ? Color(0xFF3AB8B5) : Colors.grey),
+                                      onPressed: _messageController.text.isNotEmpty && _selectedContact != null && !_isSending
+                                          ? () => _sendMessage(_messageController.text)
+                                          : null,
                                     ),
                                   );
                                 },
                               ),
-                            );
-                          },
-                        ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          if (_showEmojiPicker)
+                            Container(
+                              height: 250,
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
                                 borderRadius: BorderRadius.circular(20),
+                                color: Colors.grey[100],
                               ),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.emoji_emotions_outlined,
-                                      color: _showEmojiPicker ? Colors.blue : Colors.grey[600],
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _showEmojiPicker = !_showEmojiPicker;
-                                      });
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _messageController,
-                                      decoration: InputDecoration(
-                                        hintText: 'Type your message here...',
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              child: EmojiPicker(
+                                onEmojiSelected: (category, emoji) {
+                                  _onEmojiSelected(emoji);
+                                },
+                                config: Config(columns: 7, emojiSizeMax: 32, bgColor: Colors.transparent),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          AnimatedBuilder(
-                            animation: _bubbleAnimation,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: 1.0 + (_isSending ? _bubbleAnimation.value * 0.2 : 0),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.send,
-                                    color: _messageController.text.isNotEmpty && _selectedContact != null
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                  ),
-                                  onPressed: _messageController.text.isNotEmpty && _selectedContact != null && !_isSending
-                                      ? () => _sendMessage(_messageController.text)
-                                      : null,
-                                ),
-                              );
-                            },
-                          ),
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      if (_showEmojiPicker)
-                        Container(
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey[100],
-                          ),
-                          child: EmojiPicker(
-                            onEmojiSelected: (category, emoji) {
-                              _onEmojiSelected(emoji);
-                            },
-                            config: Config(
-                              columns: 7,
-                              emojiSizeMax: 32,
-                              bgColor: Colors.transparent,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   @override
   void dispose() {
-    for (var stream in _messageStreams.values) {
-      stream.drain();
-    }
+    for (var stream in _messageStreams.values) stream.drain();
     _messageStreams.clear();
     _messageController.dispose();
     _searchController.dispose();

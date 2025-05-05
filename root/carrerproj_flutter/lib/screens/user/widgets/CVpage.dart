@@ -36,7 +36,7 @@ class _CVPageState extends State<CVPage> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load data: $e')),
+        SnackBar(content: Text('Failed to load data: $e', style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     }
   }
@@ -45,20 +45,13 @@ class _CVPageState extends State<CVPage> {
     PdfDocument? document;
     try {
       document = PdfDocument(inputBytes: bytes);
-      
-      if (document.pages.count == 0) {
-        throw Exception('PDF file is empty');
-      }
-
+      if (document.pages.count == 0) throw Exception('PDF file is empty');
       String text = '';
       for (int i = 0; i < document.pages.count; i++) {
         final pageText = await PdfTextExtractor(document).extractText(startPageIndex: i);
         text += pageText;
       }
-
-      if (text.trim().isEmpty) {
-        throw Exception('PDF does not contain extractable text');
-      }
+      if (text.trim().isEmpty) throw Exception('PDF does not contain extractable text');
       return text;
     } catch (e) {
       throw Exception('PDF error');
@@ -70,249 +63,224 @@ class _CVPageState extends State<CVPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Build a CV',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CVGenerationPage(userId: userId),
-                        ),
-                      );
-                    },
-                    child: Text('Build my CV'),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('Generated CVs', style: TextStyle(fontSize: 18)),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: generatedCVs.length,
-                    itemBuilder: (context, index) {
-                      final gen = generatedCVs[index];
-                      return ListTile(
-                        title: Text('CV #${gen.id} - ${gen.createdAt}'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CVViewPage(generationId: gen.id!),
-                            ),
-                          );
-                        },
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () async {
-                            try {
-                              await client.cVGeneration.deleteGeneration(gen.id!);
-                              await _loadData();
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Failed to delete CV: $e')),
-                              );
-                            }
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
             ),
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Rate a CV',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        title: Image.asset('lib/assets/white_logo.png', height: 50),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Build a CV', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: GestureDetector(
-                    onTap: () async {
-                      try {
-                        final result = await FilePicker.platform.pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: ['pdf'],
-                          withData: true,
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CVGenerationPage(userId: userId)),
                         );
-
-                        if (result == null || result.files.isEmpty) return;
-
-                        final file = result.files.first;
-                        Uint8List? bytes = file.bytes;
-
-                        setState(() {
-                          selectedFile = File(file.path ?? 'uploaded.pdf');
-                          isExtracting = true;
-                          cvTextToReview = null;
-                        });
-
+                      },
+                      child: Text('Build my CV', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF3AB8B5), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Generated CVs', style: TextStyle(fontSize: 18, color: Color(0xFF1A2E44))),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: generatedCVs.length,
+                      itemBuilder: (context, index) {
+                        final gen = generatedCVs[index];
+                        return ListTile(
+                          title: Text('CV #${gen.id} - ${gen.createdAt}', style: TextStyle(color: Color(0xFF1A2E44))),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CVViewPage(generationId: gen.id!)),
+                            );
+                          },
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: Color(0xFF3AB8B5)),
+                            onPressed: () async {
+                              try {
+                                await client.cVGeneration.deleteGeneration(gen.id!);
+                                await _loadData();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Failed to delete CV: $e', style: TextStyle(color: Color(0xFF1A2E44)))),
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Rate a CV', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GestureDetector(
+                      onTap: () async {
                         try {
-                          if (bytes == null && file.path != null) {
-                            bytes = await File(file.path!).readAsBytes();
-                          }
-
-                          if (bytes == null) {
-                            throw Exception('Failed to read file contents');
-                          }
-
-                          final text = await extractText(bytes);
-                          
+                          final result = await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf'],
+                            withData: true,
+                          );
+                          if (result == null || result.files.isEmpty) return;
+                          final file = result.files.first;
+                          Uint8List? bytes = file.bytes;
                           setState(() {
-                            cvTextToReview = text;
-                            isExtracting = false;
+                            selectedFile = File(file.path ?? 'uploaded.pdf');
+                            isExtracting = true;
+                            cvTextToReview = null;
                           });
+                          try {
+                            if (bytes == null && file.path != null) bytes = await File(file.path!).readAsBytes();
+                            if (bytes == null) throw Exception('Failed to read file contents');
+                            final text = await extractText(bytes);
+                            setState(() {
+                              cvTextToReview = text;
+                              isExtracting = false;
+                            });
+                          } catch (e) {
+                            setState(() => isExtracting = false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error: ${e.toString()}', style: TextStyle(color: Color(0xFF1A2E44)))),
+                            );
+                          }
                         } catch (e) {
                           setState(() => isExtracting = false);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Error: ${e.toString()}')),
+                            SnackBar(content: Text('File picker error: $e', style: TextStyle(color: Color(0xFF1A2E44)))),
                           );
                         }
-                      } catch (e) {
-                        setState(() => isExtracting = false);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('File picker error: $e')),
-                        );
-                      }
-                    },
-                    child: DottedBorder(
-                      borderType: BorderType.RRect,
-                      radius: Radius.circular(8),
-                      dashPattern: [6, 3],
-                      strokeWidth: 2,
-                      child: Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                      },
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(8),
+                        dashPattern: [6, 3],
+                        strokeWidth: 2,
+                        child: Container(
+                          height: 200,
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                          child: isExtracting
+                              ? Center(child: CircularProgressIndicator())
+                              : selectedFile != null
+                                  ? Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.description, color: Color(0xFF3AB8B5), size: 48),
+                                        SizedBox(height: 8),
+                                        Text('Selected: ${selectedFile!.path.split('/').last}', textAlign: TextAlign.center, style: TextStyle(color: Color(0xFF1A2E44))),
+                                        SizedBox(height: 8),
+                                        Text('Tap to select a different file', style: TextStyle(color: Colors.grey)),
+                                      ],
+                                    )
+                                  : Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.file_upload, size: 48, color: Color(0xFF3AB8B5)),
+                                        SizedBox(height: 16),
+                                        Text('Click here to upload your file', style: TextStyle(color: Color(0xFF1A2E44))),
+                                        Text('Supported format: pdf', style: TextStyle(color: Colors.grey)),
+                                      ],
+                                    ),
                         ),
-                        child: isExtracting
-                            ? Center(child: CircularProgressIndicator())
-                            : selectedFile != null
-                                ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.description, 
-                                          color: Colors.green, size: 48),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        'Selected: ${selectedFile!.path.split('/').last}',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        'Tap to select a different file',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ],
-                                  )
-                                : Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.file_upload, 
-                                          size: 48, color: Colors.blue),
-                                      SizedBox(height: 16),
-                                      Text('Click here to upload your file'),
-                                      Text(
-                                        'Supported format: pdf',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ],
-                                  ),
                       ),
                     ),
                   ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: isExtracting || cvTextToReview == null
-                        ? null
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CVReviewPage(
-                                  cvText: cvTextToReview!,
-                                  userId: userId,
-                                ),
-                              ),
-                            );
-                          },
-                    child: Text('Rate my CV'),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
-                      disabledBackgroundColor: Colors.grey,
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: isExtracting || cvTextToReview == null ? null : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CVReviewPage(cvText: cvTextToReview!, userId: userId)),
+                        );
+                      },
+                      child: Text('Rate my CV', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF3AB8B5),
+                        disabledBackgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('CV Reviews', style: TextStyle(fontSize: 18)),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: reviews.length,
-                    itemBuilder: (context, index) {
-                      final review = reviews[index];
-                      return ListTile(
-                        title: Text('Review #${review.id} - ${review.createdAt}'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CVReviewViewPage(reviewId: review.id!),
-                            ),
-                          );
-                        },
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () async {
-                            try {
-                              await client.cVReview.deleteReview(review.id!);
-                              await _loadData();
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Failed to delete review: $e')),
-                              );
-                            }
-                          },
-                        ),
-                      );
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('CV Reviews', style: TextStyle(fontSize: 18, color: Color(0xFF1A2E44))),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: reviews.length,
+                      itemBuilder: (context, index) {
+                        final review = reviews[index];
+                        return ListTile(
+                          title: Text('Review #${review.id} - ${review.createdAt}', style: TextStyle(color: Color(0xFF1A2E44))),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CVReviewViewPage(reviewId: review.id!)),
+                            );
+                          },
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: Color(0xFF3AB8B5)),
+                            onPressed: () async {
+                              try {
+                                await client.cVReview.deleteReview(review.id!);
+                                await _loadData();
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Failed to delete review: $e', style: TextStyle(color: Color(0xFF1A2E44)))),
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -352,27 +320,46 @@ class _CVGenerationPageState extends State<CVGenerationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
       appBar: AppBar(
-        title: Text('Generating CV'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
+            ),
+          ),
+        ),
+        title: Text('Generating CV', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(Icons.cancel),
+            icon: Icon(Icons.cancel, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
-      body: Center(
-        child: generation == null
-            ? error != null
-                ? Text(error!, style: TextStyle(color: Colors.red))
-                : CircularProgressIndicator()
-            : SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  generation!.generatedCV ?? 'No CV content available',
-                  style: TextStyle(fontSize: 16),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Center(
+          child: generation == null
+              ? error != null
+                  ? Text(error!, style: TextStyle(color: Colors.red, fontSize: 16))
+                  : CircularProgressIndicator()
+              : SingleChildScrollView(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    generation!.generatedCV ?? 'No CV content available',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF1A2E44)),
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -413,27 +400,46 @@ class _CVReviewPageState extends State<CVReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
       appBar: AppBar(
-        title: Text('Reviewing CV'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
+            ),
+          ),
+        ),
+        title: Text('Reviewing CV', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(Icons.cancel),
+            icon: Icon(Icons.cancel, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
-      body: Center(
-        child: review == null
-            ? error != null
-                ? Text(error!, style: TextStyle(color: Colors.red))
-                : CircularProgressIndicator()
-            : SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  review!.feedback ?? 'No review feedback available',
-                  style: TextStyle(fontSize: 16),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Center(
+          child: review == null
+              ? error != null
+                  ? Text(error!, style: TextStyle(color: Colors.red, fontSize: 16))
+                  : CircularProgressIndicator()
+              : SingleChildScrollView(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    review!.feedback ?? 'No review feedback available',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF1A2E44)),
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -473,27 +479,46 @@ class _CVViewPageState extends State<CVViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
       appBar: AppBar(
-        title: Text('View CV'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
+            ),
+          ),
+        ),
+        title: Text('View CV', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(Icons.cancel),
+            icon: Icon(Icons.cancel, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
-      body: Center(
-        child: generation == null
-            ? error != null
-                ? Text(error!, style: TextStyle(color: Colors.red))
-                : CircularProgressIndicator()
-            : SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  generation!.generatedCV ?? 'No CV content available',
-                  style: TextStyle(fontSize: 16),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Center(
+          child: generation == null
+              ? error != null
+                  ? Text(error!, style: TextStyle(color: Colors.red, fontSize: 16))
+                  : CircularProgressIndicator()
+              : SingleChildScrollView(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    generation!.generatedCV ?? 'No CV content available',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF1A2E44)),
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -533,27 +558,46 @@ class _CVReviewViewPageState extends State<CVReviewViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
       appBar: AppBar(
-        title: Text('View Review'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
+            ),
+          ),
+        ),
+        title: Text('View Review', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(Icons.cancel),
+            icon: Icon(Icons.cancel, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
-      body: Center(
-        child: review == null
-            ? error != null
-                ? Text(error!, style: TextStyle(color: Colors.red))
-                : CircularProgressIndicator()
-            : SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  review!.feedback ?? 'No review feedback available',
-                  style: TextStyle(fontSize: 16),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Center(
+          child: review == null
+              ? error != null
+                  ? Text(error!, style: TextStyle(color: Colors.red, fontSize: 16))
+                  : CircularProgressIndicator()
+              : SingleChildScrollView(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    review!.feedback ?? 'No review feedback available',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF1A2E44)),
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }

@@ -4,9 +4,7 @@ import 'package:carrerproj_flutter/screens/user/widgets/messages.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/articles.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/payments.dart';
 import 'package:carrerproj_flutter/screens/user/widgets/CVpage.dart';
-
 import 'package:carrerproj_flutter/screens/user/widgets/help.dart';
-
 import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:carrerproj_flutter/screens/landing.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +18,6 @@ class DashboardPageUser extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPageUser> {
   int _selectedIndex = 0; // Track selected tab index
-  
 
   /// List of pages for each menu item
   final List<Widget> _pages = [
@@ -28,11 +25,10 @@ class _DashboardPageState extends State<DashboardPageUser> {
     const DashboardContent(title: "Calendar View"),
     ProfileContent(),
     MessagesContent(),
-    PaymentsPage(), 
+    PaymentsPage(),
     ArticleContent(),
     CVPage(),
-    HelpPage(), 
-
+    HelpPage(),
   ];
 
   @override
@@ -40,85 +36,107 @@ class _DashboardPageState extends State<DashboardPageUser> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Career Consulting',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF1A2E44), // Dark Blue
+                Color(0xFF3AB8B5), // Teal/Cyan
+              ],
+              stops: [0.0, 0.7], // Emphasize teal more
+            ),
           ),
+        ),
+        title: Image.asset(
+          'lib/assets/white_logo.png', // White logo in the header due to gradient
+          height: 50, // Adjust size as needed
         ),
       ),
+      backgroundColor: Color(0xFFF8F8F8), // Grey background (248, 248, 248)
       body: Column(
         children: [
-    /// Search Bar, Avatar, and User Text
-    Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        children: [
-          /// User Text
-          const Text(
-            'User',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.blueAccent,
-            ),
-          ),
-          const SizedBox(width: 20),
-
-          /// Search Bar
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search...",
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
+          /// Search Bar, Avatar, and User Text
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                /// User Text
+                Text(
+                  'User',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A2E44), // Dark Blue
+                  ),
                 ),
-              ),
+                const SizedBox(width: 20),
+
+                /// Search Bar
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Search...",
+                      prefixIcon: Icon(Icons.search, color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      ),
+                    ),
+                    style: TextStyle(color: Color(0xFF1A2E44)), // Dark Blue text for input
+                  ),
+                ),
+                const SizedBox(width: 20),
+
+                /// Notification Icon
+                IconButton(
+                  icon: Icon(Icons.notifications_none, color: Color(0xFF3AB8B5)), // Teal/Cyan
+                  onPressed: () {
+                    // Handle notification click
+                  },
+                ),
+                const SizedBox(width: 20),
+
+                /// Sign Out Button
+                TextButton.icon(
+                  onPressed: () {
+                    // Handle sign out
+                    sessionManager.signOutDevice();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LandingPage()),
+                    );
+                  },
+                  icon: Icon(Icons.logout, color: Color(0xFF3AB8B5)), // Teal/Cyan
+                  label: Text(
+                    "Sign Out",
+                    style: TextStyle(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                  ),
+                ),
+
+                const SizedBox(width: 20),
+
+                /// User Avatar
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Color(0xFF3AB8B5), // Teal/Cyan
+                  child: const Icon(Icons.person, color: Colors.white),
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 20),
 
-          /// Notification Icon
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: Colors.grey[700]),
-            onPressed: () {
-              // Handle notification click
-            },
-          ),
-          const SizedBox(width: 20),
-
-          /// Sign Out Button
-          TextButton.icon(
-            onPressed: () {
-              // Handle sign out
-              sessionManager.signOutDevice();
-              Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LandingPage()),
-                  );
-            },
-            icon: const Icon(Icons.logout, color: Colors.red),
-            label: const Text("Sign Out", style: TextStyle(color: Colors.red)),
-          ),
-
-          const SizedBox(width: 20),
-
-          /// User Avatar
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.grey[400],
-            child: const Icon(Icons.person, color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-        
           /// Main Content Row
           Expanded(
             child: Row(
@@ -185,8 +203,6 @@ class _DashboardPageState extends State<DashboardPageUser> {
                         isSelected: _selectedIndex == 7,
                         onTap: () => setState(() => _selectedIndex = 7),
                       ),
-
-                      
                     ],
                   ),
                 ),
@@ -195,10 +211,25 @@ class _DashboardPageState extends State<DashboardPageUser> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: _pages[_selectedIndex], // Display the selected page
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white, // White background for the content area
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: _pages[_selectedIndex], // Display the selected page
+                      ),
+                    ),
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -227,17 +258,45 @@ class SidebarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF1A2E44), // Dark Blue
+                    Color(0xFF3AB8B5), // Teal/Cyan
+                  ],
+                  stops: [0.0, 0.7],
+                )
+              : null,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Color(0xFF3AB8B5).withOpacity(0.3), // Teal/Cyan glow
+                    blurRadius: 8,
+                    spreadRadius: 2,
+                    offset: Offset(0, 2),
+                  ),
+                ]
+              : [],
+        ),
         child: Row(
           children: [
-            Icon(icon, color: isSelected ? Colors.blueAccent : Colors.black54),
+            Icon(
+              icon,
+              color: isSelected ? Colors.white : Color(0xFF1A2E44), // White for selected, Dark Blue for unselected
+            ),
             const SizedBox(width: 10),
             Text(
               label,
               style: TextStyle(
                 fontSize: 16,
-                color: isSelected ? Colors.blueAccent : Colors.black87,
+                color: isSelected ? Colors.white : Color(0xFF1A2E44), // White for selected, Dark Blue for unselected
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),

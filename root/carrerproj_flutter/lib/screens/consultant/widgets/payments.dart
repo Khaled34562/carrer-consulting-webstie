@@ -6,7 +6,7 @@ class PaymentsPage extends StatefulWidget {
 }
 
 class _PaymentsPageState extends State<PaymentsPage> {
-  bool _is2FAEnabled = true; // State for 2FA toggle
+  bool _is2FAEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +15,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Add Card and Pending Payments Row
           Row(
             children: [
-              // Add Card Section
               Expanded(
                 child: Card(
                   elevation: 2,
@@ -35,24 +33,24 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF1A2E44),
                           ),
                         ),
                         SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
-                            // Placeholder for adding a card
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Add Card functionality coming soon!")),
+                              SnackBar(content: Text("Add Card functionality coming soon!", style: TextStyle(color: Color(0xFF1A2E44)))),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Color(0xFF3AB8B5),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: Text("Add a Card"),
+                          child: Text("Add a Card", style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
@@ -60,7 +58,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 ),
               ),
               SizedBox(width: 16),
-              // Pending Payments Section
               Expanded(
                 child: Card(
                   elevation: 2,
@@ -77,6 +74,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF1A2E44),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -85,6 +83,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF1A2E44),
                           ),
                         ),
                       ],
@@ -95,10 +94,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
             ],
           ),
           SizedBox(height: 20),
-          // Security and Re-Fund Method Row
           Row(
             children: [
-              // Security Section
               Expanded(
                 child: Card(
                   elevation: 2,
@@ -109,20 +106,21 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children:[
                         Text(
                           "Security",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF1A2E44),
                           ),
                         ),
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(Icons.lock, color: Colors.blue),
+                            Icon(Icons.lock, color: Color(0xFF3AB8B5)),
                             SizedBox(width: 10),
-                            Text("2FA Enabled"),
+                            Text("2FA Enabled", style: TextStyle(color: Color(0xFF1A2E44))),
                             Spacer(),
                             Switch(
                               value: _is2FAEnabled,
@@ -131,23 +129,21 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                   _is2FAEnabled = value;
                                 });
                               },
-                              activeColor: Colors.blue,
+                              activeColor: Color(0xFF3AB8B5),
                             ),
                           ],
                         ),
                         SizedBox(height: 10),
                         ElevatedButton(
-                          onPressed: () {
-                            // Placeholder for changing key
-                          },
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey[200],
-                            foregroundColor: Colors.black,
+                            foregroundColor: Color(0xFF1A2E44),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: Text("Change"),
+                          child: Text("Change", style: TextStyle(color: Color(0xFF1A2E44))),
                         ),
                       ],
                     ),
@@ -155,7 +151,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                 ),
               ),
               SizedBox(width: 16),
-              // Re-Fund Method Section
               Expanded(
                 child: Card(
                   elevation: 2,
@@ -172,16 +167,17 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF1A2E44),
                           ),
                         ),
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(Icons.credit_card, color: Colors.blue),
+                            Icon(Icons.credit_card, color: Color(0xFF3AB8B5)),
                             SizedBox(width: 10),
-                            Text("1502****4832"),
+                            Text("1502****4832", style: TextStyle(color: Color(0xFF1A2E44))),
                             Spacer(),
-                            Icon(Icons.edit, color: Colors.grey),
+                            Icon(Icons.edit, color: Color(0xFF3AB8B5)),
                           ],
                         ),
                       ],
@@ -192,12 +188,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
             ],
           ),
           SizedBox(height: 20),
-          // Payment History Section
           Text(
             "Payment History",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF1A2E44),
             ),
           ),
           SizedBox(height: 10),

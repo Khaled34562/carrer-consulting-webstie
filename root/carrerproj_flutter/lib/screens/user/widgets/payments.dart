@@ -7,182 +7,225 @@ class PaymentsPage extends StatefulWidget {
 
 class _PaymentsPageState extends State<PaymentsPage> {
   bool _is2FAEnabled = true; // State for 2FA toggle
+  String _selectedRefundMethod = 'Visa ending in 1234'; // Default refund method
+
+  // Mock list of refund methods
+  final List<String> _refundMethods = [
+    'Visa ending in 1234',
+    'MasterCard ending in 5678',
+    'PayPal (example@email.com)',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Add Card and Pending Payments Row
-          Row(
-            children: [
-              // Add Card Section
-              Expanded(
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Add Card",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Placeholder for adding a card
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Add Card functionality coming soon!")),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Text("Add a Card"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 16),
-              // Pending Payments Section
-              Expanded(
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Pending Payments",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "\$0.00",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
+            ),
           ),
-          SizedBox(height: 20),
-          // Security and Re-Fund Method Row
-          Row(
+        ),
+        title: Image.asset('lib/assets/white_logo.png', height: 50),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Security Section
-              Expanded(
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Security",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.lock, color: Colors.blue),
-                            SizedBox(width: 10),
-                            Text("2FA Enabled"),
-                            Spacer(),
-                            Switch(
-                              value: _is2FAEnabled,
-                              onChanged: (value) {
-                                setState(() {
-                                  _is2FAEnabled = value;
-                                });
+                            Text("Add Card", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                            SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Add Card functionality coming soon!", style: TextStyle(color: Color(0xFF1A2E44)))),
+                                );
                               },
-                              activeColor: Colors.blue,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF3AB8B5),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              ),
+                              child: Text("Add a Card"),
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Placeholder for changing key
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey[200],
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Text("Change"),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Pending Payments", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                            SizedBox(height: 10),
+                            Text("\$0.00", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 16),
-              // Re-Fund Method Section
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Security", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Icon(Icons.lock, color: Color(0xFF3AB8B5)),
+                                SizedBox(width: 10),
+                                Text("2FA Enabled", style: TextStyle(color: Color(0xFF1A2E44))),
+                                Spacer(),
+                                Switch(
+                                  value: _is2FAEnabled,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _is2FAEnabled = value;
+                                    });
+                                  },
+                                  activeColor: Color(0xFF3AB8B5),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Change 2FA settings coming soon!", style: TextStyle(color: Color(0xFF1A2E44)))),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey[200],
+                                foregroundColor: Color(0xFF1A2E44),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              ),
+                              child: Text("Change"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Refund Method", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Icon(Icons.credit_card, color: Color(0xFF3AB8B5)),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: DropdownButton<String>(
+                                    value: _selectedRefundMethod,
+                                    isExpanded: true,
+                                    items: _refundMethods.map((String method) {
+                                      return DropdownMenuItem<String>(
+                                        value: method,
+                                        child: Text(method, style: TextStyle(color: Color(0xFF1A2E44))),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        _selectedRefundMethod = newValue!;
+                                      });
+                                    },
+                                    underline: SizedBox(),
+                                    dropdownColor: Colors.white,
+                                    style: TextStyle(color: Color(0xFF1A2E44)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Refund method updated!", style: TextStyle(color: Color(0xFF1A2E44)))),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF3AB8B5),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              ),
+                              child: Text("Save"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               Expanded(
                 child: Card(
                   elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Re-Fund Method",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        Text("Payment History", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44))),
                         SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Icon(Icons.credit_card, color: Colors.blue),
-                            SizedBox(width: 10),
-                            Text("1502****4832"),
-                            Spacer(),
-                            Icon(Icons.edit, color: Colors.grey),
-                          ],
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              ListTile(
+                                leading: Icon(Icons.history, color: Color(0xFF3AB8B5)),
+                                title: Text("No payment history available", style: TextStyle(color: Color(0xFF1A2E44))),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -191,35 +234,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
               ),
             ],
           ),
-          SizedBox(height: 20),
-          // Payment History Section
-          Text(
-            "Payment History",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 10),
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Text(
-                  "No payment history available",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

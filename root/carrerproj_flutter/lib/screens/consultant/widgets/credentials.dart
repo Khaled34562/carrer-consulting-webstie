@@ -45,7 +45,7 @@ class _CredentialsPageState extends State<CredentialsPage> {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error fetching credentials: $e")),
+        SnackBar(content: Text("Error fetching credentials: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     }
   }
@@ -56,7 +56,7 @@ class _CredentialsPageState extends State<CredentialsPage> {
       _fetchCredentials();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error deleting credential: $e")),
+        SnackBar(content: Text("Error deleting credential: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     }
   }
@@ -156,7 +156,7 @@ class _CredentialsPageState extends State<CredentialsPage> {
           }
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Error preparing file upload: $e")),
+            SnackBar(content: Text("Error preparing file upload: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
           );
           setState(() {
             _fileName = null;
@@ -170,7 +170,7 @@ class _CredentialsPageState extends State<CredentialsPage> {
     } catch (e) {
       print("Error in _pickFile: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error selecting file: $e")),
+        SnackBar(content: Text("Error selecting file: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     }
   }
@@ -198,25 +198,25 @@ class _CredentialsPageState extends State<CredentialsPage> {
 
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter the credential name")),
+        SnackBar(content: Text("Please enter the credential name", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
       return;
     }
     if (_issuerController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter the issuing institution")),
+        SnackBar(content: Text("Please enter the issuing institution", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
       return;
     }
     if (_issueDateController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please select the issue date")),
+        SnackBar(content: Text("Please select the issue date", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
       return;
     }
     if (_fileName == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please select a file")),
+        SnackBar(content: Text("Please select a file", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
       return;
     }
@@ -249,12 +249,12 @@ class _CredentialsPageState extends State<CredentialsPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Credential uploaded successfully")),
+        SnackBar(content: Text("Credential uploaded successfully", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     } catch (e) {
       print("Error in _uploadCredential: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error uploading credential: $e")),
+        SnackBar(content: Text("Error uploading credential: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     }
   }
@@ -264,246 +264,277 @@ class _CredentialsPageState extends State<CredentialsPage> {
       await launch(url);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Could not open document")),
+        SnackBar(content: Text("Could not open document", style: TextStyle(color: Color(0xFF1A2E44)))),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Educational Credentials",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Scaffold(
+      backgroundColor: Color(0xFFF8F8F8),
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
+              stops: [0.0, 0.7],
             ),
-            const SizedBox(height: 10),
-            _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _credentials.isEmpty
-                    ? const Center(child: Text("No credentials found"))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _credentials.length,
-                        itemBuilder: (context, index) {
-                          final credential = _credentials[index];
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                title: Text(
-                                  credential.name,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(credential.issuer ?? "Unknown Issuer"),
-                                    Text("Issued: ${credential.date.toLocal().toString().split(' ')[0]}"),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Status: ${credential.status ?? 'Pending'}",
-                                          style: TextStyle(
-                                            color: credential.status == 'Verified' ? Colors.green : Colors.orange,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        if (credential.status == 'Verified')
-                                          const Icon(Icons.verified, color: Colors.green, size: 16),
-                                        if (credential.status == 'Pending')
-                                          const Icon(Icons.hourglass_empty, color: Colors.orange, size: 16),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () => _viewDocument(credential.fileUrl),
-                                      child: const Text("View Document"),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete, color: Colors.red),
-                                      onPressed: () => _deleteCredential(credential),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-            const SizedBox(height: 20),
-
-            const Text(
-              "Upload New Credential",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        title: Image.asset('lib/assets/white_logo.png', height: 50),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Educational Credentials",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              const SizedBox(height: 10),
+              _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : _credentials.isEmpty
+                      ? Center(child: Text("No credentials found", style: TextStyle(color: Color(0xFF1A2E44))))
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _credentials.length,
+                          itemBuilder: (context, index) {
+                            final credential = _credentials[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  title: Text(
+                                    credential.name,
+                                    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(credential.issuer ?? "Unknown Issuer", style: TextStyle(color: Color(0xFF1A2E44))),
+                                      Text("Issued: ${credential.date.toLocal().toString().split(' ')[0]}", style: TextStyle(color: Color(0xFF1A2E44))),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Status: ${credential.status ?? 'Pending'}",
+                                            style: TextStyle(
+                                              color: credential.status == 'Verified' ? Colors.green : Colors.orange,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          if (credential.status == 'Verified')
+                                            const Icon(Icons.verified, color: Colors.green, size: 16),
+                                          if (credential.status == 'Pending')
+                                            const Icon(Icons.hourglass_empty, color: Colors.orange, size: 16),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () => _viewDocument(credential.fileUrl),
+                                        child: Text("View Document", style: TextStyle(color: Color(0xFF3AB8B5))),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () => _deleteCredential(credential),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+              const SizedBox(height: 20),
+              Text(
+                "Upload New Credential",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
+              ),
+              const SizedBox(height: 10),
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: _pickFile,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF3AB8B5)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.upload_file, size: 40, color: Color(0xFF3AB8B5)),
+                              const SizedBox(height: 8),
+                              Text(
+                                _fileName != null
+                                    ? "File selected: $_fileName"
+                                    : "Drag and drop your credential document here",
+                                style: TextStyle(color: Color(0xFF1A2E44)),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "Supported formats: PDF, JPG, PNG (max 10MB)",
+                                style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                              ),
+                              const SizedBox(height: 8),
+                              ElevatedButton(
+                                onPressed: _pickFile,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF3AB8B5),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text("Browse Files"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: "Credential Name",
+                          labelStyle: TextStyle(color: Color(0xFF1A2E44)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Color(0xFF3AB8B5)),
+                          ),
+                        ),
+                        style: TextStyle(color: Color(0xFF1A2E44)),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _issuerController,
+                        decoration: InputDecoration(
+                          labelText: "Issuing Institution",
+                          labelStyle: TextStyle(color: Color(0xFF1A2E44)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Color(0xFF3AB8B5)),
+                          ),
+                        ),
+                        style: TextStyle(color: Color(0xFF1A2E44)),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _issueDateController,
+                        decoration: InputDecoration(
+                          labelText: "Issue Date (MM/DD/YYYY)",
+                          labelStyle: TextStyle(color: Color(0xFF1A2E44)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Color(0xFF3AB8B5)),
+                          ),
+                        ),
+                        readOnly: true,
+                        onTap: () => _selectDate(context, _issueDateController),
+                        style: TextStyle(color: Color(0xFF1A2E44)),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _expiryDateController,
+                        decoration: InputDecoration(
+                          labelText: "Expiry Date (MM/DD/YYYY)",
+                          labelStyle: TextStyle(color: Color(0xFF1A2E44)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Color(0xFF3AB8B5)),
+                          ),
+                        ),
+                        readOnly: true,
+                        onTap: () => _selectDate(context, _expiryDateController),
+                        style: TextStyle(color: Color(0xFF1A2E44)),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _uploadCredential,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF3AB8B5),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          minimumSize: const Size(double.infinity, 50),
+                        ),
+                        child: Text("Upload Credential", style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Verification Status",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
+              ),
+              const SizedBox(height: 10),
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: _pickFile,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            const Icon(Icons.upload_file, size: 40, color: Colors.grey),
-                            const SizedBox(height: 8),
-                            Text(
-                              _fileName != null
-                                  ? "File selected: $_fileName"
-                                  : "Drag and drop your credential document here",
-                              style: TextStyle(color: Colors.grey.shade600),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Supported formats: PDF, JPG, PNG (max 10MB)",
-                              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-                            ),
-                            const SizedBox(height: 8),
-                            ElevatedButton(
-                              onPressed: _pickFile,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue.shade50,
-                                foregroundColor: Colors.blue,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text("Browse Files"),
-                            ),
-                          ],
-                        ),
+                    ListTile(
+                      title: Text("Verified", style: TextStyle(color: Color(0xFF1A2E44))),
+                      trailing: Text(
+                        "${_credentials.where((c) => c.status == 'Verified').length}",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
                       ),
+                      tileColor: Colors.green.shade50,
                     ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        labelText: "Credential Name",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                    ListTile(
+                      title: Text("Pending", style: TextStyle(color: Color(0xFF1A2E44))),
+                      trailing: Text(
+                        "${_credentials.where((c) => c.status == 'Pending' || c.status == null).length}",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
                       ),
+                      tileColor: Colors.orange.shade50,
                     ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: _issuerController,
-                      decoration: InputDecoration(
-                        labelText: "Issuing Institution",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                    ListTile(
+                      title: Text("Total", style: TextStyle(color: Color(0xFF1A2E44))),
+                      trailing: Text(
+                        "${_credentials.length}",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: _issueDateController,
-                      decoration: InputDecoration(
-                        labelText: "Issue Date (MM/DD/YYYY)",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      readOnly: true,
-                      onTap: () => _selectDate(context, _issueDateController),
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: _expiryDateController,
-                      decoration: InputDecoration(
-                        labelText: "Expiry Date (MM/DD/YYYY)",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      readOnly: true,
-                      onTap: () => _selectDate(context, _expiryDateController),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _uploadCredential,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      child: const Text("Upload Credential"),
+                      tileColor: Colors.grey.shade100,
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-
-            const Text(
-              "Verification Status",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: const Text("Verified"),
-                    trailing: Text(
-                      "${_credentials.where((c) => c.status == 'Verified').length}",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    tileColor: Colors.green.shade50,
-                  ),
-                  ListTile(
-                    title: const Text("Pending"),
-                    trailing: Text(
-                      "${_credentials.where((c) => c.status == 'Pending' || c.status == null).length}",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    tileColor: Colors.orange.shade50,
-                  ),
-                  ListTile(
-                    title: const Text("Total"),
-                    trailing: Text(
-                      "${_credentials.length}",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    tileColor: Colors.grey.shade100,
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
