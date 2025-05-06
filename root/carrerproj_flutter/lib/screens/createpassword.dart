@@ -189,22 +189,7 @@ class _CreatePassPageState extends State<CreatePassPage> {
           ),
         ),
       ),
-      persistentFooterButtons: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () {
-                // Navigate to about us page
-              },
-              child: Text(
-                'About us',
-                style: TextStyle(color: Color(0xFFFFFFFF)), // White text
-              ),
-            ),
-          ],
-        )
-      ],
+
     );
   }
 }

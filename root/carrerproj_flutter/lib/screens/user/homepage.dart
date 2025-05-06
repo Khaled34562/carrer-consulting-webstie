@@ -160,7 +160,7 @@ class _DashboardPageState extends State<DashboardPageUser> {
                       ),
                       SidebarTab(
                         icon: Icons.calendar_today,
-                        label: "Calendar",
+                        label: "Sessions",
                         isSelected: _selectedIndex == 1,
                         onTap: () => setState(() => _selectedIndex = 1),
                       ),

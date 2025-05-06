@@ -1,24 +1,36 @@
 import 'package:carrerproj_client/carrerproj_client.dart';
-import 'package:carrerproj_flutter/src/serverpod_client.dart';
 import 'package:flutter/material.dart';
+import 'package:carrerproj_flutter/src/serverpod_client.dart';
+import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class ProfileContent extends StatefulWidget {
-  const ProfileContent({Key? key}) : super(key: key);
-
   @override
   _ProfileContentState createState() => _ProfileContentState();
 }
 
 class _ProfileContentState extends State<ProfileContent> {
-  UserProfile? _userProfile;
-  bool _isLoading = true;
-  bool _isEditing = false;
+  bool isEditing = false;
+  int? _profileId;
 
-  // Controllers for editable fields
-  late TextEditingController _fullNameController;
-  late TextEditingController _nicknameController;
-  late TextEditingController _emailController;
-  String? _role;
+  // Controllers for text fields
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController nickNameController = TextEditingController();
+  TextEditingController dateOfBirthController = TextEditingController();
+  TextEditingController educationLevelController = TextEditingController();
+
+  String? selectedGender;
+  String? selectedCountry;
+  List<String> selectedLanguages = [];
+  String? selectedTimeZone;
+  String? selectedEducationLevel;
+  DateTime? dateOfBirth;
+
+  final List<String> genderOptions = ['Male', 'Female'];
+  final List<String> countryOptions = ['Saudi Arabia', 'USA', 'Canada', 'UK', 'India', 'Germany'];
+  final List<String> languageOptions = ['Arabic', 'English', 'Spanish', 'French', 'German'];
+  final List<String> timeZoneOptions = ['UTC-5', 'UTC+0', 'UTC+3', 'UTC+9'];
+  final List<String> educationLevelOptions = ['High School', 'Bachelor', 'Master', 'PhD'];
 
   @override
   void initState() {
@@ -27,243 +39,282 @@ class _ProfileContentState extends State<ProfileContent> {
   }
 
   Future<void> _loadUserProfile() async {
-    try {
-      final userId = sessionManager.signedInUser!.id!;
-      final profile = await client.user.getUserProfile(userId);
+    final userId = sessionManager.signedInUser!.id;
+    final profile = await client.user.getUserProfile(userId!);
+
+    if (profile != null) {
       setState(() {
-        _userProfile = profile;
-        _fullNameController = TextEditingController(text: profile?.fullName ?? '');
-        _nicknameController = TextEditingController(text: profile?.nickname ?? '');
-        _emailController = TextEditingController(text: sessionManager.signedInUser?.email ?? '');
-        _role = profile?.role;
-        _isLoading = false;
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to load profile: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
-      );
-      setState(() {
-        _isLoading = false;
+        _profileId = profile.id;
+        fullNameController.text = profile.fullName;
+        nickNameController.text = profile.nickname;
+        selectedGender = genderOptions.contains(profile.gender) ? profile.gender : null;
+        selectedCountry = countryOptions.contains(profile.country) ? profile.country : null;
+        selectedLanguages = profile.languages.where((lang) => languageOptions.contains(lang)).toList();
+        selectedTimeZone = timeZoneOptions.contains(profile.timezone) ? profile.timezone : null;
+        dateOfBirth = profile.dateOfBirth;
+        dateOfBirthController.text = dateOfBirth != null
+            ? "${dateOfBirth!.day}/${dateOfBirth!.month}/${dateOfBirth!.year}"
+            : '';
+        selectedEducationLevel = educationLevelOptions.contains(profile.educationLevel) ? profile.educationLevel : null;
+        educationLevelController.text = selectedEducationLevel ?? '';
       });
     }
   }
 
   Future<void> _saveProfile() async {
-    if (_userProfile == null) return;
-    try {
-      final updatedProfile = _userProfile!.copyWith(
-        fullName: _fullNameController.text,
-        nickname: _nicknameController.text,
-      );
-      await client.user.updateUserProfile(updatedProfile);
-      setState(() {
-        _userProfile = updatedProfile;
-        _isEditing = false;
-      });
+    final userId = sessionManager.signedInUser!.id;
+    final profile = await client.user.getUserProfile(userId!);
+
+    final updatedUser = UserProfile(
+      id: _profileId,
+      userId: userId,
+      role: profile?.role ?? 'user',
+      fullName: fullNameController.text,
+      nickname: nickNameController.text,
+      dateOfBirth: dateOfBirth ?? DateTime.now(),
+      gender: selectedGender ?? '',
+      country: selectedCountry ?? '',
+      languages: selectedLanguages,
+      timezone: selectedTimeZone ?? '',
+      educationLevel: selectedEducationLevel,
+      profileImage: profile?.profileImage,
+      creditCardInfo: profile?.creditCardInfo,
+    );
+
+    UserProfile? result;
+    if (profile != null) {
+      result = await client.user.updateUserProfile(updatedUser);
+    } else {
+      result = await client.user.createUserProfile(updatedUser);
+    }
+
+    if (result != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Profile updated successfully!", style: TextStyle(color: Color(0xFF1A2E44)))),
+        SnackBar(content: Text('Profile saved successfully!')),
       );
-    } catch (e) {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update profile: $e", style: TextStyle(color: Color(0xFF1A2E44)))),
+        SnackBar(content: Text('Failed to save profile.')),
       );
     }
   }
 
-  @override
-  void dispose() {
-    _fullNameController.dispose();
-    _nicknameController.dispose();
-    _emailController.dispose();
-    super.dispose();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: dateOfBirth ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != dateOfBirth) {
+      setState(() {
+        dateOfBirth = picked;
+        dateOfBirthController.text = "${picked.day}/${picked.month}/${picked.year}";
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F8F8), // Grey background
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
-              stops: [0.0, 0.7],
+      body: SingleChildScrollView(
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProfileHeader(sessionManager: sessionManager),
+                    SizedBox(height: 20),
+                    ProfileForm(
+                      isEditing: isEditing,
+                      fullNameController: fullNameController,
+                      nickNameController: nickNameController,
+                      dateOfBirthController: dateOfBirthController,
+                      educationLevelController: educationLevelController,
+                      selectedGender: selectedGender,
+                      selectedCountry: selectedCountry,
+                      selectedLanguages: selectedLanguages,
+                      selectedTimeZone: selectedTimeZone,
+                      selectedEducationLevel: selectedEducationLevel,
+                      onGenderChanged: (value) => setState(() => selectedGender = value),
+                      onCountryChanged: (value) => setState(() => selectedCountry = value),
+                      onLanguagesChanged: (values) => setState(() => selectedLanguages = values.cast<String>()),
+                      onTimeZoneChanged: (value) => setState(() => selectedTimeZone = value),
+                      onEducationChanged: (value) => setState(() => selectedEducationLevel = value),
+                      onDateTap: () => _selectDate(context),
+                      genderOptions: genderOptions,
+                      countryOptions: countryOptions,
+                      languageOptions: languageOptions,
+                      timeZoneOptions: timeZoneOptions,
+                      educationLevelOptions: educationLevelOptions,
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (isEditing) {
+                          await _saveProfile();
+                        }
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
+                      child: Text(isEditing ? 'Save' : 'Edit'),
+                    ),
+                  ],
+                ),
+              ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileHeader extends StatelessWidget {
+  final SessionManager sessionManager;
+
+  ProfileHeader({required this.sessionManager});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        UserImageButton(sessionManager: sessionManager),
+        SizedBox(width: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              sessionManager.signedInUser!.userName!,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            Text(sessionManager.signedInUser!.email ?? ''),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class ProfileForm extends StatelessWidget {
+  final bool isEditing;
+  final TextEditingController fullNameController;
+  final TextEditingController nickNameController;
+  final TextEditingController dateOfBirthController;
+  final TextEditingController educationLevelController;
+  final String? selectedGender;
+  final String? selectedCountry;
+  final List<String> selectedLanguages;
+  final String? selectedTimeZone;
+  final String? selectedEducationLevel;
+  final Function(String?) onGenderChanged;
+  final Function(String?) onCountryChanged;
+  final void Function(List<String>) onLanguagesChanged;
+  final Function(String?) onTimeZoneChanged;
+  final Function(String?) onEducationChanged;
+  final VoidCallback onDateTap;
+  final List<String> genderOptions;
+  final List<String> countryOptions;
+  final List<String> languageOptions;
+  final List<String> timeZoneOptions;
+  final List<String> educationLevelOptions;
+
+  ProfileForm({
+    required this.isEditing,
+    required this.fullNameController,
+    required this.nickNameController,
+    required this.dateOfBirthController,
+    required this.educationLevelController,
+    required this.selectedGender,
+    required this.selectedCountry,
+    required this.selectedLanguages,
+    required this.selectedTimeZone,
+    required this.selectedEducationLevel,
+    required this.onGenderChanged,
+    required this.onCountryChanged,
+    required this.onLanguagesChanged,
+    required this.onTimeZoneChanged,
+    required this.onEducationChanged,
+    required this.onDateTap,
+    required this.genderOptions,
+    required this.countryOptions,
+    required this.languageOptions,
+    required this.timeZoneOptions,
+    required this.educationLevelOptions,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: fullNameController,
+          enabled: isEditing,
+          decoration: InputDecoration(labelText: 'Full Name'),
+        ),
+        SizedBox(height: 20),
+        TextField(
+          controller: nickNameController,
+          enabled: isEditing,
+          decoration: InputDecoration(labelText: 'Nick Name'),
+        ),
+        SizedBox(height: 20),
+        TextField(
+          controller: dateOfBirthController,
+          enabled: isEditing,
+          readOnly: true,
+          onTap: isEditing ? onDateTap : null,
+          decoration: InputDecoration(
+            labelText: 'Date of Birth',
+            suffixIcon: Icon(Icons.calendar_today),
           ),
         ),
-        title: Image.asset('lib/assets/white_logo.png', height: 50),
-        actions: [
-          if (!_isLoading && _userProfile != null)
-            IconButton(
-              icon: Icon(_isEditing ? Icons.save : Icons.edit, color: Colors.white),
-              onPressed: () {
-                if (_isEditing) {
-                  _saveProfile();
-                } else {
-                  setState(() {
-                    _isEditing = true;
-                  });
-                }
-              },
-            ),
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+        SizedBox(height: 20),
+        DropdownButtonFormField(
+          value: selectedGender,
+          items: genderOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onGenderChanged : null,
+          decoration: InputDecoration(labelText: 'Gender'),
         ),
-        child: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _userProfile == null
-                ? Center(child: Text("Unable to load profile.", style: TextStyle(color: Color(0xFF1A2E44))))
-                : SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Color(0xFF3AB8B5),
-                                child: Icon(Icons.person, size: 60, color: Colors.white),
-                              ),
-                              if (_isEditing)
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Color(0xFF3AB8B5),
-                                    child: IconButton(
-                                      icon: Icon(Icons.camera_alt, color: Colors.white, size: 20),
-                                      onPressed: () {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("Profile picture upload coming soon!", style: TextStyle(color: Color(0xFF1A2E44)))),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          "Full Name",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 8),
-                        TextField(
-                          controller: _fullNameController,
-                          enabled: _isEditing,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Color(0xFF3AB8B5)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Color(0xFF3AB8B5)),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Color(0xFF3AB8B5)),
-                            ),
-                          ),
-                          style: TextStyle(color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          "Nickname",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 8),
-                        TextField(
-                          controller: _nicknameController,
-                          enabled: _isEditing,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Color(0xFF3AB8B5)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Color(0xFF3AB8B5)),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Color(0xFF3AB8B5)),
-                            ),
-                          ),
-                          style: TextStyle(color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          "Email",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 8),
-                        TextField(
-                          controller: _emailController,
-                          enabled: false, // Email is typically not editable
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.grey.shade300),
-                            ),
-                          ),
-                          style: TextStyle(color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          "Role",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          _role ?? 'N/A',
-                          style: TextStyle(fontSize: 16, color: Color(0xFF1A2E44)),
-                        ),
-                        SizedBox(height: 20),
-                        if (_isEditing)
-                          Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isEditing = false;
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey,
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                              child: Text("Cancel"),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-      ),
+        SizedBox(height: 20),
+        DropdownButtonFormField(
+          value: selectedCountry,
+          items: countryOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onCountryChanged : null,
+          decoration: InputDecoration(labelText: 'Country'),
+        ),
+        SizedBox(height: 20),
+        MultiSelectDialogField(
+          items: languageOptions.map((e) => MultiSelectItem<String>(e, e)).toList(),
+          initialValue: selectedLanguages,
+          onConfirm: onLanguagesChanged,
+          title: Text('Select Languages'),
+          buttonText: Text('Select Languages'),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        SizedBox(height: 20),
+        DropdownButtonFormField(
+          value: selectedTimeZone,
+          items: timeZoneOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onTimeZoneChanged : null,
+          decoration: InputDecoration(labelText: 'Time Zone'),
+        ),
+        SizedBox(height: 20),
+        DropdownButtonFormField(
+          value: selectedEducationLevel,
+          items: educationLevelOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: isEditing ? onEducationChanged : null,
+          decoration: InputDecoration(labelText: 'Education Level'),
+        ),
+      ],
     );
   }
 }

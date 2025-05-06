@@ -95,7 +95,7 @@ class CVReviewEndpoint extends Endpoint {
     String? language,
     String? country,
   ) async {
-    const apiKey = 'Your-key'; // Use config or secrets manager
+    const apiKey = 'Your-Api-Key'; // Use config or secrets manager
     final locale = language ?? 'English';
     final countryInfo = country != null ? ' for $country job market' : '';
 
@@ -106,7 +106,7 @@ class CVReviewEndpoint extends Endpoint {
         'Authorization': 'Bearer $apiKey',
       },
       body: jsonEncode({
-        'model': 'gpt-4',
+        'model': 'gpt-4.1',
         'messages': [
           {
             'role': 'system',
@@ -128,7 +128,7 @@ Focus on:
     );
 
     if (response.statusCode != 200) {
-      throw Exception('OpenAI API error: ${response.statusCode}');
+      throw Exception('OpenAI API error: ${response.statusCode}, ${response.body}');
     }
 
     final data = jsonDecode(response.body);

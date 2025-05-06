@@ -84,7 +84,7 @@ class CVGenerationEndpoint extends Endpoint {
   }
 
   Future<String> _generateCVContent(UserProfile user) async {
-    const apiKey = 'Your-key'; // Use config or secrets manager
+    const apiKey = 'Your-Api-Key'; // Use config or secrets manager
     final language = user.languages?.firstOrNull ?? 'English';
 
     final response = await http.post(
@@ -94,7 +94,7 @@ class CVGenerationEndpoint extends Endpoint {
         'Authorization': 'Bearer $apiKey',
       },
       body: jsonEncode({
-        'model': 'gpt-4',
+        'model': 'gpt-4.1',
         'messages': [
           {
             'role': 'system',
@@ -129,7 +129,7 @@ Create realistic work experience based on education level.
     );
 
     if (response.statusCode != 200) {
-      throw Exception('OpenAI API error: ${response.statusCode}');
+      throw Exception('OpenAI API error: ${response.statusCode}, ${response.body}');
     }
 
     final data = jsonDecode(response.body);

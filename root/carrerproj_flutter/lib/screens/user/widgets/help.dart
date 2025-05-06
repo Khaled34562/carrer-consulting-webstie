@@ -34,20 +34,7 @@ class _HelpPageState extends State<HelpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F8F8), // Grey background
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
-              stops: [0.0, 0.7],
-            ),
-          ),
-        ),
-        title: Image.asset('lib/assets/white_logo.png', height: 50),
-      ),
+      backgroundColor: Color(0xFFF8F8F8), // Grey backgroun
       body: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(

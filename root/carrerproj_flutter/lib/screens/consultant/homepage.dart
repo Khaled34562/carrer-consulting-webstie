@@ -28,159 +28,216 @@ class _DashboardPageState extends State<DashboardPage> {
     MessagesContent(),
     PaymentsPage(),
     ArticleContent(),
-    HelpPage(), 
+    HelpPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F8F8), // Grey background
       appBar: AppBar(
+        centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF1A2E44), Color(0xFF3AB8B5)],
-              stops: [0.0, 0.7],
+              colors: [
+                Color(0xFF1A2E44), // Dark Blue
+                Color(0xFF3AB8B5), // Teal/Cyan
+              ],
+              stops: [0.0, 0.7], // Emphasize teal more
             ),
           ),
         ),
-        title: Row(
-          children: [
-            Image.asset('lib/assets/white_logo.png', height: 50),
-            SizedBox(width: 20),
-            Text(
-              'Consultant',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ],
+        title: Image.asset(
+          'lib/assets/white_logo.png', // White logo in the header due to gradient
+          height: 50, // Adjust size as needed
         ),
-        actions: [
-          Container(
-            width: 300,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search...",
-                hintStyle: TextStyle(color: Colors.white70),
-                prefixIcon: Icon(Icons.search, color: Colors.white),
-                filled: true,
-                fillColor: Colors.white24,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          SizedBox(width: 20),
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: Colors.white),
-            onPressed: () {
-              // Handle notification click
-            },
-          ),
-          SizedBox(width: 20),
-          TextButton.icon(
-            onPressed: () {
-              sessionManager.signOutDevice();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LandingPage()),
-              );
-            },
-            icon: Icon(Icons.logout, color: Colors.red),
-            label: Text("Sign Out", style: TextStyle(color: Colors.red)),
-          ),
-          SizedBox(width: 20),
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: Color(0xFF3AB8B5),
-            child: Icon(Icons.person, color: Colors.white),
-          ),
-          SizedBox(width: 20),
-        ],
       ),
-      body: Row(
+      backgroundColor: Color(0xFFF8F8F8), // Grey background (248, 248, 248)
+      body: Column(
         children: [
-          /// Sidebar Menu
-          Container(
-            width: 250,
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          /// Search Bar, Avatar, and User Text
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
               children: [
-                const SizedBox(height: 30),
-                SidebarTab(
-                  icon: Icons.dashboard,
-                  label: "Dashboard",
-                  isSelected: _selectedIndex == 0,
-                  onTap: () => setState(() => _selectedIndex = 0),
+                /// User Text
+                Text(
+                  'Consultant',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A2E44), // Dark Blue
+                  ),
                 ),
-                SidebarTab(
-                  icon: Icons.calendar_today,
-                  label: "Calendar",
-                  isSelected: _selectedIndex == 1,
-                  onTap: () => setState(() => _selectedIndex = 1),
+                const SizedBox(width: 20),
+
+                /// Search Bar
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Search...",
+                      prefixIcon: Icon(Icons.search,
+                          color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            BorderSide(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            BorderSide(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            BorderSide(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                      ),
+                    ),
+                    style: TextStyle(
+                        color: Color(0xFF1A2E44)), // Dark Blue text for input
+                  ),
                 ),
-                SidebarTab(
-                  icon: Icons.person,
-                  label: "Profile",
-                  isSelected: _selectedIndex == 2,
-                  onTap: () => setState(() => _selectedIndex = 2),
+                const SizedBox(width: 20),
+
+                /// Notification Icon
+                IconButton(
+                  icon: Icon(Icons.notifications_none,
+                      color: Color(0xFF3AB8B5)), // Teal/Cyan
+                  onPressed: () {
+                    // Handle notification click
+                  },
                 ),
-                SidebarTab(
-                  icon: Icons.article,
-                  label: "Credentials",
-                  isSelected: _selectedIndex == 3,
-                  onTap: () => setState(() => _selectedIndex = 3),
+                const SizedBox(width: 20),
+
+                /// Sign Out Button
+                TextButton.icon(
+                  onPressed: () {
+                    // Handle sign out
+                    sessionManager.signOutDevice();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LandingPage()),
+                    );
+                  },
+                  icon:
+                      Icon(Icons.logout, color: Color(0xFF3AB8B5)), // Teal/Cyan
+                  label: Text(
+                    "Sign Out",
+                    style: TextStyle(color: Color(0xFF3AB8B5)), // Teal/Cyan
+                  ),
                 ),
-                SidebarTab(
-                  icon: Icons.mail,
-                  label: "Messages",
-                  isSelected: _selectedIndex == 4,
-                  onTap: () => setState(() => _selectedIndex = 4),
-                ),
-                SidebarTab(
-                  icon: Icons.payment,
-                  label: "Payments",
-                  isSelected: _selectedIndex == 5,
-                  onTap: () => setState(() => _selectedIndex = 5),
-                ),
-                SidebarTab(
-                  icon: Icons.library_books,
-                  label: "Articles",
-                  isSelected: _selectedIndex == 6,
-                  onTap: () => setState(() => _selectedIndex = 6),
-                ),
-                const Spacer(),
-                SidebarTab(
-                  icon: Icons.help_outline,
-                  label: "Help",
-                  isSelected: _selectedIndex == 7,
-                  onTap: () => setState(() => _selectedIndex = 7),
+
+                const SizedBox(width: 20),
+
+                /// User Avatar
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Color(0xFF3AB8B5), // Teal/Cyan
+                  child: const Icon(Icons.person, color: Colors.white),
                 ),
               ],
             ),
           ),
-          /// Main Content (Updates Based on Selected Tab)
+
+          /// Main Content Row
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                decoration: BoxDecoration(
+            child: Row(
+              children: [
+                /// Sidebar Menu
+                Container(
+                  width: 250,
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2)],
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 30),
+
+                      /// Sidebar Tabs
+                      SidebarTab(
+                        icon: Icons.dashboard,
+                        label: "Dashboard",
+                        isSelected: _selectedIndex == 0,
+                        onTap: () => setState(() => _selectedIndex = 0),
+                      ),
+                      SidebarTab(
+                        icon: Icons.calendar_today,
+                        label: "Sessions",
+                        isSelected: _selectedIndex == 1,
+                        onTap: () => setState(() => _selectedIndex = 1),
+                      ),
+                      SidebarTab(
+                        icon: Icons.person,
+                        label: "Profile",
+                        isSelected: _selectedIndex == 2,
+                        onTap: () => setState(() => _selectedIndex = 2),
+                      ),
+                      SidebarTab(
+                        icon: Icons.article,
+                        label: "Credentials",
+                        isSelected: _selectedIndex == 3,
+                        onTap: () => setState(() => _selectedIndex = 3),
+                      ),
+                      SidebarTab(
+                        icon: Icons.mail,
+                        label: "Messages",
+                        isSelected: _selectedIndex == 4,
+                        onTap: () => setState(() => _selectedIndex = 4),
+                      ),
+                      SidebarTab(
+                        icon: Icons.payment,
+                        label: "Payments",
+                        isSelected: _selectedIndex == 5,
+                        onTap: () => setState(() => _selectedIndex = 5),
+                      ),
+                      SidebarTab(
+                        icon: Icons.library_books,
+                        label: "Articles",
+                        isSelected: _selectedIndex == 6,
+                        onTap: () => setState(() => _selectedIndex = 6),
+                      ),
+                      const Spacer(),
+                      SidebarTab(
+                        icon: Icons.help_outline,
+                        label: "Help",
+                        isSelected: _selectedIndex == 7,
+                        onTap: () => setState(() => _selectedIndex = 7),
+                      ),
+                    ],
+                  ),
                 ),
-                child: _pages[_selectedIndex], // Display the selected page
-              ),
+
+                /// Main Content (Updates Based on Selected Tab)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors
+                            .white, // White background for the content area
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child:
+                            _pages[_selectedIndex], // Display the selected page
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -208,17 +265,51 @@ class SidebarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF1A2E44), // Dark Blue
+                    Color(0xFF3AB8B5), // Teal/Cyan
+                  ],
+                  stops: [0.0, 0.7],
+                )
+              : null,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Color(0xFF3AB8B5).withOpacity(0.3), // Teal/Cyan glow
+                    blurRadius: 8,
+                    spreadRadius: 2,
+                    offset: Offset(0, 2),
+                  ),
+                ]
+              : [],
+        ),
         child: Row(
           children: [
-            Icon(icon, color: isSelected ? Color(0xFF3AB8B5) : Color(0xFF1A2E44)),
+            Icon(
+              icon,
+              color: isSelected
+                  ? Colors.white
+                  : Color(
+                      0xFF1A2E44), // White for selected, Dark Blue for unselected
+            ),
             const SizedBox(width: 10),
             Text(
               label,
               style: TextStyle(
                 fontSize: 16,
-                color: isSelected ? Color(0xFF3AB8B5) : Color(0xFF1A2E44),
+                color: isSelected
+                    ? Colors.white
+                    : Color(
+                        0xFF1A2E44), // White for selected, Dark Blue for unselected
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
